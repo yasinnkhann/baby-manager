@@ -10,7 +10,9 @@
   },
   "dependencies": {
     "axios": "^0.25.0",
+    "better-react-spinkit": "^2.0.4",
     "firebase": "^9.6.5",
+    "lodash": "^4.17.21",
     "next": "12.0.9",
     "prettier": "^2.5.1",
     "react": "17.0.2",
