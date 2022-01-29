@@ -17,7 +17,6 @@ export default function Home() {
     }
   }, [user, router]);
 
-  // SEPARATE
   if (loading) {
     return <LoadingPage />;
   }

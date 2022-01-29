@@ -1,20 +1,42 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
+import { auth } from '../firebaseConfig.js';
+import { createUserWithEmailAndPassword, onAuthStateChanged } from 'firebase/auth';
+// import { useCreateUserWithEmailAndPassword } from 'react-firebase-hooks/auth';
 
 export default function Register() {
+  const [user, setUser] = useState({});
   const [registerInfo, setRegisterInfo] = useState({
     email: '',
     password: '',
     confirmPassword: '',
   });
 
+  //   const [createUserWithEmailAndPassword, user, loading, error] =
+  //     useCreateUserWithEmailAndPassword(auth);
+
+  onAuthStateChanged(auth, currentUser => {
+    setUser(currentUser);
+  });
+
   const handleChange = ({ target: { name, value } }) => {
     setRegisterInfo({ ...registerInfo, hasChanged: true, [name]: value });
   };
 
-  const handleSubmit = e => {
+  const handleSubmit = async e => {
+    const { email, password, confirmPassword } = registerInfo;
     e.preventDefault();
-    alert('submitted!');
+    if (password === confirmPassword) {
+      await createUserWithEmailAndPassword(auth, email, password);
+      console.log(user);
+    } else {
+      alert('passwords do not match');
+    }
+    setRegisterInfo({
+      email: '',
+      password: '',
+      confirmPassword: '',
+    });
   };
 
   return (
