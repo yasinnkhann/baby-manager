@@ -8,6 +8,9 @@ module.exports = {
         '3xl': '2000px',
       },
     },
+    fontFamily: {
+      body: ['Rubik', 'sans-serif'],
+    },
   },
   variants: {
     extend: {},
