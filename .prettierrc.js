@@ -1,6 +1,6 @@
 module.exports = {
   trailingComma: 'es5',
-  printWidth: 120,
+  printWidth: 95,
   singleQuote: true,
   jsxSingleQuote: true,
   arrowParens: 'avoid',
