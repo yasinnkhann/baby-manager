@@ -1,15 +1,21 @@
 import Head from 'next/head';
 import Image from 'next/image';
-import { useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth, db } from '../firebaseConfig.js';
 import LoadingPage from '../components/LoadingPage.js';
 import Link from 'next/link';
+import { onAuthStateChanged, signOut } from 'firebase/auth';
 
 export default function Home() {
-  const [user, loading] = useAuthState(auth);
+  const [user, setUser] = useState({});
+  const [_, loading] = useAuthState(auth);
   const router = useRouter();
+
+  onAuthStateChanged(auth, currentUser => {
+    setUser(currentUser);
+  });
 
   useEffect(() => {
     if (!user && router.pathname == '/') {
@@ -17,13 +23,19 @@ export default function Home() {
     }
   }, [user, router]);
 
+  const handleSignOut = async () => {
+    try {
+      await signOut(auth);
+      console.log('signed out!');
+      router.push('/login');
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   if (loading) {
     return <LoadingPage />;
   }
-
-  // if (!user) {
-  //   router.push('/login');
-  // }
 
   return (
     <div>
@@ -40,9 +52,10 @@ export default function Home() {
       </h1>
       <br />
       <br />
-      <Link href='/login'>
+      <button onClick={handleSignOut}>Sign out</button>
+      {/* <Link href='/login'>
         <a>Sign out</a>
-      </Link>
+      </Link> */}
     </div>
   );
 }

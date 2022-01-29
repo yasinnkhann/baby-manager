@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { auth } from '../firebaseConfig.js';
 import { createUserWithEmailAndPassword, onAuthStateChanged } from 'firebase/auth';
 // import { useCreateUserWithEmailAndPassword } from 'react-firebase-hooks/auth';
+import { useRouter } from 'next/router';
 
 export default function Register() {
   const [user, setUser] = useState({});
@@ -11,13 +12,19 @@ export default function Register() {
     password: '',
     confirmPassword: '',
   });
+  const router = useRouter();
 
   //   const [createUserWithEmailAndPassword, user, loading, error] =
   //     useCreateUserWithEmailAndPassword(auth);
 
-  onAuthStateChanged(auth, currentUser => {
-    setUser(currentUser);
-  });
+  //   onAuthStateChanged(auth, user => {
+  //     if (user) {
+  //       const uid = user.uid;
+  //       console.log('UID: ', uid);
+  //     } else {
+  //       useRouter.push('/login');
+  //     }
+  //   });
 
   const handleChange = ({ target: { name, value } }) => {
     setRegisterInfo({ ...registerInfo, hasChanged: true, [name]: value });
@@ -27,8 +34,14 @@ export default function Register() {
     const { email, password, confirmPassword } = registerInfo;
     e.preventDefault();
     if (password === confirmPassword) {
-      await createUserWithEmailAndPassword(auth, email, password);
-      console.log(user);
+      try {
+        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+        console.log('REGISTERED AS: ', userCredential);
+        router.push('/');
+      } catch (err) {
+        console.error(err);
+        alert(err.message);
+      }
     } else {
       alert('passwords do not match');
     }
