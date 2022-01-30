@@ -1,3 +1,9 @@
+import WbSunnyIcon from '@mui/icons-material/WbSunny';
+import FoodModal from '../../components/FoodModal.js';
+
+//--------------------------------------------------------//
+//------------------Gather Data from DB-------------------//
+//--------------------------------------------------------//
 export const getServerSidePaths = async () => {
   const res = await fetch(`https://jsonplaceholder.typicode.com/users`);
   const data = await res.json();
@@ -23,7 +29,13 @@ export const getServerSideProps = async context => {
     props: { baby: data },
   };
 };
+//--------------------------------------------------------//
+//--------------------------------------------------------//
+//--------------------------------------------------------//
 
+//--------------------------------------------------------//
+//------------------Render to Page------------------------//
+//--------------------------------------------------------//
 const Baby = ({ baby }) => {
   return (
     <div
@@ -40,7 +52,13 @@ const Baby = ({ baby }) => {
           <div>
             <b>{baby.name}</b>
             <div className='sb-buffer'></div>
-            <b>Baby Asleep???</b>
+            <b>Awake</b>
+            <button
+              style={{ width: '50px' }}
+              className='rounded-md border-2 border-emerald-400'
+            >
+              <WbSunnyIcon />
+            </button>
           </div>
         </div>
         <div style={{ display: 'grid' }} className='grid-cols-2 text-center sb-buffer'>
@@ -77,12 +95,7 @@ const Baby = ({ baby }) => {
         </div>
         <div style={{ display: 'grid' }} className='grid-cols-1 text-center'>
           <div className='sb-buffer'>
-            <button
-              style={{ width: '300px' }}
-              className='rounded-md border-2  border-emerald-400'
-            >
-              Add New Feed
-            </button>
+            <FoodModal />
           </div>
         </div>
         <div style={{ display: 'grid' }} className='grid-cols-1 text-center'>
@@ -100,12 +113,8 @@ const Baby = ({ baby }) => {
   );
 };
 
-// const Baby = ({ baby }) => {
-//   return(
-//     <div>
-//       <h1>{baby.name}</h1>
-//     </div>
-//   )
-// }
+//--------------------------------------------------------//
+//--------------------------------------------------------//
+//--------------------------------------------------------//
 
 export default Baby;
