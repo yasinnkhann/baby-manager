@@ -1,3 +1,6 @@
+import { db } from '../../firebaseConfig.js';
+import { collection, query, where, getDocs, doc, getDoc } from 'firebase/firestore';
+
 export const getServerSidePaths = async () => {
   const res = await fetch(`https://jsonplaceholder.typicode.com/users`);
   const data = await res.json();
@@ -16,6 +19,14 @@ export const getServerSidePaths = async () => {
 
 export const getServerSideProps = async context => {
   const id = context.params.id;
+
+  // const babyref = doc(db, 'baby', `${id}`)
+  // const babySnap = await getDoc(babyRef);
+
+  // return {
+  //   props: { baby: JSON.stringify(babySnap)},
+  // }
+
   const res = await fetch(`https://jsonplaceholder.typicode.com/users/${id}`);
   const data = await res.json();
 
