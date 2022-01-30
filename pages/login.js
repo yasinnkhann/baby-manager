@@ -4,39 +4,35 @@ import {
   signInWithPopup,
   GoogleAuthProvider,
   signInWithEmailAndPassword,
-  onAuthStateChanged,
 } from 'firebase/auth';
 import { auth, provider } from '../firebaseConfig.js';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 
 export default function Login() {
-  // const [user, setUser] = useState({});
   const [loginInfo, setLoginInfo] = useState({
     email: '',
     password: '',
   });
   const router = useRouter();
 
-  // onAuthStateChanged(auth, currentUser => {
-  //   setUser(currentUser);
-  // });
-
   const handleChange = ({ target: { name, value } }) => {
     setLoginInfo({ ...loginInfo, hasChanged: true, [name]: value });
   };
 
-  const signIn = () => {
-    signInWithPopup(auth, provider)
-      .then(res => {
-        const credential = GoogleAuthProvider.credentialFromResult(res);
-        const token = credential.accessToken;
-        const user = res.user;
-        console.log(token);
-        console.log(user);
-        router.push('/');
-      })
-      .catch(err => console.error(err));
+  const signIn = async () => {
+    try {
+      const res = await signInWithPopup(auth, provider);
+      const credential = GoogleAuthProvider.credentialFromResult(res);
+      const token = credential.accessToken;
+      const user = res.user;
+      user.firstName = user.displayName.split(' ')[0];
+      user.lastName = user.displayName.split(' ')[1];
+      console.log('USER @ LOGIN: ', user);
+      router.push('/');
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   const handleSubmit = async e => {
