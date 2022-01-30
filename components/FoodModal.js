@@ -10,6 +10,7 @@ import MenuItem from '@mui/material/MenuItem';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import StaticTimePicker from '@mui/lab/StaticTimePicker';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
+import DatePicker from '@mui/lab/DatePicker';
 
 const popupStyle = {
   position: 'absolute',
@@ -31,8 +32,9 @@ const FoodModal = () => {
   const [food, setFood] = React.useState(['Formula', 'Milk', 'Mushy Peas']);
   const [foodValue, setFoodValue] = React.useState('');
   const [foodAmount, setFoodAmount] = React.useState(0);
-  const [date, setDate] = React.useState(new Date().toString());
+  const [date, setDate] = React.useState(null);
   const [feedTime, setFeedTime] = React.useState(new Date());
+  const [feedDate, setFeedDate] = React.useState(new Date().toString());
 
   //------------------------------------------//
   //----To handle open and close Modal--------//
@@ -47,16 +49,39 @@ const FoodModal = () => {
   //------------------------------------------//
   //------------------------------------------//
 
+  //------------------------------------------//
+  //----To Get Pretty Date--------------------//
+  //------------------------------------------//
+  const getPrettyDate = () => {
+    const uglyDate = new Date().toString();
+    const splitDate = uglyDate.split(' ');
+    const prettyDate = `${splitDate[0]} ${splitDate[1]} ${splitDate[2]}, ${splitDate[3]}`;
+    setDate(prettyDate);
+  };
+  //------------------------------------------//
+  //------------------------------------------//
+  //------------------------------------------//
+
+  //------------------------------------------//
+  //----Use Effect to Render------------------//
+  //------------------------------------------//
   useEffect(() => {
-    console.log(foodValue);
-    console.log(foodAmount);
-    console.log(feedTime);
-  }, [foodValue, foodAmount, feedTime]);
+    console.log('Type of Food', foodValue);
+    console.log('How much Food', foodAmount);
+    console.log('Time', feedTime);
+    console.log('Date', feedDate);
+  }, [foodValue, foodAmount, feedTime, feedDate]);
+
+  useEffect(() => {
+    getPrettyDate();
+  }, []);
+  //------------------------------------------//
+  //------------------------------------------//
+  //------------------------------------------//
 
   //------------------------------------------//
   //----Render Component----------------------//
   //------------------------------------------//
-
   return (
     <div>
       <button
@@ -68,10 +93,11 @@ const FoodModal = () => {
       </button>
       <Modal open={open} onClose={toClose}>
         <Box sx={popupStyle} className='sm:w-5/5 md:w-3/5'>
-          <h1>{date}</h1>
+          <b>{date}</b>
+          <hr />
           <div className='sb-buffer'></div>
           <FormControl fullWidth noValidate>
-            <InputLabel id='foodLabel'>Food</InputLabel>
+            <InputLabel id='foodLabel'>Type of Food</InputLabel>
             <Select
               onChange={e => setFoodValue(e.target.value)}
               value={foodValue}
@@ -100,6 +126,16 @@ const FoodModal = () => {
               step={0.5}
               onChange={e => setFoodAmount(e.target.value)}
             ></Slider>
+            <LocalizationProvider dateAdapter={AdapterDateFns}>
+              <DatePicker
+                label='Date of Feeding'
+                value={feedDate}
+                onChange={newValue => {
+                  setFeedDate(newValue);
+                }}
+                renderInput={params => <TextField {...params} />}
+              />
+            </LocalizationProvider>
             <div style={{ width: '300px' }} className='place-self-center'>
               <LocalizationProvider dateAdapter={AdapterDateFns}>
                 <StaticTimePicker
