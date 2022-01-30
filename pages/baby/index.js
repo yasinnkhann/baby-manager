@@ -1,4 +1,4 @@
-import Link from 'next/Link';
+import Link from 'next/link';
 
 fetch('https://jsonplaceholder.typicode.com/users').then(res => res.json());
 
