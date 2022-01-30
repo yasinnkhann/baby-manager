@@ -5,7 +5,14 @@ import { auth, db } from '../firebaseConfig.js';
 import LoadingPage from '../components/LoadingPage.js';
 import { signOut } from 'firebase/auth';
 import { useEffect } from 'react';
-import { doc, setDoc, serverTimestamp, updateDoc } from 'firebase/firestore';
+import {
+  doc,
+  setDoc,
+  serverTimestamp,
+  updateDoc,
+  getDoc,
+  onSnapshot,
+} from 'firebase/firestore';
 
 export default function Home() {
   const [user, loading, error] = useAuthState(auth);
@@ -14,14 +21,19 @@ export default function Home() {
   useEffect(() => {
     const updateUsers = async () => {
       if (user) {
-        console.log('user @ INDEX: ', user);
+        console.log('INDEX USER: ', user);
+        console.log('DISPLAY NAME: ', user.displayName);
+        const docRef = doc(db, 'users', user.uid);
+        const docSnapshot = await getDoc(docRef);
+        console.log('DOC SS', docSnapshot?.data());
         await setDoc(
           doc(db, 'users', user.uid),
           {
-            firstName: user.firstName ? user.firstName : null,
-            lastName: user.lastName ? user.lastName : null,
+            firstName: docSnapshot?.data()?.firstName,
+            lastName: docSnapshot?.data()?.lastName,
             email: user.email,
-            phoneNumber: user.phoneNumber ? String(user.phoneNumber) : null,
+            phoneNumber: docSnapshot?.data()?.phoneNumber,
+            // phoneNumber: user.phoneNumber,
             lastSeen: serverTimestamp(),
           },
           { merge: true }
@@ -30,26 +42,6 @@ export default function Home() {
     };
     updateUsers();
   }, [user]);
-
-  // useEffect(() => {
-  //   const updateUsers = async () => {
-  //     if (user) {
-  //       console.log('user @ INDEX: ', user);
-  //       await setDoc(
-  //         doc(db, 'users', user.uid),
-  //         {
-  //           firstName: user.firstName ? user.firstName : null,
-  //           lastName: user.lastName ? user.lastName : null,
-  //           email: user.email,
-  //           phoneNumber: user.phoneNumber ? String(user.phoneNumber) : null,
-  //           lastSeen: serverTimestamp(),
-  //         },
-  //         { merge: true }
-  //       );
-  //     }
-  //   };
-  //   updateUsers();
-  // }, [user]);
 
   const handleSignOut = async () => {
     try {
@@ -75,7 +67,6 @@ export default function Home() {
     }
 
     if (user) {
-      console.log('USER: ', user);
       return (
         <div>
           <Head>
@@ -84,7 +75,7 @@ export default function Home() {
             <link rel='icon' href='/favicon.ico' />
           </Head>
           <h1
-            className='text-red-500 sm:text-green-500 md:text-pink-500 lg:text-purple-500 
+            className='text-red-500 sm:text-green-500 md:text-pink-500 lg:text-purple-500
           xl:text-black 2xl:text-blue-500'
           >
             HOME PAGE
@@ -103,3 +94,96 @@ export default function Home() {
 
   return <>{handleUser()}</>;
 }
+
+// import Head from 'next/head';
+// import { useRouter } from 'next/router';
+// import { useAuthState } from 'react-firebase-hooks/auth';
+// import { auth, db } from '../firebaseConfig.js';
+// import LoadingPage from '../components/LoadingPage.js';
+// import { signOut } from 'firebase/auth';
+// import { useEffect } from 'react';
+// import { doc, setDoc, serverTimestamp, updateDoc } from 'firebase/firestore';
+
+// export default function Home() {
+//   const [user, loading, error] = useAuthState(auth);
+//   const router = useRouter();
+
+//   useEffect(() => {
+//     const updateUsers = async () => {
+//       if (user) {
+//         console.log('hereeeeeeeeeee');
+//         console.log(user);
+
+//         console.log('DISPLAY NAME: ', user.displayName);
+
+//         await setDoc(
+//           doc(db, 'users', user.uid),
+//           {
+//             firstName: user?.displayName
+//               ? user?.displayName?.split(' ')[0]
+//               : 'default',
+//             lastName: user?.displayName
+//               ? user?.displayName?.split(' ')[1]
+//               : 'default',
+//             email: user.email,
+//             phoneNumber: user.photoURL,
+//             lastSeen: serverTimestamp(),
+//           },
+//           { merge: true }
+//         );
+//       }
+//     };
+//     updateUsers();
+//   }, [user]);
+
+//   const handleSignOut = async () => {
+//     try {
+//       await signOut(auth);
+//       console.log('signed out!');
+//       router.push('/login');
+//     } catch (err) {
+//       console.error(err);
+//     }
+//   };
+
+//   const handleUser = () => {
+//     if (loading) {
+//       return <LoadingPage />;
+//     }
+
+//     if (error) {
+//       return (
+//         <div>
+//           <p>Error: {error}</p>
+//         </div>
+//       );
+//     }
+
+//     if (user) {
+//       return (
+//         <div>
+//           <Head>
+//             <title>Welcome to Baby Manager!</title>
+//             <meta name='description' content='Generated by create next app' />
+//             <link rel='icon' href='/favicon.ico' />
+//           </Head>
+//           <h1
+//             className='text-red-500 sm:text-green-500 md:text-pink-500 lg:text-purple-500
+//           xl:text-black 2xl:text-blue-500'
+//           >
+//             HOME PAGE
+//           </h1>
+//           <br />
+//           <br />
+//           <button onClick={handleSignOut}>Sign out</button>
+//         </div>
+//       );
+//     }
+
+//     if (!user) {
+//       router.push('/login');
+//     }
+//   };
+
+//   return <>{handleUser()}</>;
+// }

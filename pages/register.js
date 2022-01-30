@@ -1,9 +1,16 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { auth, db } from '../firebaseConfig.js';
-import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
 import { useRouter } from 'next/router';
-import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
+import {
+  collection,
+  addDoc,
+  doc,
+  setDoc,
+  updateDoc,
+  serverTimestamp,
+} from 'firebase/firestore';
 
 export default function Register() {
   const [registerInfo, setRegisterInfo] = useState({
@@ -26,19 +33,26 @@ export default function Register() {
     if (password === confirmPassword) {
       try {
         const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-        const userRef = collection(db, 'users', userCredential.user.uid);
-        await addDoc(userRef, {
-          firstName: registerInfo.firstName,
-          lastName: registerInfo.lastName,
-          email: registerInfo.email,
-          phoneNumber: registerInfo.phoneNumber ? String(registerInfo.phoneNumber) : null,
+        const user = userCredential.user;
+        const userDoc = doc(db, 'users', user.uid);
+        await setDoc(
+          userDoc,
+          {
+            firstName: registerInfo.firstName,
+            lastName: registerInfo.lastName,
+            email: registerInfo.email,
+            phoneNumber: registerInfo.phoneNumber ? registerInfo.phoneNumber : null,
+            lastSeen: serverTimestamp(),
+          },
+          { merge: true }
+        );
+        await updateProfile(auth.currentUser, {
+          displayName: `${registerInfo.firstName} ${registerInfo.lastName}`,
         });
-        // userCredential.user.firstName = registerInfo.firstName;
-        // userCredential.user.lastName = registerInfo.lastName;
-        // userCredential.user.phoneNumber = registerInfo.phoneNumber
-        //   ? String(registerInfo.phoneNumber)
-        //   : null;
-        // console.log('REGISTERED AS: ', userCredential.user);
+
+        user.phoneNumber = registerInfo.phoneNumber;
+
+        console.log('REGISTERED AS: ', user);
         router.push('/');
       } catch (err) {
         console.error(err);
@@ -133,9 +147,17 @@ export default function Register() {
 
 // import React, { useState } from 'react';
 // import Link from 'next/link';
-// import { auth } from '../firebaseConfig.js';
-// import { createUserWithEmailAndPassword } from 'firebase/auth';
+// import { auth, db } from '../firebaseConfig.js';
+// import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
 // import { useRouter } from 'next/router';
+// import {
+//   collection,
+//   addDoc,
+//   doc,
+//   setDoc,
+//   updateDoc,
+//   serverTimestamp,
+// } from 'firebase/firestore';
 
 // export default function Register() {
 //   const [registerInfo, setRegisterInfo] = useState({
@@ -162,12 +184,18 @@ export default function Register() {
 //           email,
 //           password
 //         );
-//         userCredential.user.firstName = registerInfo.firstName;
-//         userCredential.user.lastName = registerInfo.lastName;
-//         userCredential.user.phoneNumber = registerInfo.phoneNumber
-//           ? String(registerInfo.phoneNumber)
-//           : null;
-//         console.log('REGISTERED AS: ', userCredential.user);
+
+//         await updateProfile(auth.currentUser, {
+//           displayName: `${registerInfo.firstName} ${registerInfo.lastName}`,
+//           photoURL: registerInfo.phoneNumber ?? '1234567890',
+//         });
+
+//         // userCredential.user.Name = registerInfo.firstName;
+//         // userCredential.user.lastName = registerInfo.lastName;
+//         //userCredential.user.phoneNumber = registerInfo.phoneNumber
+//         //? String(registerInfo.phoneNumber)
+//         // : null;
+//         // console.log('REGISTERED AS: ', userCredential.user);
 //         router.push('/');
 //       } catch (err) {
 //         console.error(err);
