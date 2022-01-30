@@ -104,7 +104,7 @@ const FoodModal = () => {
               value={foodValue}
               labelId='foodLabel'
               id='foodFed'
-              label='Food'
+              label='Type of Food'
             >
               {food.map(food => {
                 return (
