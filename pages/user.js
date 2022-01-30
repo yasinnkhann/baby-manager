@@ -21,27 +21,29 @@ export default function User() {
   };
 
   return (
-    <section>
-      <div>
-        <div>First Name</div>
-        <div>Last Name</div>
-        <div>Email</div>
-        <div>Phone Number</div>
-      </div>
-      <div>
-        <div>[List of names that are authorized to manage your baby details]</div>
-        <div>Invite another user to manage your babies</div>
-        <div>
-          <input type='text' onChange={handleChange}></input>
-          <button onClick={handleInviteButton}>Invite User</button>
-        </div>
-        {/* <Link href='/'>
+    <main>
+      <article>
+        <section>
+          <div>First Name</div>
+          <div>Last Name</div>
+          <div>Email</div>
+          <div>Phone Number</div>
+        </section>
+        <section>
+          <div>[List of names that are authorized to manage your baby details]</div>
+          <div>Invite another user to manage your babies</div>
+          <div>
+            <input type='text' onChange={handleChange}></input>
+            <button onClick={handleInviteButton}>Invite User</button>
+          </div>
+          {/* <Link href='/'>
           <a>Invitation Link</a>
         </Link> */}
-        <div>
-          <button>Sign Out Button</button>
-        </div>
-      </div>
-    </section>
+          <div>
+            <button>Sign Out Button</button>
+          </div>
+        </section>
+      </article>
+    </main>
   );
 }
