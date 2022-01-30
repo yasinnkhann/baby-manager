@@ -4,6 +4,12 @@
 
 @layer base {
   body {
-    @apply bg-[#EFF1FA];
+    @apply bg-[#ffffff];
+  }
+  .sb-container {
+    width: 768px;
+  }
+  .sb-buffer {
+    padding: 15px 0px;
   }
 }
