@@ -1,8 +1,6 @@
 import Link from 'next/Link';
 
-fetch('https://jsonplaceholder.typicode.com/users')
-  .then(res => res.json())
-  .then(json => console.log(json));
+fetch('https://jsonplaceholder.typicode.com/users').then(res => res.json());
 
 export const getServerSideProps = async () => {
   const res = await fetch('https://jsonplaceholder.typicode.com/users');

@@ -14,6 +14,7 @@ import DatePicker from '@mui/lab/DatePicker';
 
 const popupStyle = {
   position: 'absolute',
+  borderRadius: '15px',
   top: '50%',
   left: '50%',
   transform: 'translate(-50%, -50%)',
@@ -63,14 +64,14 @@ const FoodModal = () => {
   //------------------------------------------//
 
   //------------------------------------------//
-  //----Use Effect to Render------------------//
+  //----Use Effect to Render/Log--------------//
   //------------------------------------------//
-  useEffect(() => {
-    console.log('Type of Food', foodValue);
-    console.log('How much Food', foodAmount);
-    console.log('Time', feedTime);
-    console.log('Date', feedDate);
-  }, [foodValue, foodAmount, feedTime, feedDate]);
+  // useEffect(() => {
+  //   console.log('Type of Food', foodValue);
+  //   console.log('How much Food', foodAmount);
+  //   console.log('Time', feedTime);
+  //   console.log('Date', feedDate);
+  // }, [foodValue, foodAmount, feedTime, feedDate]);
 
   useEffect(() => {
     getPrettyDate();
