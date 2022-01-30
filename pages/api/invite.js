@@ -1,9 +1,13 @@
 const nodemailer = require('nodemailer');
+const crypto = require('crypto');
 
-export default function handler(req, res) {
-  const email = req.body;
-  // Create random hash
+export default function inviteHandler(req, res) {
+  // Create random token
   // Create firebase query to store hash,main user id/email, provided email to invite
+  var token = crypto.randomBytes(8).toString('hex');
+  const INVITE_LINK = `http://localhost:3000/?=${token}`;
+
+  const email = req.body;
   let transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
@@ -16,17 +20,16 @@ export default function handler(req, res) {
     from: process.env.NEXT_PUBLIC_SERVER_EMAIL,
     to: email,
     subject: 'Team Flareon is the best!!!',
-    text: "You are invited to manage {users name}'s babies. Click the following link to log in or sign up to manage his/her babies! \n{link}",
+    text: `You are invited to manage {users name}'s babies. Click the following link to log in or sign up to manage his/her babies! \n\n${INVITE_LINK}. \n\nOnly log in through this link to gain access to {users name}'s babies.`,
   };
 
-  transporter.sendMail(mailOptions, (err, data) => {
+  let data = transporter.sendMail(mailOptions, (err, data) => {
     if (err) {
       console.log('Error:', err);
+      res.status(400).json({ msg: 'Error sending email:', err });
     } else {
       console.log('Email sent successfully');
+      res.status(201).json({ msg: 'Email sent successfully.', data });
     }
   });
-
-  // const email = req.body;
-  res.status(200).json({ name: 'John Doe' });
 }
