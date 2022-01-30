@@ -92,7 +92,7 @@ const FoodModal = () => {
       >
         Add New Feed
       </button>
-      <Modal open={open} onClose={toClose}>
+      <Modal style={{ overflow: 'auto' }} open={open} onClose={toClose}>
         <Box sx={popupStyle} className='sm:w-5/5 md:w-3/5'>
           <b>{date}</b>
           <hr />
