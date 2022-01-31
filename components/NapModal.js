@@ -12,6 +12,7 @@ import StaticTimePicker from '@mui/lab/StaticTimePicker';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import DatePicker from '@mui/lab/DatePicker';
 import Button from '@mui/material/Button';
+import Icon from '@mui/material/Icon';
 
 const popupStyle = {
   position: 'absolute',
@@ -35,8 +36,8 @@ const FoodModal = () => {
   const [foodValue, setFoodValue] = React.useState('');
   const [foodAmount, setFoodAmount] = React.useState(0);
   const [date, setDate] = React.useState(null);
-  const [feedTime, setFeedTime] = React.useState(new Date());
-  const [feedDate, setFeedDate] = React.useState(new Date().toString());
+  const [napTime, setNapTime] = React.useState(new Date());
+  const [napDate, setNapDate] = React.useState(new Date().toString());
 
   //------------------------------------------//
   //----To handle open and close Modal--------//
@@ -70,8 +71,8 @@ const FoodModal = () => {
   // useEffect(() => {
   //   console.log('Type of Food', foodValue);
   //   console.log('How much Food', foodAmount);
-  //   console.log('Time', feedTime);
-  //   console.log('Date', feedDate);
+  console.log('Time', napTime);
+  console.log('Date', napDate);
   // }, [foodValue, foodAmount, feedTime, feedDate]);
 
   useEffect(() => {
@@ -91,6 +92,7 @@ const FoodModal = () => {
         style={{ width: '300px', backgroundColor: 'lightgreen' }}
         className='rounded-md border-2 border-emerald-400'
         variant='contained'
+        color='success'
       >
         Add New Feed
       </Button>
@@ -100,41 +102,12 @@ const FoodModal = () => {
           <hr />
           <div className='sb-buffer'></div>
           <FormControl fullWidth noValidate>
-            <InputLabel id='foodLabel'>Type of Food</InputLabel>
-            <Select
-              onChange={e => setFoodValue(e.target.value)}
-              value={foodValue}
-              labelId='foodLabel'
-              id='foodFed'
-              label='Type of Food'
-            >
-              {food.map(food => {
-                return (
-                  <MenuItem key={food} value={food}>
-                    {food}
-                  </MenuItem>
-                );
-              })}
-            </Select>
-            <div className='sb-buffer'>
-              <label id='amountLabel'>
-                {foodAmount} oz. of {foodValue}
-              </label>
-            </div>
-            <Slider
-              className='py-8'
-              valueLabelDisplay='auto'
-              min={0}
-              max={16}
-              step={0.5}
-              onChange={e => setFoodAmount(e.target.value)}
-            ></Slider>
             <LocalizationProvider dateAdapter={AdapterDateFns}>
               <DatePicker
-                label='Date of Feeding'
-                value={feedDate}
+                label='Date of Nap'
+                value={napDate}
                 onChange={newValue => {
-                  setFeedDate(newValue);
+                  setNapDate(newValue);
                 }}
                 renderInput={params => <TextField {...params} />}
               />
@@ -142,8 +115,8 @@ const FoodModal = () => {
             <div style={{ width: '300px' }} className='place-self-center'>
               <LocalizationProvider dateAdapter={AdapterDateFns}>
                 <StaticTimePicker
-                  value={feedTime}
-                  onChange={time => setFeedTime(time)}
+                  value={napTime}
+                  onChange={time => setNapTime(time)}
                   renderInput={params => <TextField {...params} />}
                 />
               </LocalizationProvider>
@@ -155,7 +128,6 @@ const FoodModal = () => {
               style={{ backgroundColor: 'lightgreen', width: '50%' }}
               className='rounded-md border-2 border-emerald-400 place-self-center'
               variant='contained'
-              starticon='<Icon />'
             >
               Save
             </Button>

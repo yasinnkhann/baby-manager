@@ -1,5 +1,6 @@
 import WbSunnyIcon from '@mui/icons-material/WbSunny';
 import FoodModal from '../../components/FoodModal.js';
+import NapModal from '../../components/NapModal.js';
 
 //--------------------------------------------------------//
 //------------------Gather Data from DB-------------------//
@@ -100,12 +101,7 @@ const Baby = ({ baby }) => {
         </div>
         <div style={{ display: 'grid' }} className='grid-cols-1 text-center'>
           <div className='sb-buffer'>
-            <button
-              style={{ width: '300px' }}
-              className='rounded-md border-2 border-emerald-400'
-            >
-              Add New Nap
-            </button>
+            <NapModal />
           </div>
         </div>
       </div>
