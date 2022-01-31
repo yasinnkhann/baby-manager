@@ -18,11 +18,27 @@ import {
   FormControl,
 } from '@mui/material';
 
+import { auth, db } from '../firebaseConfig.js';
+import { useRouter } from 'next/router';
+import { doc, addDoc, updateDoc, collection } from 'firebase/firestore';
+
 export default function AddBaby() {
   const [weight, setWeight] = useState(0);
   const [weightType, setWeightType] = useState('lb');
   const [date, setDate] = useState(null);
-  const [gender, setGender] = useState('');
+
+  const handleSubmit = async e => {
+    e.preventDefault();
+    let currUser = auth.currentUser.uid;
+    console.log('this the current user', currUser);
+    const docRef = await addDoc(collection(db, 'baby'), {
+      name: e.target.name.value,
+      birthday: date,
+      weightType: weightType,
+      weight: weight,
+    });
+    console.log('you made a new baby', docRef.id);
+  };
 
   return (
     <div className='h-screen mt-[25%]'>
@@ -31,16 +47,30 @@ export default function AddBaby() {
           Add A Baby
         </h1>
         <ChildCareIcon className='text-[75px] self-center sm:text-[95px] lg:text-[110px] xl:text-9xl' />
-        <FormControl sx={{ m: 1, minWidth: 80 }} className='flex flex-col'>
+        <form
+          sx={{ m: 1, minWidth: 80 }}
+          className='flex flex-col'
+          onSubmit={e => {
+            handleSubmit(e);
+            // console.log('this is the submit stuff',e.target.name.value);
+            // console.log('this is the submit stuff', date);
+            // console.log('this is the submit stuff', weightType);
+            // console.log('this is the submit stuff', weight);
+            // console.log('current usr all info', auth.currentUser);
+            // console.log('current usr id', auth.currentUser.uid);
+          }}
+        >
           <TextField
             className='py-4 pb-10'
             id='name'
             label='Name'
             variant='standard'
+            required
           ></TextField>
 
           <LocalizationProvider dateAdapter={AdapterDateFns}>
             <DatePicker
+              id='birthday'
               label='Birthday'
               value={date}
               onChange={newValue => {
@@ -50,25 +80,6 @@ export default function AddBaby() {
             />
           </LocalizationProvider>
 
-          {/* <div className='flex flex-row space-x-8 justify-center pt-5 '>
-            <ToggleButtonGroup
-              value={gender}
-              exclusive
-              onChange={(e, newGender) => {
-                setGender(newGender);
-              }}
-              aria-label='text alignment'
-            >
-              <ToggleButton value='female' aria-label='female'>
-                <FemaleIcon />
-                Female
-              </ToggleButton>
-              <ToggleButton value='male' aria-label='male'>
-                <MaleIcon />
-                Male
-              </ToggleButton>
-            </ToggleButtonGroup>
-          </div> */}
           <div className='flex flex-row justify-center my-2'>
             <Slider
               className='py-8 text-stone-900'
@@ -99,12 +110,13 @@ export default function AddBaby() {
             <Button
               className='min-w-[125px] max-w-[20%] text-stone-900 bg-emerald-50  hover:bg-cyan-200 mt-[4%] '
               variant='contained'
+              type='submit'
               startIcon={<AddCircleIcon />}
             >
               Submit
             </Button>
           </div>
-        </FormControl>
+        </form>
       </main>
     </div>
   );
