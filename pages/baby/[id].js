@@ -1,3 +1,6 @@
+import WbSunnyIcon from '@mui/icons-material/WbSunny';
+import FoodModal from '../../components/FoodModal.js';
+
 import { db } from '../../firebaseConfig.js';
 import {
   collection,
