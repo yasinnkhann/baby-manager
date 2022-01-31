@@ -29,6 +29,7 @@ export default function Overview() {
   return (
     <React.Fragment>
       <div
+        className=' my-[10%]'
         style={{
           display: 'flex',
           flexDirection: 'column',
