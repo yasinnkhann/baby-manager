@@ -1,34 +1,34 @@
 import Head from 'next/head';
 import NoteItem from '../components/NoteItem';
-import { getAuth } from '@firebase/auth';
 import axios from 'axios';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useAuthState } from 'react-firebase-hooks/auth';
+import { auth } from '../firebaseConfig';
+import { useRouter } from 'next/router';
 
-export const getStaticProps = async () => {
-  try {
-    const auth = getAuth();
-    const user = auth.currentUser;
-    console.log(user);
-    const { data } = await axios.get('https://jsonplaceholder.typicode.com/todos');
-    return {
-      props: {
-        notes: data,
-      },
-    };
-  } catch (err) {
-    console.log(err);
-    return {
-      props: {
-        error: err.toString(),
-      },
-    };
-  }
-};
-
-const Notes = ({ notes }) => {
+const Notes = () => {
+  const [notes, setNotes] = useState();
   const [isAddingNote, setIsAddingNote] = useState(false);
   const [newNote, setNewNote] = useState('');
-  // const [notes, setNotes] = useState(notes);
+  const [user, loading, error] = useAuthState(auth);
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!user && !loading) {
+      router.push('/login');
+    } else {
+      fetchNotes();
+    }
+  }, [user, loading, router]);
+
+  const fetchNotes = async () => {
+    try {
+      const { data } = await axios.get('https://jsonplaceholder.typicode.com/todos');
+      setNotes(data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   const renderNotes = () => notes?.map(note => <NoteItem key={note.id} note={note} />);
 
