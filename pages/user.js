@@ -21,15 +21,15 @@ export default function User() {
   };
 
   return (
-    <main>
-      <article>
-        <section>
+    <article>
+      <section className='h-screen'>
+        <div>
           <div>First Name</div>
           <div>Last Name</div>
           <div>Email</div>
           <div>Phone Number</div>
-        </section>
-        <section>
+        </div>
+        <div>
           <div>[List of names that are authorized to manage your baby details]</div>
           <div>Invite another user to manage your babies</div>
           <div>
@@ -37,13 +37,13 @@ export default function User() {
             <button onClick={handleInviteButton}>Invite User</button>
           </div>
           {/* <Link href='/'>
-          <a>Invitation Link</a>
-        </Link> */}
+            <a>Invitation Link</a>
+          </Link> */}
           <div>
             <button>Sign Out Button</button>
           </div>
-        </section>
-      </article>
-    </main>
+        </div>
+      </section>
+    </article>
   );
 }
