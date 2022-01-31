@@ -2,12 +2,27 @@ import { db } from '../../firebaseConfig.js';
 import { collection, query, where, getDocs, doc, getDoc } from 'firebase/firestore';
 
 export const getServerSidePaths = async () => {
-  const res = await fetch(`https://jsonplaceholder.typicode.com/users`);
-  const data = await res.json();
+  // const res = await fetch(`https://jsonplaceholder.typicode.com/users`);
+  // const data = await res.json();
 
-  const paths = data.map(baby => {
+  // const paths = data.map(baby => {
+  //   return {
+  //     params: { id: baby.id.toString() },
+  //   };
+  // });
+
+  // return {
+  //   paths,
+  //   fallback: false,
+  // };
+
+  ///////////////////////
+  const babyRef = collection(db, 'baby');
+  const data = await getDocs(babyRef);
+
+  const babies = data.docs.map(doc => {
     return {
-      params: { id: baby.id.toString() },
+      params: { id: doc.id.toString() },
     };
   });
 
@@ -20,19 +35,25 @@ export const getServerSidePaths = async () => {
 export const getServerSideProps = async context => {
   const id = context.params.id;
 
-  // const babyref = doc(db, 'baby', `${id}`)
-  // const babySnap = await getDoc(babyRef);
+  const ref = doc(db, 'baby', `${id}`);
+  const babySnap = await getDoc(ref);
 
-  // return {
-  //   props: { baby: JSON.stringify(babySnap)},
-  // }
+  // const feedingEvents = collection(db, 'feedingEvents');
+  // const feedingEventsData = await getDocs(feedingEvents);
 
-  const res = await fetch(`https://jsonplaceholder.typicode.com/users/${id}`);
-  const data = await res.json();
+  // console.log(feedingEventsData.docs);
+  console.log(babySnap.data());
 
   return {
-    props: { baby: data },
+    props: { baby: JSON.stringify(babySnap) },
   };
+
+  // const res = await fetch(`https://jsonplaceholder.typicode.com/users/${id}`);
+  // const data = await res.json();
+
+  // return {
+  //   props: { baby: data },
+  // };
 };
 
 const Baby = ({ baby }) => {
