@@ -50,7 +50,7 @@ export default function AddBaby() {
             />
           </LocalizationProvider>
 
-          <div className='flex flex-row space-x-8 justify-center pt-5 '>
+          {/* <div className='flex flex-row space-x-8 justify-center pt-5 '>
             <ToggleButtonGroup
               value={gender}
               exclusive
@@ -68,7 +68,7 @@ export default function AddBaby() {
                 Male
               </ToggleButton>
             </ToggleButtonGroup>
-          </div>
+          </div> */}
           <div className='flex flex-row justify-center my-2'>
             <Slider
               className='py-8 text-stone-900'

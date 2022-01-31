@@ -49,7 +49,7 @@ const Notes = ({ notes }) => {
   };
 
   return (
-    <>
+    <div className='h-screen my-[10%]'>
       <Head>
         <title>BabyManager | Notes</title>
       </Head>
@@ -59,7 +59,7 @@ const Notes = ({ notes }) => {
         {isAddingNote ? renderAddNote() : null}
         {renderNotes()}
       </section>
-    </>
+    </div>
   );
 };
 
