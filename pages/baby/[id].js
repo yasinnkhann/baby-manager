@@ -66,8 +66,13 @@ export const getServerSideProps = async context => {
   //   ({ id: doc.id, ...doc.data()})
   // )
 
+  const babyData = {};
+  babyData['lastFeed'] = sortedFeeds[0];
+  babyData['lastSleep'] = sortedSleeps[0];
+
   console.log('feeds:', sortedFeeds);
   console.log('sleeps:', sortedSleeps);
+  console.log('babyData:', babyData);
 
   return {
     props: { baby: JSON.stringify(feedSnap) },
