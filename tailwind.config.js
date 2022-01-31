@@ -10,6 +10,9 @@ module.exports = {
         lg: '1024px',
         xl: '1280px',
       },
+      colors: {
+        slider: '#0f172a',
+      },
     },
     fontFamily: {
       body: ['Rubik', 'sans-serif'],
