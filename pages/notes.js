@@ -8,6 +8,7 @@ export const getStaticProps = async () => {
   try {
     const auth = getAuth();
     const user = auth.currentUser;
+    console.log(user);
     const { data } = await axios.get('https://jsonplaceholder.typicode.com/todos');
     return {
       props: {
@@ -27,16 +28,21 @@ export const getStaticProps = async () => {
 const Notes = ({ notes }) => {
   const [isAddingNote, setIsAddingNote] = useState(false);
   const [newNote, setNewNote] = useState('');
+  // const [notes, setNotes] = useState(notes);
 
-  const renderNotes = () => {
-    return notes?.map(note => <NoteItem key={note.id} note={note} />);
-  };
+  const renderNotes = () => notes?.map(note => <NoteItem key={note.id} note={note} />);
 
   const handleNewNote = async e => {
-    e.preventDefault();
-    //create new note in firestore
-    setIsAddingNote(false);
-    setNewNote('');
+    try {
+      e.preventDefault();
+      //create new note in firestore
+    } catch (err) {
+      console.log(err);
+    } finally {
+      //render new note
+      setIsAddingNote(false);
+      setNewNote('');
+    }
   };
 
   const renderAddNote = () => {
