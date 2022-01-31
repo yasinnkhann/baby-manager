@@ -8,7 +8,9 @@ export default function User() {
     setEmail(event.target.value);
   };
 
-  const handleInviteButton = async () => {
+  const handleInviteButton = async e => {
+    e.preventDefault();
+
     const response = await fetch('/api/invite', {
       method: 'POST',
       body: JSON.stringify(email),
@@ -18,11 +20,12 @@ export default function User() {
     });
     const data = await response.json();
     console.log('data from api:', data);
+    alert('Invite Sent!');
   };
 
   return (
     <article>
-      <section className='h-screen'>
+      <section className='h-screen my-[10%]'>
         <div>
           <div>First Name</div>
           <div>Last Name</div>
@@ -33,14 +36,16 @@ export default function User() {
           <div>[List of names that are authorized to manage your baby details]</div>
           <div>Invite another user to manage your babies</div>
           <div>
-            <input type='text' onChange={handleChange}></input>
-            <button onClick={handleInviteButton}>Invite User</button>
-          </div>
-          {/* <Link href='/'>
+            <form onSubmit={handleInviteButton}>
+              <input type='text' onChange={handleChange}></input>
+              <button type='submit'>Invite User</button>
+            </form>
+            {/* <Link href='/'>
             <a>Invitation Link</a>
           </Link> */}
-          <div>
-            <button>Sign Out Button</button>
+            <div>
+              <button>Sign Out Button</button>
+            </div>
           </div>
         </div>
       </section>
