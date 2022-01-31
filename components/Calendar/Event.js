@@ -30,12 +30,12 @@ function Event(props) {
           {props.babyName === 'JakeB' ? (
             <div className='food-calendar align-start'>
               <div className='food-type ml-6'>protein</div>
-              <div className='food-type ml-6'>1000 grams</div>
+              <div className='food-amount ml-6'>1000 grams</div>
             </div>
           ) : (
             <div className='food-calendar align-start'>
               <div className='food-type ml-6'>{props.typeOfFood}</div>
-              <div className='food-type ml-6'>{props.foodAmount}</div>
+              <div className='food-amount ml-6'>{props.foodAmount}</div>
             </div>
           )}
         </div>
