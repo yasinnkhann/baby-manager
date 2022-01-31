@@ -18,7 +18,6 @@ const Notes = () => {
     if (!user && !loading) {
       router.push('/login');
     } else if (user) {
-      console.log(user);
       fetchNotes();
     }
   }, [user, loading]); // eslint-disable-line
@@ -28,7 +27,7 @@ const Notes = () => {
       const notesRef = collection(db, 'users', user.uid, 'notes');
       const notesSnap = await getDocs(notesRef);
       const notesData = [];
-      notesSnap.forEach(note => notesData.push({ id: note.id, body: note.data().body }));
+      notesSnap.forEach(note => notesData.unshift({ id: note.id, body: note.data().body }));
       setNotes(notesData);
     } catch (err) {
       console.log(err);
