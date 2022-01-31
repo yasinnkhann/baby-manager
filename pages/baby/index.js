@@ -1,4 +1,4 @@
-import Link from 'next/Link';
+import Link from 'next/link';
 import { db } from '../../firebaseConfig.js';
 import { collection, query, where, getDocs } from 'firebase/firestore';
 
