@@ -1,5 +1,14 @@
 import { db } from '../../firebaseConfig.js';
-import { collection, query, where, getDocs, doc, getDoc } from 'firebase/firestore';
+import {
+  collection,
+  query,
+  where,
+  getDocs,
+  doc,
+  getDoc,
+  orderBy,
+  limit,
+} from 'firebase/firestore';
 
 export const getServerSidePaths = async () => {
   // const res = await fetch(`https://jsonplaceholder.typicode.com/users`);
@@ -35,17 +44,33 @@ export const getServerSidePaths = async () => {
 export const getServerSideProps = async context => {
   const id = context.params.id;
 
-  const ref = doc(db, 'baby', `${id}`);
-  const babySnap = await getDoc(ref);
+  const feedRef = collection(db, 'baby', `${id}`, 'feedingEvents');
+  const feedSnap = await getDocs(feedRef);
 
-  // const feedingEvents = collection(db, 'feedingEvents');
-  // const feedingEventsData = await getDocs(feedingEvents);
+  const feedQuery = query(feedRef, orderBy('startTime', 'desc'));
+  const feeds = await getDocs(feedQuery);
+  const sortedFeeds = feeds.docs.map(doc => ({ id: doc.id, ...doc.data() }));
 
-  // console.log(feedingEventsData.docs);
-  console.log(babySnap.data());
+  const sleepRef = collection(db, 'baby', `${id}`, 'sleepingEvents');
+  // const sleepSnap = await getDocs(sleepRef);
+
+  const sleepQuery = query(sleepRef, orderBy('startTime', 'desc'));
+  const sleeps = await getDocs(sleepQuery);
+  const sortedSleeps = sleeps.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+
+  // const feeds = feedSnap.docs.map(doc =>
+  //   ({ id: doc.id, ...doc.data()})
+  // );
+
+  // const sleeps = sleepSnap.docs.map(doc =>
+  //   ({ id: doc.id, ...doc.data()})
+  // )
+
+  console.log('feeds:', sortedFeeds);
+  console.log('sleeps:', sortedSleeps);
 
   return {
-    props: { baby: JSON.stringify(babySnap) },
+    props: { baby: JSON.stringify(feedSnap) },
   };
 
   // const res = await fetch(`https://jsonplaceholder.typicode.com/users/${id}`);
