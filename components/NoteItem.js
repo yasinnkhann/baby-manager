@@ -25,7 +25,7 @@ const NoteItem = ({ note }) => {
           <button type='submit'>Submit</button>
         </form>
       ) : (
-        <p>{note.title}</p>
+        <p>{note.body}</p>
       )}
       <button onClick={() => setIsEditing(!isEditing)}>Edit</button>
       <button onClick={handleDelete}>Delete</button>

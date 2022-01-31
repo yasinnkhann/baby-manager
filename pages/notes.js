@@ -3,11 +3,12 @@ import NoteItem from '../components/NoteItem';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
-import { auth } from '../firebaseConfig';
+import { auth, db } from '../firebaseConfig';
 import { useRouter } from 'next/router';
+import { collection, addDoc, getDocs, doc } from '@firebase/firestore';
 
 const Notes = () => {
-  const [notes, setNotes] = useState();
+  const [notes, setNotes] = useState(null);
   const [isAddingNote, setIsAddingNote] = useState(false);
   const [newNote, setNewNote] = useState('');
   const [user, loading, error] = useAuthState(auth);
@@ -16,30 +17,35 @@ const Notes = () => {
   useEffect(() => {
     if (!user && !loading) {
       router.push('/login');
-    } else {
+    } else if (user) {
+      console.log(user);
       fetchNotes();
     }
-  }, [user, loading, router]);
+  }, [user, loading]); // eslint-disable-line
 
   const fetchNotes = async () => {
     try {
-      const { data } = await axios.get('https://jsonplaceholder.typicode.com/todos');
-      setNotes(data);
+      const notesRef = collection(db, 'users', user.uid, 'notes');
+      const notesSnap = await getDocs(notesRef);
+      const notesData = [];
+      notesSnap.forEach(note => notesData.push({ id: note.id, body: note.data().body }));
+      setNotes(notesData);
     } catch (err) {
       console.log(err);
     }
   };
 
-  const renderNotes = () => notes?.map(note => <NoteItem key={note.id} note={note} />);
-
   const handleNewNote = async e => {
     try {
       e.preventDefault();
-      //create new note in firestore
+      const docRef = await addDoc(collection(db, 'users', user.uid, 'notes'), {
+        body: newNote,
+      });
+      console.log('Document written with ID: ', docRef.id);
     } catch (err) {
-      console.log(err);
+      console.error('Error adding document: ', err);
     } finally {
-      //render new note
+      fetchNotes();
       setIsAddingNote(false);
       setNewNote('');
     }
@@ -53,6 +59,8 @@ const Notes = () => {
       </form>
     );
   };
+
+  const renderNotes = () => notes?.map(note => <NoteItem key={note.id} note={note} />);
 
   return (
     <div className='h-screen my-[10%]'>
