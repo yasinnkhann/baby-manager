@@ -54,12 +54,20 @@ const Notes = () => {
 
   const renderAddNote = () => (
     <form onSubmit={e => handleNewNote(e)}>
-      <input type='text' value={newNote} onChange={e => setNewNote(e.target.value)} />
+      <input
+        type='text'
+        value={newNote}
+        onChange={e => setNewNote(e.target.value)}
+        autoFocus
+      />
       <button type='submit'>Submit</button>
     </form>
   );
 
-  const renderNotes = () => notes?.map(note => <NoteItem key={note.id} note={note} />);
+  const renderNotes = () =>
+    notes?.map(note => (
+      <NoteItem key={note.id} note={note} fetchNotes={fetchNotes} user={user} />
+    ));
 
   return (
     <div className='h-screen my-[10%]'>

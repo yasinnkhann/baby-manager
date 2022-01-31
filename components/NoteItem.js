@@ -1,16 +1,32 @@
 import { useState } from 'react';
+import { doc, deleteDoc, updateDoc } from '@firebase/firestore';
+import { db } from '../firebaseConfig';
 
-const NoteItem = ({ note }) => {
+const NoteItem = ({ note, fetchNotes, user }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [editedNote, setEditedNote] = useState(note.data.body);
+  const noteRef = doc(db, 'users', user.uid, 'notes', note.id);
 
   const handleEdit = async e => {
     e.preventDefault();
-    //editing note in firestore
-    setIsEditing(false);
+    try {
+      await updateDoc(noteRef, { body: editedNote });
+    } catch (err) {
+      console.log(err);
+    } finally {
+      fetchNotes();
+      setIsEditing(false);
+    }
   };
+
   const handleDelete = async () => {
-    //delete note from firestore
+    try {
+      await deleteDoc(noteRef);
+    } catch (err) {
+      console.log(err);
+    } finally {
+      fetchNotes();
+    }
   };
 
   return (
@@ -21,6 +37,7 @@ const NoteItem = ({ note }) => {
             type='text'
             value={editedNote}
             onChange={e => setEditedNote(e.target.value)}
+            autoFocus
           />
           <button type='submit'>Submit</button>
         </form>
