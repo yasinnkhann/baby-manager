@@ -66,12 +66,10 @@ export default function Register() {
 
   return (
     <div className='h-screen my-[10%]'>
-      <h1 className='text-center text-indigo-700 text-xl'>Create an Account</h1>
+      <h2>Create an Account</h2>
       <br />
       <form onSubmit={handleSubmit}>
-        <label htmlFor='firstName' className='block mb-2 text-pink-500'>
-          First Name:
-        </label>
+        <label htmlFor='firstName'>First Name: </label>
         <input
           type='text'
           id='firstName'
@@ -79,12 +77,9 @@ export default function Register() {
           value={registerInfo.firstName}
           onChange={handleChange}
           required
-          className='w-full p-2 mb-6 text-pink-500 border-b-2 border-pink-500 outline-none focus:bg-gray-300'
         />
         <br />
-        <label htmlFor='lastName' className='block mb-2 text-pink-500'>
-          Last Name:
-        </label>
+        <label htmlFor='lastName'>Last Name: </label>
         <input
           type='text'
           id='lastName'
@@ -92,12 +87,9 @@ export default function Register() {
           value={registerInfo.lastName}
           onChange={handleChange}
           required
-          className='w-full p-2 mb-6 text-pink-500 border-b-2 border-pink-500 outline-none focus:bg-gray-300'
         />
         <br />
-        <label htmlFor='email' className='block mb-2 text-pink-500'>
-          Email:
-        </label>
+        <label htmlFor='email'>Email: </label>
         <input
           type='email'
           id='email'
@@ -105,12 +97,9 @@ export default function Register() {
           value={registerInfo.email}
           onChange={handleChange}
           required
-          className='w-full p-2 mb-6 text-pink-500 border-b-2 border-pink-500 outline-none focus:bg-gray-300'
         />
         <br />
-        <label htmlFor='phoneNumber' className='block mb-2 text-pink-500'>
-          Phone Number (optional):
-        </label>
+        <label htmlFor='phoneNumber'>Phone Number (optional): </label>
         <input
           type='tel'
           id='phoneNumber'
@@ -118,12 +107,9 @@ export default function Register() {
           value={registerInfo.phoneNumber}
           onChange={handleChange}
           pattern='[0-9]{3}-[0-9]{3}-[0-9]{4}'
-          className='w-full p-2 mb-6 text-pink-500 border-b-2 border-pink-500 outline-none focus:bg-gray-300'
         />
         <br />
-        <label htmlFor='password' className='block mb-2 text-pink-500'>
-          Password:
-        </label>
+        <label htmlFor='password'>Password: </label>
         <input
           type='password'
           id='password'
@@ -131,12 +117,9 @@ export default function Register() {
           value={registerInfo.password}
           onChange={handleChange}
           required
-          className='w-full p-2 mb-6 text-pink-500 border-b-2 border-pink-500 outline-none focus:bg-gray-300'
         />
         <br />
-        <label htmlFor='confirmPassword' className='block mb-2 text-pink-500'>
-          Confirm Password:
-        </label>
+        <label htmlFor='confirmPassword'>Confirm Password: </label>
         <input
           type='password'
           id='confirmPassword'
@@ -144,17 +127,12 @@ export default function Register() {
           value={registerInfo.confirmPassword}
           onChange={handleChange}
           required
-          className='w-full p-2 mb-6 text-pink-500 border-b-2 border-pink-500 outline-none focus:bg-gray-300'
         />
         <br />
-        <button className='w-full bg-indigo-700 hover:bg-pink-700 text-white font-bold py-2 px-4 mb-6 rounded'>
-          Register
-        </button>
+        <button>Register</button>
       </form>
       <Link href='/login'>
-        <a className='text-blue-700 hover:text-purple-700 text-sm float-left'>
-          Have an account? Login here!
-        </a>
+        <a>Have an account? Login here!</a>
       </Link>
     </div>
   );

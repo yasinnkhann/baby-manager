@@ -69,7 +69,7 @@ export default function Login() {
   };
 
   return (
-    <div className='h-screen my-[10%]'>
+    <div className='h-screen my-[20%]'>
       <Head>
         <title>Login</title>
       </Head>
