@@ -6,7 +6,7 @@ function Event(props) {
   function getDuration(startTime, endTime) {}
 
   return (
-    <div className='mx-20 box bg-[#EFF1FA] flex gap-x-20  justify-start border border-gray-600/75'>
+    <div className='rounded mb-2 mx-20 box bg-[#EFF1FA] flex gap-x-20  justify-start border border-gray-600/75'>
       <div className='event-left'>
         <div className='start-time'>{props.startTime}</div>
         {props.type === 'eat' ? (
@@ -21,8 +21,23 @@ function Event(props) {
       <div className='divider border border-gray-400/50'></div>
       <div className='my-6 event-right'>
         <div className='right-subcontainer'>
-          <div className='baby-name mr-7 font-bold '>{props.babyName}</div>
+          {props.gender === 'male' ? (
+            <div className='baby-name text-[#85C9EA] mr-7 font-bold'> {props.babyName}</div>
+          ) : (
+            <div className='baby-name text-[#FF92B1] mr-7 font-bold'> {props.babyName}</div>
+          )}
           {props.type === 'eat' ? <DiningIcon /> : <SleepingIcon />}
+          {props.babyName === 'JakeB' ? (
+            <div className='food-calendar align-start'>
+              <div className='food-type ml-6'>protein</div>
+              <div className='food-type ml-6'>1000 grams</div>
+            </div>
+          ) : (
+            <div className='food-calendar align-start'>
+              <div className='food-type ml-6'>{props.typeOfFood}</div>
+              <div className='food-type ml-6'>{props.foodAmount}</div>
+            </div>
+          )}
         </div>
       </div>
     </div>

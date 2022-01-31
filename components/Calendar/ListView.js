@@ -2,14 +2,49 @@ import react, { useState, useEffect } from 'react';
 import Event from './/Event.js';
 
 var events = [
-  { babyName: 'Daniel', type: 'sleep', startTime: '9AM', endTime: '12PM' },
-
+  { babyName: 'Daniel', gender: 'male', type: 'sleep', startTime: '6AM', endTime: '12PM' },
   {
-    babyName: 'Daniel',
+    babyName: 'Alissa',
+    gender: 'female',
     type: 'eat',
     typeOfFood: 'milk',
     foodAmount: '28oz',
-    startTime: '1PM',
+    startTime: '8AM',
+  },
+  { babyName: 'Derek', gender: 'male', type: 'sleep', startTime: '9AM', endTime: '12PM' },
+  {
+    babyName: 'JakeB',
+    gender: 'male',
+    type: 'eat',
+    typeOfFood: 'milk',
+    foodAmount: '28oz',
+    startTime: '11AM',
+  },
+  { babyName: 'Ryan', gender: 'female', type: 'sleep', startTime: '3PM', endTime: '12PM' },
+  {
+    babyName: 'Yasin',
+    gender: 'male',
+    type: 'eat',
+    typeOfFood: 'formula',
+    foodAmount: '28oz',
+    startTime: '4PM',
+  },
+  { babyName: 'Edward', gender: 'male', type: 'sleep', startTime: '7PM', endTime: '12PM' },
+  {
+    babyName: 'Hatha',
+    gender: 'male',
+    type: 'eat',
+    typeOfFood: 'milk',
+    foodAmount: '28oz',
+    startTime: '9PM',
+  },
+  {
+    babyName: 'Ryne',
+    gender: 'male',
+    type: 'eat',
+    typeOfFood: 'formula',
+    foodAmount: '28oz',
+    startTime: '10PM',
   },
 ];
 
@@ -30,11 +65,14 @@ function ListView() {
   }
 
   return (
-    <div className='listview-container mt-20'>
+    <div className='list-view-container mt-10 mb-10'>
       {events.map((event, i) => {
         return (
           <Event
             key={i}
+            gender={event.gender}
+            typeOfFood={event.typeOfFood}
+            foodAmount={event.foodAmount}
             type={event.type}
             babyName={event.babyName}
             startTime={event.startTime}
