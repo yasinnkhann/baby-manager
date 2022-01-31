@@ -1,25 +1,36 @@
-import Image from 'next/image';
-import baby from '../babyIcon.png';
+import { Button } from '@mui/material';
+import LogoutIcon from '@mui/icons-material/Logout';
+import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
+import PersonIcon from '@mui/icons-material/Person';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faBaby } from '@fortawesome/free-solid-svg-icons';
 
 export default function Navbar() {
   return (
-    <nav className='bg-blue-100'>
-      <div className='px-8 py-4 mx-auto'>
-        <div className='flex justify-between'>
-          <div>logo</div>
+    <nav className='fixed bg-blue-100 font-["Rubik"] top-0 w-full'>
+      <div className='flex justify-between items-center pl-[3%] pr-[8%] mr-[20px]'>
+        <div className='flex flex-row content-center'>
+          <div className='bg-[url("/baby3.svg")] w-[65px] h-[70px] bg-center bg-cover bg-no-repeat'></div>
+          <div className='font-["Pacifico"] text-xl self-center'>Baby Manager</div>
+        </div>
+        <div className='justify-self-end flex flex-row items-center justify-around'>
+          <FontAwesomeIcon className='text-[24px] hidden sm:block mx-[15%]' icon={faBaby} />
 
-          <div>primary nav</div>
+          <CalendarTodayIcon className='hidden sm:block mr-[10%] ml-[5%]' />
 
-          <div>secondary nav</div>
+          <PersonIcon className='text-[28px] hidden sm:block ml-[10%] mr-[15%]' />
+
+          <div className='hidden sm:block '>
+            <Button
+              className=' min-w-[125px] max-w-[20%] text-stone-900 bg-emerald-50  hover:bg-cyan-200  '
+              variant='contained'
+              startIcon={<LogoutIcon />}
+            >
+              Log Out
+            </Button>
+          </div>
         </div>
       </div>
     </nav>
   );
-}
-
-{
-  /* <div className="flex flex">
-      <Image className="" alt="baby icon" src={baby} width={145} height={100}/>
-      <h1 className="text-xl md:text-4xl lg:text-8xl">nav goes here</h1>
-      </div> */
 }

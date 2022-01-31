@@ -35,7 +35,7 @@ export default function Login() {
   };
 
   return (
-    <div>
+    <div className='h-screen'>
       <Head>
         <title>Login</title>
       </Head>

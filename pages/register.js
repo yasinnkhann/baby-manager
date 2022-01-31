@@ -40,7 +40,7 @@ export default function Register() {
   };
 
   return (
-    <div>
+    <div className='h-screen'>
       <h2>Create an Account</h2>
       <br />
       <form onSubmit={handleSubmit}>
