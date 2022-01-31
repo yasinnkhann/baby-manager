@@ -65,7 +65,7 @@ function ListView() {
   }
 
   return (
-    <div className='list-view-container mt-10 mb-10'>
+    <div className='list-view-container mt-20 mb-10'>
       {events.map((event, i) => {
         return (
           <Event
