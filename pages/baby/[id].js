@@ -48,7 +48,7 @@ export const getServerSideProps = async context => {
   const id = context.params.id;
 
   const feedRef = collection(db, 'baby', `${id}`, 'feedingEvents');
-  const feedSnap = await getDocs(feedRef);
+  // const feedSnap = await getDocs(feedRef);
 
   const feedQuery = query(feedRef, orderBy('startTime', 'desc'));
   const feeds = await getDocs(feedQuery);
@@ -73,12 +73,12 @@ export const getServerSideProps = async context => {
   babyData['lastFeed'] = sortedFeeds[0];
   babyData['lastSleep'] = sortedSleeps[0];
 
-  console.log('feeds:', sortedFeeds);
-  console.log('sleeps:', sortedSleeps);
+  // console.log('feeds:', sortedFeeds);
+  // console.log('sleeps:', sortedSleeps);
   console.log('babyData:', babyData);
 
   return {
-    props: { baby: JSON.stringify(feedSnap) },
+    props: { baby: JSON.stringify(babyData) },
   };
 
   // const res = await fetch(`https://jsonplaceholder.typicode.com/users/${id}`);
@@ -96,6 +96,7 @@ export const getServerSideProps = async context => {
 //------------------Render to Page------------------------//
 //--------------------------------------------------------//
 const Baby = ({ baby }) => {
+  let parsedBaby = JSON.parse(baby);
   return (
     <>
       <div style={{ paddingTop: '80px' }}></div>
@@ -127,7 +128,7 @@ const Baby = ({ baby }) => {
               <b>Last Feed</b>
             </div>
             <div>
-              <b>{baby.email}</b>
+              <b>{new Date(parsedBaby.lastFeed.startTime.seconds * 1000).toString()}</b>
             </div>
           </div>
           <div style={{ display: 'grid' }} className='grid-cols-2 text-center sb-buffer'>
@@ -143,7 +144,7 @@ const Baby = ({ baby }) => {
               <b>Last Nap</b>
             </div>
             <div>
-              <b>{baby.username}</b>
+              <b>{new Date(parsedBaby.lastSleep.startTime.seconds * 1000).toString()}</b>
             </div>
           </div>
           <div style={{ display: 'grid' }} className='grid-cols-2 text-center sb-buffer'>
