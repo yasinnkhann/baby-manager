@@ -42,7 +42,6 @@ const Notes = () => {
         body: newNote,
         createdAt: new Date().toISOString(),
       });
-      console.log('Document written with ID: ', docRef.id);
     } catch (err) {
       console.error('Error adding document: ', err);
     } finally {
