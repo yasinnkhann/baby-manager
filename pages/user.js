@@ -21,7 +21,7 @@ export default function User() {
   };
 
   return (
-    <section>
+    <section className='h-screen my-[10%]'>
       <div>
         <div>First Name</div>
         <div>Last Name</div>
