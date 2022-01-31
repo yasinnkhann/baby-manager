@@ -1,18 +1,40 @@
 import WbSunnyIcon from '@mui/icons-material/WbSunny';
 import FoodModal from '../../components/FoodModal.js';
+import { db } from '../../firebaseConfig.js';
+import {
+  collection,
+  query,
+  where,
+  getDocs,
+  doc,
+  getDoc,
+  orderBy,
+  limit,
+} from 'firebase/firestore';
+import NapModal from '../../componenets/NapModal.js';
 
-import NapModal from '../../components/NapModal.js';
-
-//--------------------------------------------------------//
-//------------------Gather Data from DB-------------------//
-//--------------------------------------------------------//
 export const getServerSidePaths = async () => {
-  const res = await fetch(`https://jsonplaceholder.typicode.com/users`);
-  const data = await res.json();
+  // const res = await fetch(`https://jsonplaceholder.typicode.com/users`);
+  // const data = await res.json();
 
-  const paths = data.map(baby => {
+  // const paths = data.map(baby => {
+  //   return {
+  //     params: { id: baby.id.toString() },
+  //   };
+  // });
+
+  // return {
+  //   paths,
+  //   fallback: false,
+  // };
+
+  ///////////////////////
+  const babyRef = collection(db, 'baby');
+  const data = await getDocs(babyRef);
+
+  const babies = data.docs.map(doc => {
     return {
-      params: { id: baby.id.toString() },
+      params: { id: doc.id.toString() },
     };
   });
 
@@ -24,12 +46,47 @@ export const getServerSidePaths = async () => {
 
 export const getServerSideProps = async context => {
   const id = context.params.id;
-  const res = await fetch(`https://jsonplaceholder.typicode.com/users/${id}`);
-  const data = await res.json();
+
+  const feedRef = collection(db, 'baby', `${id}`, 'feedingEvents');
+  const feedSnap = await getDocs(feedRef);
+
+  const feedQuery = query(feedRef, orderBy('startTime', 'desc'));
+  const feeds = await getDocs(feedQuery);
+  const sortedFeeds = feeds.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+
+  const sleepRef = collection(db, 'baby', `${id}`, 'sleepingEvents');
+  // const sleepSnap = await getDocs(sleepRef);
+
+  const sleepQuery = query(sleepRef, orderBy('startTime', 'desc'));
+  const sleeps = await getDocs(sleepQuery);
+  const sortedSleeps = sleeps.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+
+  // const feeds = feedSnap.docs.map(doc =>
+  //   ({ id: doc.id, ...doc.data()})
+  // );
+
+  // const sleeps = sleepSnap.docs.map(doc =>
+  //   ({ id: doc.id, ...doc.data()})
+  // )
+
+  const babyData = {};
+  babyData['lastFeed'] = sortedFeeds[0];
+  babyData['lastSleep'] = sortedSleeps[0];
+
+  console.log('feeds:', sortedFeeds);
+  console.log('sleeps:', sortedSleeps);
+  console.log('babyData:', babyData);
 
   return {
-    props: { baby: data },
+    props: { baby: JSON.stringify(feedSnap) },
   };
+
+  // const res = await fetch(`https://jsonplaceholder.typicode.com/users/${id}`);
+  // const data = await res.json();
+
+  // return {
+  //   props: { baby: data },
+  // };
 };
 //--------------------------------------------------------//
 //--------------------------------------------------------//
