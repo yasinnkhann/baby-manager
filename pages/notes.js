@@ -50,14 +50,12 @@ const Notes = () => {
     }
   };
 
-  const renderAddNote = () => {
-    return (
-      <form onSubmit={e => handleNewNote(e)}>
-        <input type='text' value={newNote} onChange={e => setNewNote(e.target.value)} />
-        <button type='submit'>Submit</button>
-      </form>
-    );
-  };
+  const renderAddNote = () => (
+    <form onSubmit={e => handleNewNote(e)}>
+      <input type='text' value={newNote} onChange={e => setNewNote(e.target.value)} />
+      <button type='submit'>Submit</button>
+    </form>
+  );
 
   const renderNotes = () => notes?.map(note => <NoteItem key={note.id} note={note} />);
 
