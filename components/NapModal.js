@@ -37,7 +37,7 @@ const popupStyle = {
 //------------------Modal Window Section------------------//
 //--------------------------------------------------------//
 
-const FoodModal = () => {
+const NapModal = () => {
   const [open, setOpen] = React.useState(false);
   const [food, setFood] = React.useState(['Formula', 'Milk', 'Mushy Peas']);
   const [foodValue, setFoodValue] = React.useState('');
@@ -199,4 +199,4 @@ const FoodModal = () => {
 //--------------------------------------------------------//
 //--------------------------------------------------------//
 
-export default FoodModal;
+export default NapModal;

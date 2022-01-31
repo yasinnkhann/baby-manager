@@ -11,7 +11,7 @@ import {
   orderBy,
   limit,
 } from 'firebase/firestore';
-import NapModal from '../../componenets/NapModal.js';
+import NapModal from '../../components/NapModal.js';
 
 export const getServerSidePaths = async () => {
   // const res = await fetch(`https://jsonplaceholder.typicode.com/users`);

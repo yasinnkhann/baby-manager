@@ -31,6 +31,7 @@ const BabyIndex = ({ docs }) => {
   return (
     <>
       {/* {console.log(docs)} */}
+      <div style={{ paddingTop: '100px' }}></div>
       {JSON.parse(docs).map((doc, index) => {
         return (
           <Link href={`/baby/${doc.id}`} key={doc.id}>
