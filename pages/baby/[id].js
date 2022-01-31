@@ -75,7 +75,7 @@ export const getServerSideProps = async context => {
 
   // console.log('feeds:', sortedFeeds);
   // console.log('sleeps:', sortedSleeps);
-  console.log('babyData:', babyData);
+  // console.log('babyData:', babyData);
 
   return {
     props: { baby: JSON.stringify(babyData) },
