@@ -5,8 +5,17 @@ module.exports = {
   theme: {
     extend: {
       screens: {
-        '3xl': '2000px',
+        sm: '640px',
+        md: '768px',
+        lg: '1024px',
+        xl: '1280px',
       },
+      colors: {
+        slider: '#0f172a',
+      },
+    },
+    fontFamily: {
+      body: ['Rubik', 'sans-serif'],
     },
   },
   variants: {
