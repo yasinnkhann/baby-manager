@@ -5,31 +5,39 @@ import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import ViewListIcon from '@mui/icons-material/ViewList';
 import ViewModuleIcon from '@mui/icons-material/ViewModule';
 
-const babyAsleepImage =
-  'https://cdn0.iconfinder.com/data/icons/family-babies-kids/24/kid-infant-baby-child-children-family-512.png';
-const babyAwakeImage =
-  'https://toppng.com/uploads/preview/babys-room-icon-baby-icon-11553449311dwd4ky7lpi.png';
+const baby = {
+  name: ['Ryne', 'Alisa', 'Jake', ' Ryan', 'Yasin', 'Edward', 'Hatha', 'Daniel', 'Derek'],
+};
+
+const babyCardInModule = {
+  display: 'flex',
+  flexDirection: 'row',
+  flexWrap: 'wrap',
+  alignItems: 'center',
+  justifyContent: 'center',
+  marginTop: '1px',
+};
+
+const babyCardInList = {
+  display: 'flex',
+  flexDirection: 'column',
+  flexWrap: 'wrap',
+  alignItems: 'center',
+  justifyContent: 'center',
+  marginTop: '1px',
+};
 
 export default function Overview() {
   const [view, setView] = useState('module');
-
-  const [isAsleepToggled, setIsAsleepToggled] = useState('asleep');
-  const [isBabyImageAsleep, setIsBabyImageAsleep] = useState(babyAsleepImage);
 
   const handleChange = (event, nextView) => {
     setView(nextView);
   };
 
-  const babyStatusToggler = () => {
-    isAsleepToggled = 'asleep' ? setIsAsleepToggled('awake') : setIsAsleepToggled('asleep');
-  };
-
-  const babyImageStatusChange = () => {};
-
   return (
     <React.Fragment>
       <div
-        className=' my-[10%]'
+        className=' my-[19%]'
         style={{
           display: 'flex',
           flexDirection: 'column',
@@ -53,23 +61,18 @@ export default function Overview() {
       </div>
 
       <div
-        style={{
-          display: 'flex',
-          flexDirection: 'row',
-          alignItems: 'center',
-          justifyContent: 'center',
-          marginTop: '20px',
-        }}
+        style={babyCardInModule}
+        // style={babyCardInList}
       >
-        <BabyCard
-          isAsleepToggled={isAsleepToggled}
-          onToggle={() => {
-            babyStatusToggler(!isAsleepToggled);
-          }}
-        />
-        <BabyCard />
-        <BabyCard />
-        {/* <BabyCard/> */}
+        <BabyCard babyName={baby.name[0]} />
+        <BabyCard babyName={baby.name[1]} />
+        <BabyCard babyName={baby.name[2]} />
+        <BabyCard babyName={baby.name[3]} />
+        <BabyCard babyName={baby.name[4]} />
+        <BabyCard babyName={baby.name[5]} />
+        <BabyCard babyName={baby.name[6]} />
+        <BabyCard babyName={baby.name[7]} />
+        <BabyCard babyName={baby.name[8]} />
       </div>
     </React.Fragment>
   );
