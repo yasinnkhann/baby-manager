@@ -1,52 +1,73 @@
 import Head from 'next/head';
 import NoteItem from '../components/NoteItem';
-import { getAuth } from '@firebase/auth';
 import axios from 'axios';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useAuthState } from 'react-firebase-hooks/auth';
+import { auth, db } from '../firebaseConfig';
+import { useRouter } from 'next/router';
+import { collection, addDoc, getDocs, doc } from '@firebase/firestore';
 
-export const getStaticProps = async () => {
-  try {
-    const auth = getAuth();
-    const user = auth.currentUser;
-    const { data } = await axios.get('https://jsonplaceholder.typicode.com/todos');
-    return {
-      props: {
-        notes: data,
-      },
-    };
-  } catch (err) {
-    console.log(err);
-    return {
-      props: {
-        error: err.toString(),
-      },
-    };
-  }
-};
-
-const Notes = ({ notes }) => {
+const Notes = () => {
+  const [notes, setNotes] = useState(null);
   const [isAddingNote, setIsAddingNote] = useState(false);
   const [newNote, setNewNote] = useState('');
+  const [user, loading, error] = useAuthState(auth);
+  const router = useRouter();
 
-  const renderNotes = () => {
-    return notes?.map(note => <NoteItem key={note.id} note={note} />);
+  useEffect(() => {
+    if (!user && !loading) {
+      router.push('/login');
+    } else if (user) {
+      fetchNotes();
+    }
+  }, [user, loading]); // eslint-disable-line
+
+  const fetchNotes = async () => {
+    try {
+      const notesRef = collection(db, 'users', user.uid, 'notes');
+      const notesSnap = await getDocs(notesRef);
+      const notesData = [];
+      notesSnap.forEach(note => notesData.push({ id: note.id, data: note.data() }));
+      notesData.sort((a, b) => (a.data.createdAt > b.data.createdAt ? -1 : 1));
+      setNotes(notesData);
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   const handleNewNote = async e => {
-    e.preventDefault();
-    //create new note in firestore
-    setIsAddingNote(false);
-    setNewNote('');
+    try {
+      e.preventDefault();
+      const notesRef = collection(db, 'users', user.uid, 'notes');
+      const docRef = await addDoc(notesRef, {
+        body: newNote,
+        createdAt: new Date().toISOString(),
+      });
+    } catch (err) {
+      console.error('Error adding document: ', err);
+    } finally {
+      fetchNotes();
+      setIsAddingNote(false);
+      setNewNote('');
+    }
   };
 
-  const renderAddNote = () => {
-    return (
-      <form onSubmit={e => handleNewNote(e)}>
-        <input type='text' value={newNote} onChange={e => setNewNote(e.target.value)} />
-        <button type='submit'>Submit</button>
-      </form>
-    );
-  };
+  const renderAddNote = () => (
+    <form onSubmit={e => handleNewNote(e)}>
+      <input
+        type='text'
+        value={newNote}
+        onChange={e => setNewNote(e.target.value)}
+        autoFocus
+      />
+      <button type='submit'>Submit</button>
+    </form>
+  );
+
+  const renderNotes = () =>
+    notes?.map(note => (
+      <NoteItem key={note.id} note={note} fetchNotes={fetchNotes} user={user} />
+    ));
 
   return (
     <div className='h-screen my-[10%]'>
