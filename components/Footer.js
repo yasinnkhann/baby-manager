@@ -3,22 +3,31 @@ import PersonIcon from '@mui/icons-material/Person';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBaby } from '@fortawesome/free-solid-svg-icons';
-
 import Button from '@mui/material/Button';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import Fade from '@mui/material/Fade';
 import IconButton from '@mui/material/IconButton';
 import { useState } from 'react';
+import { useRouter } from 'next/router';
+import { signOut } from 'firebase/auth';
+import { auth } from '../firebaseConfig.js';
 
 export default function Footer() {
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
-  const handleClick = event => {
-    setAnchorEl(event.currentTarget);
-  };
-  const handleClose = () => {
-    setAnchorEl(null);
+  const [anchorElPer, setAnchorElPer] = useState(null);
+  const openPer = Boolean(anchorElPer);
+  const router = useRouter();
+
+  const handleSignOut = async () => {
+    try {
+      await signOut(auth);
+      console.log('signed out!');
+      router.push('/login');
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   return (
@@ -32,26 +41,33 @@ export default function Footer() {
           <div>
             <IconButton
               className='text-neutral-900'
-              id='fade-button'
-              aria-controls={open ? 'fade-menu' : undefined}
+              id='fade-button-person'
+              aria-controls={openPer ? 'fade-menu-person' : undefined}
               aria-haspopup='true'
-              aria-expanded={open ? 'true' : undefined}
-              onClick={handleClick}
+              aria-expanded={openPer ? 'true' : undefined}
+              onClick={e => setAnchorElPer(e.currentTarget)}
             >
               <PersonIcon className='text-[28px]' />
             </IconButton>
             <Menu
-              id='fade-menu'
+              id='fade-menu-person'
               MenuListProps={{
-                'aria-labelledby': 'fade-button',
+                'aria-labelledby': 'fade-button-person',
               }}
-              anchorEl={anchorEl}
-              open={open}
-              onClose={handleClose}
+              anchorEl={anchorElPer}
+              open={openPer}
+              onClose={() => setAnchorElPer(null)}
               TransitionComponent={Fade}
             >
-              <MenuItem onClick={handleClose}>Profile</MenuItem>
-              <MenuItem onClick={handleClose}>Logout</MenuItem>
+              <MenuItem onClick={() => setAnchorElPer(null)}>Profile</MenuItem>
+              <MenuItem
+                onClick={() => {
+                  setAnchorElPer(null);
+                  handleSignOut();
+                }}
+              >
+                Logout
+              </MenuItem>
             </Menu>
           </div>
 
@@ -66,7 +82,7 @@ export default function Footer() {
               aria-controls={open ? 'fade-menu' : undefined}
               aria-haspopup='true'
               aria-expanded={open ? 'true' : undefined}
-              onClick={handleClick}
+              onClick={e => setAnchorEl(e.currentTarget)}
             >
               <MoreHorizIcon />
             </IconButton>
@@ -77,11 +93,11 @@ export default function Footer() {
               }}
               anchorEl={anchorEl}
               open={open}
-              onClose={handleClose}
+              onClose={() => setAnchorEl(null)}
               TransitionComponent={Fade}
             >
-              <MenuItem onClick={handleClose}>Baby Coupons</MenuItem>
-              <MenuItem onClick={handleClose}>Notes</MenuItem>
+              <MenuItem onClick={() => setAnchorEl(null)}>Baby Coupons</MenuItem>
+              <MenuItem onClick={() => setAnchorEl(null)}>Notes</MenuItem>
             </Menu>
           </div>
         </div>
