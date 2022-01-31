@@ -2,7 +2,7 @@ import { useState } from 'react';
 
 const NoteItem = ({ note }) => {
   const [isEditing, setIsEditing] = useState(false);
-  const [editedNote, setEditedNote] = useState(note.title);
+  const [editedNote, setEditedNote] = useState(note.data.body);
 
   const handleEdit = async e => {
     e.preventDefault();
@@ -25,7 +25,7 @@ const NoteItem = ({ note }) => {
           <button type='submit'>Submit</button>
         </form>
       ) : (
-        <p>{note.body}</p>
+        <p>{note.data.body}</p>
       )}
       <button onClick={() => setIsEditing(!isEditing)}>Edit</button>
       <button onClick={handleDelete}>Delete</button>

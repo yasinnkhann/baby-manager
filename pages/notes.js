@@ -27,7 +27,8 @@ const Notes = () => {
       const notesRef = collection(db, 'users', user.uid, 'notes');
       const notesSnap = await getDocs(notesRef);
       const notesData = [];
-      notesSnap.forEach(note => notesData.unshift({ id: note.id, body: note.data().body }));
+      notesSnap.forEach(note => notesData.push({ id: note.id, data: note.data() }));
+      notesData.sort((a, b) => (a.data.createdAt > b.data.createdAt ? -1 : 1));
       setNotes(notesData);
     } catch (err) {
       console.log(err);
@@ -39,6 +40,7 @@ const Notes = () => {
       e.preventDefault();
       const docRef = await addDoc(collection(db, 'users', user.uid, 'notes'), {
         body: newNote,
+        createdAt: new Date().toISOString(),
       });
       console.log('Document written with ID: ', docRef.id);
     } catch (err) {
