@@ -4,12 +4,43 @@
 
 @layer base {
   body {
-    @apply bg-[#ffffff];
+    background-image: linear-gradient(#93c5fd, #cffafe, #c1c2ad);
   }
+
   .sb-container {
     width: 768px;
   }
   .sb-buffer {
-    padding: 15px;
+    padding: 15px 0px;
+  }
+  .box {
+    width: 400px;
+    height: 75px;
+  }
+
+  .list-view-container {
+  }
+
+  .baby-name {
+    /* font-family: 'Courier New', Courier, monospace */
+  }
+
+  .right-subcontainer {
+    display: flex;
+  }
+
+  .start-time {
+    /* font-family: 'Courier New', Courier, monospace */
+  }
+
+  .food-calendar {
+    margin-top: -10px;
+  }
+
+  .divider {
+    height: 50px;
+    margin-top: 10px;
+    margin-right: -50px;
+    margin-left: -50px;
   }
 }
