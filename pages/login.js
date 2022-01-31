@@ -73,51 +73,36 @@ export default function Login() {
       <Head>
         <title>Login</title>
       </Head>
-      <div className='w-full max-w-xs m-auto bg-indigo-100 rounded p-5'>
-        <button
-          onClick={googleSignIn}
-          className='w-full bg-indigo-700 hover:bg-pink-700 text-white font-bold py-2 px-4 mb-6 rounded'
-        >
-          Login with Google
-        </button>
+      <div>
+        <button onClick={googleSignIn}>Login with Google</button>
         <br />
         <br />
         <fieldset>
           <form onSubmit={handleSubmit}>
-            <label htmlFor='email' className='block mb-2 text-pink-500'>
-              Email:
-            </label>
+            <label htmlFor='email'>Email: </label>
             <input
               type='email'
               id='email'
               name='email'
               value={loginInfo.email}
               onChange={handleChange}
-              className='w-full p-2 mb-6 text-pink-500 border-b-2 border-pink-500 outline-none focus:bg-gray-300'
             />
             <br />
-            <label htmlFor='password' className='block mb-2 text-pink-500'>
-              Password:
-            </label>
+            <label htmlFor='password'>Password: </label>
             <input
               type='password'
               id='password'
               name='password'
               value={loginInfo.password}
               onChange={handleChange}
-              className='w-full p-2 mb-6 text-pink-500 border-b-2 border-pink-500 outline-none focus:bg-gray-300'
             />
             <br />
-            <button className='w-full bg-indigo-700 hover:bg-pink-700 text-white font-bold py-2 px-4 mb-6 rounded'>
-              Login
-            </button>
+            <button>Login</button>
           </form>
         </fieldset>
 
         <Link href='/register'>
-          <a className='text-blue-700 hover:text-purple-700 text-sm float-left'>
-            Don&apos;t have an accout? Sign up here!
-          </a>
+          <a>Don&apos;t have an accout? Sign up here!</a>
         </Link>
       </div>
     </div>
