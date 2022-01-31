@@ -65,7 +65,7 @@ export default function Register() {
   };
 
   return (
-    <div className='h-screen my-[10%]'>
+    <div className='h-screen my-[25%]'>
       <h2>Create an Account</h2>
       <br />
       <form onSubmit={handleSubmit}>
