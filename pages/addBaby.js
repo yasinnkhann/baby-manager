@@ -20,28 +20,28 @@ import {
 
 import { auth, db } from '../firebaseConfig.js';
 import { useRouter } from 'next/router';
-import { doc, addDoc, updateDoc, collection } from 'firebase/firestore';
+import { doc, addDoc, collection } from 'firebase/firestore';
 
 export default function AddBaby() {
   const [weight, setWeight] = useState(0);
   const [weightType, setWeightType] = useState('lb');
   const [date, setDate] = useState(null);
+  const [user] = useAuthState(auth);
+  const babiesRef = collection(db, 'users', user, 'babies');
 
   const handleSubmit = async e => {
-    e.preventDefault();
-    let currUser = auth.currentUser.uid;
-    console.log('this the current user', currUser);
-    const docRef = await addDoc(collection(db, 'baby'), {
-      name: e.target.name.value,
-      birthday: date,
-      weightType: weightType,
-      weight: weight,
-    });
-    console.log('you made a new baby', docRef.id);
-    // const currRef = doc(db, 'users', currUser);
-    // await updateDoc(currRef, {
-
-    // })
+    try {
+      e.preventDefault();
+      const docRef = await addDoc(babiesRef, {
+        name: e.target.name.value,
+        birthday: date,
+        weightType: weightType,
+        weight: weight,
+        createdAt: new Date().toISOString(),
+      });
+    } catch (err) {
+      console.error('Error adding baby document: ', err);
+    }
   };
 
   return (
