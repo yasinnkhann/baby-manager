@@ -24,6 +24,8 @@ const popupStyle = {
   borderRadius: '15px',
   top: '50%',
   left: '50%',
+  maxHeight: '100%',
+  overflow: 'auto',
   transform: 'translate(-50%, -50%)',
   bgcolor: 'background.paper',
   border: '2px solid #000',
@@ -82,8 +84,8 @@ const FoodModal = () => {
   // useEffect(() => {
   //   console.log('Type of Food', foodValue);
   //   console.log('How much Food', foodAmount);
-  console.log('Time', napTime);
-  console.log('Date', napDate);
+  // console.log('Time', napTime);
+  // console.log('Date', napDate);
   // console.log('ReminderTime', reminderTime);
   // }, [foodValue, foodAmount, feedTime, feedDate]);
 
@@ -108,7 +110,7 @@ const FoodModal = () => {
       >
         Add New Nap
       </Button>
-      <Modal style={{ overflow: 'auto' }} open={open} onClose={toClose}>
+      <Modal open={open} onClose={toClose}>
         <Box sx={popupStyle} className='sm:w-5/5 md:w-3/5'>
           <div style={{ width: '300px' }}></div>
           <b>{date}</b>

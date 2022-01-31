@@ -1,5 +1,6 @@
 import WbSunnyIcon from '@mui/icons-material/WbSunny';
 import FoodModal from '../../components/FoodModal.js';
+
 import NapModal from '../../components/NapModal.js';
 
 //--------------------------------------------------------//

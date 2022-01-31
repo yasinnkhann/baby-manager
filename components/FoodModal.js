@@ -13,11 +13,14 @@ import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import DatePicker from '@mui/lab/DatePicker';
 import Button from '@mui/material/Button';
 
+//work on styling for this, cuts off a little bit at the top when overflow is to big
 const popupStyle = {
   position: 'absolute',
   borderRadius: '15px',
   top: '50%',
   left: '50%',
+  maxHeight: '100%',
+  overflow: 'auto',
   transform: 'translate(-50%, -50%)',
   bgcolor: 'background.paper',
   border: '2px solid #000',
@@ -47,6 +50,14 @@ const FoodModal = () => {
   const toClose = () => {
     setOpen(false);
   };
+  //------------------------------------------//
+  //------------------------------------------//
+  //------------------------------------------//
+
+  //------------------------------------------//
+  //----Scrape Data and prepare for post------//
+  //------------------------------------------//
+  const submitFood = () => {};
   //------------------------------------------//
   //------------------------------------------//
   //------------------------------------------//
@@ -94,7 +105,7 @@ const FoodModal = () => {
       >
         Add New Feed
       </Button>
-      <Modal style={{ overflow: 'auto' }} open={open} onClose={toClose}>
+      <Modal open={open} onClose={toClose}>
         <Box sx={popupStyle} className='sm:w-5/5 md:w-3/5'>
           <b>{date}</b>
           <hr />
@@ -149,26 +160,26 @@ const FoodModal = () => {
               </LocalizationProvider>
               <div className='sb-buffer'></div>
             </div>
+            <div style={{ display: 'flex' }} className='flex-col'>
+              <Button
+                style={{ backgroundColor: 'lightgreen', width: '50%' }}
+                className='rounded-md border-2 border-emerald-400 place-self-center'
+                variant='contained'
+                starticon='<Icon />'
+              >
+                Save
+              </Button>
+              <div className='sb-buffer'></div>
+              <Button
+                style={{ backgroundColor: 'lightgreen', width: '50%' }}
+                className='rounded-md border-2 border-emerald-400 place-self-center'
+                variant='contained'
+                onClick={toClose}
+              >
+                Cancel
+              </Button>
+            </div>
           </FormControl>
-          <div style={{ display: 'flex' }} className='flex-col'>
-            <Button
-              style={{ backgroundColor: 'lightgreen', width: '50%' }}
-              className='rounded-md border-2 border-emerald-400 place-self-center'
-              variant='contained'
-              starticon='<Icon />'
-            >
-              Save
-            </Button>
-            <div className='sb-buffer'></div>
-            <Button
-              style={{ backgroundColor: 'lightgreen', width: '50%' }}
-              className='rounded-md border-2 border-emerald-400 place-self-center'
-              variant='contained'
-              onClick={toClose}
-            >
-              Cancel
-            </Button>
-          </div>
         </Box>
       </Modal>
     </div>
