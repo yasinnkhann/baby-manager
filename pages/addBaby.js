@@ -38,6 +38,10 @@ export default function AddBaby() {
       weight: weight,
     });
     console.log('you made a new baby', docRef.id);
+    // const currRef = doc(db, 'users', currUser);
+    // await updateDoc(currRef, {
+
+    // })
   };
 
   return (
