@@ -47,6 +47,14 @@ export default function Register() {
 
         console.log('REGISTERED AS: ', user);
         router.push('/');
+        setRegisterInfo({
+          firstName: '',
+          lastName: '',
+          email: '',
+          phoneNumber: '',
+          password: '',
+          confirmPassword: '',
+        });
       } catch (err) {
         console.error(err);
         alert(err.message);
@@ -54,14 +62,6 @@ export default function Register() {
     } else {
       alert('passwords do not match');
     }
-    setRegisterInfo({
-      firstName: '',
-      lastName: '',
-      email: '',
-      phoneNumber: '',
-      password: '',
-      confirmPassword: '',
-    });
   };
 
   return (
