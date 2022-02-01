@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import FemaleIcon from '@mui/icons-material/Female';
 import MaleIcon from '@mui/icons-material/Male';
 import ChildCareIcon from '@mui/icons-material/ChildCare';
@@ -21,17 +21,24 @@ import {
 import { auth, db } from '../firebaseConfig.js';
 import { useRouter } from 'next/router';
 import { doc, addDoc, collection } from 'firebase/firestore';
+import { useAuthState } from 'react-firebase-hooks/auth';
 
 export default function AddBaby() {
   const [weight, setWeight] = useState(0);
   const [weightType, setWeightType] = useState('lb');
   const [date, setDate] = useState(null);
-  const [user] = useAuthState(auth);
-  const babiesRef = collection(db, 'users', user, 'babies');
+  const [user, loading] = useAuthState(auth);
+
+  useEffect(() => {
+    if (!user && !loading) {
+      router.push('/login');
+    }
+  }, [user, loading]);
 
   const handleSubmit = async e => {
     try {
       e.preventDefault();
+      const babiesRef = collection(db, 'users', user.uid, 'babies');
       const docRef = await addDoc(babiesRef, {
         name: e.target.name.value,
         birthday: date,
@@ -56,12 +63,7 @@ export default function AddBaby() {
           className='flex flex-col'
           onSubmit={e => {
             handleSubmit(e);
-            // console.log('this is the submit stuff',e.target.name.value);
-            // console.log('this is the submit stuff', date);
-            // console.log('this is the submit stuff', weightType);
-            // console.log('this is the submit stuff', weight);
-            // console.log('current usr all info', auth.currentUser);
-            // console.log('current usr id', auth.currentUser.uid);
+            // router.push('/overview');
           }}
         >
           <TextField
