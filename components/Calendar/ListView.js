@@ -52,19 +52,33 @@ var events = [
 
 // })
 
-function ListView() {
-  const [date, setDate] = useState(currentDate());
+function ListView(props) {
+  // const [date, setDate] = useState(currentDate());
 
-  function currentDate() {
-    var today = new Date();
-    var dd = String(today.getDate()).padStart(2, '0');
-    var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
-    var yyyy = today.getFullYear();
-    today = mm + '/' + dd + '/' + yyyy;
-    return today;
-  }
+  // function currentDate() {
+  //   var today = new Date();
+  //   var dd = String(today.getDate()).padStart(2, '0');
+  //   var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+  //   var yyyy = today.getFullYear();
+  //   today = mm + '/' + dd + '/' + yyyy;
+  //   return today;
+  // }
 
   return (
+    //   <div className='list-view-container mt-20 mb-10'>
+    //   {props.sortedDayEvents.map((event, i) => {
+    //     return (
+    //       <Event
+    //         key={i}
+    //         typeOfFood={event.foodType}
+    //         foodAmount={event.foodAmount}
+    //         type={event.type}
+    //         babyName={event.babyName}
+    //         startTime={event.startTime}
+    //       />
+    //     );
+    //   })}
+    // </div>
     <div className='list-view-container mt-20 mb-10'>
       {events.map((event, i) => {
         return (

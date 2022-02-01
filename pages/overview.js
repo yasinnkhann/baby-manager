@@ -5,31 +5,42 @@ import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import ViewListIcon from '@mui/icons-material/ViewList';
 import ViewModuleIcon from '@mui/icons-material/ViewModule';
 
-const babyAsleepImage =
-  'https://cdn0.iconfinder.com/data/icons/family-babies-kids/24/kid-infant-baby-child-children-family-512.png';
-const babyAwakeImage =
-  'https://toppng.com/uploads/preview/babys-room-icon-baby-icon-11553449311dwd4ky7lpi.png';
+const baby = {
+  name: ['Ryne', 'Alisa', 'Jake', ' Ryan', 'Yasin', 'Edward', 'Hatha', 'Daniel', 'Derek'],
+};
+
+const babyCardInModule = {
+  display: 'flex',
+  flexDirection: 'row',
+  flexWrap: 'wrap',
+  alignItems: 'center',
+  justifyContent: 'center',
+  marginTop: '1px',
+};
+
+const babyCardInList = {
+  display: 'flex',
+  flexDirection: 'column',
+  flexWrap: 'wrap',
+  alignItems: 'center',
+  justifyContent: 'center',
+  marginTop: '1px',
+  marginBottom: '90px',
+};
 
 export default function Overview() {
   const [view, setView] = useState('module');
+  const [isViewChange, setViewChange] = useState(babyCardInModule);
 
-  const [isAsleepToggled, setIsAsleepToggled] = useState('asleep');
-  const [isBabyImageAsleep, setIsBabyImageAsleep] = useState(babyAsleepImage);
-
-  const handleChange = (event, nextView) => {
+  const handleOrientationChange = (event, nextView) => {
+    nextView === 'module' ? setViewChange(babyCardInModule) : setViewChange(babyCardInList);
     setView(nextView);
   };
-
-  const babyStatusToggler = () => {
-    isAsleepToggled = 'asleep' ? setIsAsleepToggled('awake') : setIsAsleepToggled('asleep');
-  };
-
-  const babyImageStatusChange = () => {};
 
   return (
     <React.Fragment>
       <div
-        className=' my-[10%]'
+        className=' mt-[21%]'
         style={{
           display: 'flex',
           flexDirection: 'column',
@@ -41,7 +52,7 @@ export default function Overview() {
           orientation='horizontal'
           value={view}
           exclusive
-          onChange={handleChange}
+          onChange={handleOrientationChange}
         >
           <ToggleButton value='module' aria-label='module'>
             <ViewModuleIcon />
@@ -52,24 +63,17 @@ export default function Overview() {
         </ToggleButtonGroup>
       </div>
 
-      <div
-        style={{
-          display: 'flex',
-          flexDirection: 'row',
-          alignItems: 'center',
-          justifyContent: 'center',
-          marginTop: '20px',
-        }}
-      >
-        <BabyCard
-          isAsleepToggled={isAsleepToggled}
-          onToggle={() => {
-            babyStatusToggler(!isAsleepToggled);
-          }}
-        />
-        <BabyCard />
-        <BabyCard />
-        {/* <BabyCard/> */}
+      <div style={isViewChange}>
+        <BabyCard babyName={baby.name[0]} />
+        <div>{view === 'list' ? <div>Next Feed Time: 12:00pm</div> : null}</div>
+        <BabyCard babyName={baby.name[1]} />
+        <BabyCard babyName={baby.name[2]} />
+        <BabyCard babyName={baby.name[3]} />
+        <BabyCard babyName={baby.name[4]} />
+        <BabyCard babyName={baby.name[5]} />
+        <BabyCard babyName={baby.name[6]} />
+        <BabyCard babyName={baby.name[7]} />
+        <BabyCard babyName={baby.name[8]} />
       </div>
     </React.Fragment>
   );

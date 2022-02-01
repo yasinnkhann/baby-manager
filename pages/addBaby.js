@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import FemaleIcon from '@mui/icons-material/Female';
 import MaleIcon from '@mui/icons-material/Male';
 import ChildCareIcon from '@mui/icons-material/ChildCare';
@@ -18,11 +18,41 @@ import {
   FormControl,
 } from '@mui/material';
 
+import { auth, db } from '../firebaseConfig.js';
+import { useRouter } from 'next/router';
+import Link from 'next/link';
+import { doc, addDoc, collection } from 'firebase/firestore';
+import { useAuthState } from 'react-firebase-hooks/auth';
+
 export default function AddBaby() {
   const [weight, setWeight] = useState(0);
   const [weightType, setWeightType] = useState('lb');
   const [date, setDate] = useState(null);
-  const [gender, setGender] = useState('');
+  const [user, loading] = useAuthState(auth);
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!user && !loading) {
+      router.push('/login');
+    }
+  }, [user, loading, router]);
+
+  const handleSubmit = async e => {
+    try {
+      e.preventDefault();
+      const babiesRef = collection(db, 'users', user.uid, 'babies');
+      const docRef = await addDoc(babiesRef, {
+        name: e.target.name.value,
+        birthday: date,
+        weightType: weightType,
+        weight: weight,
+        createdAt: new Date().toISOString(),
+      });
+      router.push('/overview');
+    } catch (err) {
+      console.error('Error adding baby document: ', err);
+    }
+  };
 
   return (
     <div className='h-screen mt-[25%]'>
@@ -31,16 +61,24 @@ export default function AddBaby() {
           Add A Baby
         </h1>
         <ChildCareIcon className='text-[75px] self-center sm:text-[95px] lg:text-[110px] xl:text-9xl' />
-        <FormControl sx={{ m: 1, minWidth: 80 }} className='flex flex-col'>
+        <form
+          sx={{ m: 1, minWidth: 80 }}
+          className='flex flex-col'
+          onSubmit={e => {
+            handleSubmit(e);
+          }}
+        >
           <TextField
             className='py-4 pb-10'
             id='name'
             label='Name'
             variant='standard'
+            required
           ></TextField>
 
           <LocalizationProvider dateAdapter={AdapterDateFns}>
             <DatePicker
+              id='birthday'
               label='Birthday'
               value={date}
               onChange={newValue => {
@@ -50,25 +88,6 @@ export default function AddBaby() {
             />
           </LocalizationProvider>
 
-          {/* <div className='flex flex-row space-x-8 justify-center pt-5 '>
-            <ToggleButtonGroup
-              value={gender}
-              exclusive
-              onChange={(e, newGender) => {
-                setGender(newGender);
-              }}
-              aria-label='text alignment'
-            >
-              <ToggleButton value='female' aria-label='female'>
-                <FemaleIcon />
-                Female
-              </ToggleButton>
-              <ToggleButton value='male' aria-label='male'>
-                <MaleIcon />
-                Male
-              </ToggleButton>
-            </ToggleButtonGroup>
-          </div> */}
           <div className='flex flex-row justify-center my-2'>
             <Slider
               className='py-8 text-stone-900'
@@ -99,12 +118,13 @@ export default function AddBaby() {
             <Button
               className='min-w-[125px] max-w-[20%] text-stone-900 bg-emerald-50  hover:bg-cyan-200 mt-[4%] '
               variant='contained'
+              type='submit'
               startIcon={<AddCircleIcon />}
             >
               Submit
             </Button>
           </div>
-        </FormControl>
+        </form>
       </main>
     </div>
   );
