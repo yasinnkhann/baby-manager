@@ -25,19 +25,22 @@ const babyCardInList = {
   alignItems: 'center',
   justifyContent: 'center',
   marginTop: '1px',
+  marginBottom: '90px',
 };
 
 export default function Overview() {
   const [view, setView] = useState('module');
+  const [isViewChange, setViewChange] = useState(babyCardInModule);
 
-  const handleChange = (event, nextView) => {
+  const handleOrientationChange = (event, nextView) => {
+    nextView === 'module' ? setViewChange(babyCardInModule) : setViewChange(babyCardInList);
     setView(nextView);
   };
 
   return (
     <React.Fragment>
       <div
-        className=' my-[19%]'
+        className=' mt-[21%]'
         style={{
           display: 'flex',
           flexDirection: 'column',
@@ -49,7 +52,7 @@ export default function Overview() {
           orientation='horizontal'
           value={view}
           exclusive
-          onChange={handleChange}
+          onChange={handleOrientationChange}
         >
           <ToggleButton value='module' aria-label='module'>
             <ViewModuleIcon />
@@ -60,11 +63,9 @@ export default function Overview() {
         </ToggleButtonGroup>
       </div>
 
-      <div
-        style={babyCardInModule}
-        // style={babyCardInList}
-      >
+      <div style={isViewChange}>
         <BabyCard babyName={baby.name[0]} />
+        <div>{view === 'list' ? <div>Next Feed Time: 12:00pm</div> : null}</div>
         <BabyCard babyName={baby.name[1]} />
         <BabyCard babyName={baby.name[2]} />
         <BabyCard babyName={baby.name[3]} />

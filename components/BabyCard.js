@@ -53,10 +53,6 @@ const MaterialUISwitch = styled(Switch)(({ theme }) => ({
   },
 }));
 
-const baby = {
-  name: 'David',
-};
-
 const icon = {
   awake:
     'https://cdn3.iconfinder.com/data/icons/family-member-flat-happy-family-day/512/Son-256.png',
@@ -77,7 +73,10 @@ export default function BabyCard({ babyName }) {
 
   return (
     <React.Fragment>
-      <Card sx={{ maxWidth: 120, maxHeight: 140 }}>
+      <Card
+        style={{ margin: '5px', padding: '1px', boxShadow: '1px 2px #08F1CF' }}
+        sx={{ maxWidth: 120, maxHeight: 140 }}
+      >
         <FormControlLabel
           labelPlacement='top'
           control={
