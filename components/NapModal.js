@@ -66,6 +66,14 @@ const NapModal = () => {
   //------------------------------------------//
 
   //------------------------------------------//
+  //----Post Request--------------------------//
+  //------------------------------------------//
+  const postNextNap = () => {};
+  //------------------------------------------//
+  //------------------------------------------//
+  //------------------------------------------//
+
+  //------------------------------------------//
   //----To Get Pretty Date--------------------//
   //------------------------------------------//
   const getPrettyDate = () => {
@@ -176,6 +184,7 @@ const NapModal = () => {
           <div className='sb-buffer'></div>
           <div style={{ display: 'flex' }} className='flex-col'>
             <Button
+              onClick={postNextNap}
               style={{ backgroundColor: 'lightgreen', width: '50%' }}
               className='rounded-md border-2 border-emerald-400 place-self-center'
               variant='contained'

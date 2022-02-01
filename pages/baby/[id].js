@@ -203,6 +203,7 @@ const Baby = ({ baby }) => {
           </div>
         </div>
       </div>
+      <div style={{ paddingTop: '40px' }}></div>
     </>
   );
 };
