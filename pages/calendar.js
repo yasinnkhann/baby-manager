@@ -18,6 +18,8 @@ function Calendar() {
 
   const [selectedDate, setDate] = useState(new Date());
   const [dayEvents, setDayEvents] = useState([]);
+  const [allEvents, setAllEvents] = useState([]);
+
   const [user, loading, error] = useAuthState(auth);
   //   // var getCurrentUserID = async () => {
   //   //   if (user) {
@@ -27,7 +29,6 @@ function Calendar() {
   var orderEvents = async () => {
     console.log('events', events);
   };
-  const events = [];
   var getCurrentUserBabyFeedingEvents = async () => {
     if (user) {
       const babies = collection(db, 'users', user.uid, 'babies');
@@ -44,6 +45,7 @@ function Calendar() {
             doc.id,
             'feedingEvents'
           );
+          const events = [];
           const querySnapshot = await getDocs(feedingEvents);
           querySnapshot.forEach(async doc => {
             // console.log(doc.data())
