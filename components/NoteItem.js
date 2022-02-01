@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { doc, deleteDoc, updateDoc } from '@firebase/firestore';
 import { db } from '../firebaseConfig';
+import { Button } from '@mui/material';
 
 const NoteItem = ({ note, fetchNotes, user }) => {
   const [isEditing, setIsEditing] = useState(false);
@@ -39,13 +40,31 @@ const NoteItem = ({ note, fetchNotes, user }) => {
             onChange={e => setEditedNote(e.target.value)}
             autoFocus
           />
-          <button type='submit'>Submit</button>
+          <Button
+            className='min-w-[125px] max-w-[20%] text-stone-900 bg-emerald-50  hover:bg-cyan-200 mt-[4%] '
+            variant='contained'
+            type='submit'
+          >
+            Submit
+          </Button>
         </form>
       ) : (
         <p>{note.data.body}</p>
       )}
-      <button onClick={() => setIsEditing(!isEditing)}>Edit</button>
-      <button onClick={handleDelete}>Delete</button>
+      <Button
+        onClick={() => setIsEditing(!isEditing)}
+        className='min-w-[125px] max-w-[20%] text-stone-900 bg-emerald-50  hover:bg-cyan-200 mt-[4%] '
+        variant='contained'
+      >
+        Edit
+      </Button>
+      <Button
+        className='min-w-[125px] max-w-[20%] text-stone-900 bg-emerald-50  hover:bg-cyan-200 mt-[4%] '
+        variant='contained'
+        onClick={handleDelete}
+      >
+        Delete
+      </Button>
     </article>
   );
 };
