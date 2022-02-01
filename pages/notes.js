@@ -6,6 +6,7 @@ import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth, db } from '../firebaseConfig';
 import { useRouter } from 'next/router';
 import { collection, addDoc, getDocs, doc } from '@firebase/firestore';
+import { Button } from '@mui/material';
 
 const Notes = () => {
   const [notes, setNotes] = useState(null);
@@ -60,7 +61,13 @@ const Notes = () => {
         onChange={e => setNewNote(e.target.value)}
         autoFocus
       />
-      <button type='submit'>Submit</button>
+      <Button
+        className='min-w-[125px] max-w-[20%] text-stone-900 bg-emerald-50  hover:bg-cyan-200 mt-[4%] '
+        variant='contained'
+        type='submit'
+      >
+        Submit
+      </Button>
     </form>
   );
 
@@ -76,7 +83,13 @@ const Notes = () => {
       </Head>
       <section className="font-['Rubik'] h-full mx-auto w-3/4 mt-2 flex flex-col justify-start px-4">
         <h1 className='font-medium self-center text-[26px] md:text-4xl lg:text-5xl'>Notes</h1>
-        <button onClick={() => setIsAddingNote(!isAddingNote)}>Add Note</button>
+        <Button
+          onClick={() => setIsAddingNote(!isAddingNote)}
+          className='min-w-[125px] max-w-[20%] text-stone-900 bg-emerald-50  hover:bg-cyan-200 mt-[4%] '
+          variant='contained'
+        >
+          Add Note
+        </Button>
         {isAddingNote ? renderAddNote() : null}
         <div className='flex flex-col'>{renderNotes()}</div>
       </section>
