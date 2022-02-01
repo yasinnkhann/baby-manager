@@ -13,7 +13,6 @@ const Notes = () => {
   const [newNote, setNewNote] = useState('');
   const [user, loading, error] = useAuthState(auth);
   const router = useRouter();
-  const notesRef = collection(db, 'users', user.uid, 'notes');
 
   useEffect(() => {
     if (!user && !loading) {
@@ -25,6 +24,7 @@ const Notes = () => {
 
   const fetchNotes = async () => {
     try {
+      const notesRef = collection(db, 'users', user.uid, 'notes');
       const notesSnap = await getDocs(notesRef);
       const notesData = [];
       notesSnap.forEach(note => notesData.push({ id: note.id, data: note.data() }));
@@ -38,6 +38,7 @@ const Notes = () => {
   const handleNewNote = async e => {
     try {
       e.preventDefault();
+      const notesRef = collection(db, 'users', user.uid, 'notes');
       const docRef = await addDoc(notesRef, {
         body: newNote,
         createdAt: new Date().toISOString(),
