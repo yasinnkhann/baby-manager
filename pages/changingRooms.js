@@ -2,12 +2,15 @@ import React, { useState, useEffect } from 'react';
 import { MyMapComponent } from '../components/ChangingRoom/GoogleMap.js';
 import MyLocationIcon from '@mui/icons-material/MyLocation';
 import axios from 'axios';
-import MyComponents from '../components/ChangingRoom/GoogleMap.js';
+import MyComponents from '../components/ChangingRoom/GoogleMap copy.js';
+import Head from 'next/head';
 
 export default function ChangingRooms(props) {
   const API_KEY = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API;
-  const [currentLocation, setCurrentLoc] = useState({ lat: 47.5, lng: -112.644 });
-  const [bathrooms, setBathrooms] = useState({});
+  const [currentLocation, setCurrentLoc] = useState({ lat: 0, lng: 0 });
+
+  // useEffect(()=> {
+  // }, [])
 
   const clickHandler = () => {
     if (navigator.geolocation) {
@@ -17,7 +20,6 @@ export default function ChangingRooms(props) {
             lat: position.coords.latitude,
             lng: position.coords.longitude,
           };
-          console.log(pos);
           setCurrentLoc(pos);
         },
         () => {
@@ -26,8 +28,14 @@ export default function ChangingRooms(props) {
       );
     }
   };
+
   return (
     <div style={{ marginTop: '100px' }}>
+      <Head>
+        {/* <script async
+          src={`https://maps.googleapis.com/maps/api/js?key=${API_KEY}`}>
+      </script> */}
+      </Head>
       {/* <form>
         <input type='text' placeholder='search'></input>
         <input type='submit'></input>

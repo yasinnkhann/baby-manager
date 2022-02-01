@@ -1,7 +1,8 @@
-import React, { Component, useState } from 'react';
+import React, { Component, useState, useEffect } from 'react';
 import {
   GoogleMap,
   LoadScript,
+  useLoadScript,
   Marker,
   InfoWindow,
   StandaloneSearchBox,
@@ -12,15 +13,53 @@ const containerStyle = {
   height: '500px',
 };
 
+//clicking multiple times causes error of searchBox.getPlaces()
+//disable person view
+//error blocked by client after logging in
+
 const API_KEY = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API;
 const libraries = ['places'];
 
 function MyComponents({ center, zoom }) {
   const [searchBox, setSearchBox] = useState(null);
+  const [results, setResults] = useState(null);
+  const [bounds, setBounds] = useState(null);
+
+  const { isLoaded, loadError } = useLoadScript({
+    googleMapsApiKey: API_KEY,
+  });
+
   const onLoad = ref => {
-    searchBox = ref;
+    setResults(ref.getPlaces());
+    // let service = new window.google.maps.places.PlacesService(map);
+    // let request = {
+    //   query: 'bathroom'
+    // }
+    // service.findPlaceFromQuery(request, (results, status) => {
+    //   console.log(results);
+    //   console.log('this is status', status);
+    // })
   };
-  const onPlacesChanged = () => setSearchBox(searchBox.getPlaces());
+  const onPlacesChanged = () => {
+    setResults(searchBox.getPlaces());
+  };
+
+  const onMapLoad = map => {
+    // setResults(searchBox.getPlaces())
+  };
+
+  // const renderMap = () => {
+  //   const onLoad = React.useCallback(
+  //     function onLoad(mapInstance) {
+  //       //do something
+  //     });
+
+  //   return (<GoogleMap
+  //     onLoad={onLoad}
+  //     >
+
+  //     </GoogleMap>)
+  // }
 
   return (
     <LoadScript googleMapsApiKey={API_KEY} libraries={libraries}>
@@ -31,11 +70,12 @@ function MyComponents({ center, zoom }) {
         onCenterChanged
         onZoomChanged
         clickableIcons={true}
+        onLoad={onMapLoad}
+        // onLoad={(map) => {onMapLoad(map)}}
       >
         {/* Child components, such as markers, info windows, etc. */}
-        {searchBox
-          ? searchBox.map(item => {
-              console.log(item.geometry.location.lat());
+        {results
+          ? results.map(item => {
               return (
                 <Marker
                   key={item.place_id}
@@ -48,11 +88,11 @@ function MyComponents({ center, zoom }) {
             })
           : null}
 
-        <InfoWindow position={{ lat: 47.5, lng: -122.644 }}>
+        {/* <InfoWindow position={{ lat: 47.5, lng: -122.644 }}>
           <div>
             <h1>InfoWindow</h1>
           </div>
-        </InfoWindow>
+        </InfoWindow> */}
         <StandaloneSearchBox onLoad={onLoad} onPlacesChanged={onPlacesChanged}>
           <input
             type='text'
