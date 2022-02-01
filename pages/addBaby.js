@@ -47,6 +47,7 @@ export default function AddBaby() {
         weightType: weightType,
         weight: weight,
         createdAt: new Date().toISOString(),
+        isAsleep: false,
       });
       router.push('/overview');
     } catch (err) {
