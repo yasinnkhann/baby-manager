@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { db } from '../../firebaseConfig.js';
+import { auth, db } from '../../firebaseConfig.js';
 import { collection, query, where, getDocs } from 'firebase/firestore';
 
 // fetch('https://jsonplaceholder.typicode.com/users')
@@ -14,7 +14,7 @@ export const getServerSideProps = async () => {
   //   props: { baby: data },
   // };
 
-  const babyRef = collection(db, 'baby');
+  const babyRef = collection(db, 'users', auth.uid, 'babies');
   const data = await getDocs(babyRef);
 
   const babies = data.docs.map(doc => ({

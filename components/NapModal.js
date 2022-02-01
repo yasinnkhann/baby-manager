@@ -18,6 +18,20 @@ import Button from '@mui/material/Button';
 import Icon from '@mui/material/Icon';
 import NotificationsOffIcon from '@mui/icons-material/NotificationsOff';
 import NotificationsActiveIcon from '@mui/icons-material/NotificationsActive';
+import { db } from '../firebaseConfig.js';
+import {
+  collection,
+  query,
+  where,
+  getDocs,
+  doc,
+  getDoc,
+  orderBy,
+  limit,
+  addDoc,
+  updateDoc,
+} from 'firebase/firestore';
+import { getAuth } from 'firebase/auth';
 
 const popupStyle = {
   position: 'absolute',
@@ -43,8 +57,8 @@ const NapModal = () => {
   const [foodValue, setFoodValue] = React.useState('');
   const [foodAmount, setFoodAmount] = React.useState(0);
   const [date, setDate] = React.useState(null);
-  const [napTime, setNapTime] = React.useState(new Date());
-  const [napDate, setNapDate] = React.useState(new Date().toString());
+  const [napTime, setNapTime] = React.useState(null);
+  const [napDate, setNapDate] = React.useState(null);
   const [reminderIcon, setReminderIcon] = React.useState(
     <NotificationsOffIcon color='disabled' />
   );
@@ -68,7 +82,21 @@ const NapModal = () => {
   //------------------------------------------//
   //----Post Request--------------------------//
   //------------------------------------------//
-  const postNextNap = () => {};
+  const postNextNap = () => {
+    console.log(napDate);
+    addDoc(collection(db, 'baby'), {
+      babyName: 'Zebra3',
+      scheduleSleep: napDate,
+    }).then(res => {
+      console.log(res);
+    });
+  };
+
+  const getCurrentUser = () => {
+    const auth = getAuth();
+    const user = auth.currentUser;
+    console.log(user);
+  };
   //------------------------------------------//
   //------------------------------------------//
   //------------------------------------------//

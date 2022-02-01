@@ -30,7 +30,7 @@ export const getServerSidePaths = async () => {
   // };
 
   ///////////////////////
-  const babyRef = collection(db, 'baby');
+  const babyRef = collection(db, 'users', user.uid, 'babies');
   const data = await getDocs(babyRef);
 
   const babies = data.docs.map(doc => {
@@ -112,7 +112,7 @@ const Baby = ({ baby }) => {
       prettyTime = `${uglyTime[0]}:${uglyTime[1]} am`;
     }
     const prettyDate = `${splitDate[0]} ${splitDate[1]} ${splitDate[2]}, ${splitDate[3]}, ${prettyTime}`;
-    setLastFeed(prettyDate);
+    setLastFeed(prettyDate || 'No Date');
   };
 
   const getLastNapDatePretty = () => {
@@ -203,7 +203,7 @@ const Baby = ({ baby }) => {
           </div>
         </div>
       </div>
-      <div style={{ paddingTop: '40px' }}></div>
+      <div style={{ paddingTop: '80px' }}></div>
     </>
   );
 };
