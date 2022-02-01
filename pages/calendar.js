@@ -9,7 +9,7 @@ import { query, where } from 'firebase/firestore';
 
 function Calendar() {
   const [selectedDate, setDate] = useState(new Date());
-  const [allEvents, setAllEvents] = useState([]);
+  // const [allEvents, setAllEvents] = useState([]);
   const [dayEvents, setDayEvents] = useState([]);
   const [sortedDayEvents, setSortedDayEvents] = useState([]);
   const [user, loading, error] = useAuthState(auth);
@@ -35,7 +35,7 @@ function Calendar() {
     //     // getCurrentUserID();
     if (user) {
       getCurrentUserBabyFeedingEvents();
-      getCurrentUserBabySleepingEvents();
+      // getCurrentUserBabySleepingEvents();
       // orderEvents();
     }
   }, [user]); //eslint-disable-line
@@ -54,14 +54,23 @@ function Calendar() {
 
   // })
 
+  const feedingEventsArray = [];
+  const sleepingEventsArray = [];
+
   var getCurrentUserBabyFeedingEvents = async () => {
-    const babies = collection(db, 'users', user.uid, 'babies');
-    const querySnapshot = await getDocs(babies);
-    const feedingEventsData = [];
-    querySnapshot.forEach(doc => {
-      // const feedingEvents = collection(db, "users", user.uid, "babies", doc.id);
-      // const querySnapshot = await getDocs(feedingEvents);
+    try {
+      const babies = collection(db, 'users', user.uid, 'babies');
+      const querySnapshot = await getDocs(babies);
+      const feedingEventsArray = [];
+
       querySnapshot.forEach(async doc => {
+        // const feedingEvents = collection(db, "users", user.uid, "babies", doc.id);
+        // const querySnapshot = await getDocs(feedingEvents);
+        // console.log(babyName)
+        const babyName = doc.data().babyName;
+
+        // GET ALL FEEDING EVENTS FOR CURRENT BABY AND PUSH TO feedingEventsArray
+
         const feedingEvents = collection(
           db,
           'users',
@@ -70,24 +79,17 @@ function Calendar() {
           doc.id,
           'feedingEvents'
         );
-        const querySnapshot = await getDocs(feedingEvents);
-        querySnapshot.forEach(doc => {
-          feedingEventsData.push(doc.data());
+        const feedingQuerySnapshot = await getDocs(feedingEvents);
+        feedingQuerySnapshot.forEach(doc => {
+          var feedingEvent = doc.data();
+          feedingEvent['babyName'] = babyName;
+          feedingEvent['type'] = 'eat';
+          feedingEventsArray.push(feedingEvent);
         });
-        console.log('feedingEventsData', feedingEventsData);
-        setAllEvents(feedingEventsData);
-      });
-    });
-  };
+        console.log('feedingEvents: ', feedingEventsArray);
 
-  var getCurrentUserBabySleepingEvents = async () => {
-    const babies = collection(db, 'users', user.uid, 'babies');
-    const querySnapshot = await getDocs(babies);
-    querySnapshot.forEach(doc => {
-      // const feedingEvents = collection(db, "users", user.uid, "babies", doc.id);
-      // const querySnapshot = await getDocs(feedingEvents);
-      const sleepingEventsData = [];
-      querySnapshot.forEach(async doc => {
+        // GET ALL SLEEPING EVENTS FOR CURRENT BABY AND PUSH TO sleepingEventsArray
+
         const sleepingEvents = collection(
           db,
           'users',
@@ -96,17 +98,77 @@ function Calendar() {
           doc.id,
           'sleepingEvents'
         );
-        const querySnapshot = await getDocs(sleepingEvents);
-        querySnapshot.forEach(doc => {
+
+        const sleepingQuerySnapshot = await getDocs(sleepingEvents);
+        sleepingQuerySnapshot.forEach(doc => {
+          var sleepingEvent = doc.data();
+          sleepingEvent['babyName'] = babyName;
+          sleepingEvent['type'] = 'sleep';
+          sleepingEventsArray.push(sleepingEvent);
+          // console.log(new Date(events[0].startTime.seconds * 1000));
+        });
+
+        console.log('sleepingEventsArray ', sleepingEventsArray);
+
+        var combinedEvents = feedingEventsArray.flat().concat(sleepingEventsArray.flat());
+
+        console.log('combinedEvents ', combinedEvents);
+
+        var dayEvents = combinedEvents.filter(event => {
+          var seconds = event.startTime.seconds;
+          var date = new Date(seconds * 1000);
+          return sameDay(date, selectedDate);
+        });
+        var sortedDayEvents = dayEvents.sort((a, b) => {
+          return b.startTime.seconds - a.startTime.seconds;
+        });
+        setSortedDayEvents(sortedDayEvents);
+
+        console.log('sortedEvents', sortedDayEvents);
+      });
+      // feedingEventsArray.push(feedingEventsData);
+    } catch {
+      console.log(error);
+    }
+  };
+
+  var getCurrentUserBabySleepingEvents = async () => {
+    try {
+      const babies = collection(db, 'users', user.uid, 'babies');
+      const querySnapshot = await getDocs(babies);
+
+      querySnapshot.forEach(async doc => {
+        console.log(babyName);
+
+        // const feedingEvents = collection(db, "users", user.uid, "babies", doc.id);
+        // const querySnapshot = await getDocs(feedingEvents);
+        const babyName = doc.data().babyName;
+        const sleepingEventsData = [];
+        const sleepingEvents = collection(
+          db,
+          'users',
+          user.uid,
+          'babies',
+          doc.id,
+          'sleepingEvents'
+        );
+        const sleepingQuerySnapshot = await getDocs(sleepingEvents);
+        sleepingQuerySnapshot.forEach(doc => {
           // console.log(doc.data())
-          sleepingEventsData.push(doc.data());
+          var sleepingEvent = doc.data();
+          sleepingEvent['babyName'] = babyName;
+          sleepingEvent['type'] = 'sleep';
+          sleepingEventsData.push(sleepingEvent);
           // console.log(new Date(events[0].startTime.seconds * 1000));
         });
         console.log('sleepingEventsData ', sleepingEventsData);
+        // console.log('allEvents ', allEvents);
 
-        var combinedEvents = allEvents.concat(sleepingEventsData);
+        var combinedEvents = feedingEventsArray.flat().concat(sleepingEventsData.flat());
+        console.log('combinedEvents ', combinedEvents);
 
         var dayEvents = combinedEvents.filter(event => {
+          console.log(combinedEvents);
           var seconds = event.startTime.seconds;
           var date = new Date(seconds * 1000);
           return sameDay(date, selectedDate);
@@ -118,7 +180,13 @@ function Calendar() {
         console.log('sorted dayevents ', sortedDayEvents);
         setSortedDayEvents(sortedDayEvents);
       });
-    });
+    } catch {
+      console.log(error);
+    }
+  };
+
+  var setStartDate = function (date) {
+    setDate(date);
   };
 
   return (
