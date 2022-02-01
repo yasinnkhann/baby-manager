@@ -8,7 +8,7 @@ export default function inviteHandler(req, res) {
     // console.log('req.body:', req.body);
     const token = req.body.token;
     // var token = crypto.randomBytes(8).toString('hex');
-    const INVITE_LINK = `http://localhost:3000/?=${token}`;
+    const INVITE_LINK = `http://localhost:3000?token=${token}`;
 
     const email = req.body.email;
     let transporter = nodemailer.createTransport({

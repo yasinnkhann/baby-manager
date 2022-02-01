@@ -10,7 +10,9 @@ export default function User() {
   const [user, loading, error] = useAuthState(auth);
 
   useEffect(() => {
-    console.log(user);
+    if (user) {
+      console.log(user);
+    }
   }, [user]);
 
   const getUserInfo = async () => {
@@ -68,7 +70,7 @@ export default function User() {
           <div>Invite another user to manage your babies</div>
           <div>
             <form onSubmit={handleInviteButton}>
-              <input type='text' onChange={handleChange}></input>
+              <input type='email' onChange={handleChange}></input>
               <button type='submit'>Invite User</button>
             </form>
             <button onClick={getUserInfo}>Print User Info</button>
