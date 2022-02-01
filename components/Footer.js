@@ -12,6 +12,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/router';
 import { signOut } from 'firebase/auth';
 import { auth } from '../firebaseConfig.js';
+import Link from 'next/link';
 
 export default function Footer() {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -34,9 +35,11 @@ export default function Footer() {
     <footer className='fixed inset-x-0 bottom-0  bg-blue-100 pb:16 bottom sm:hidden md:hidden lg:hidden xl:hidden '>
       <div className='px-8 py-4 mx-auto'>
         <div className='flex justify-between items-center'>
-          <IconButton className='text-neutral-900'>
-            <CalendarTodayIcon />
-          </IconButton>
+          <Link href='/calendar' passHref>
+            <IconButton className='text-neutral-900'>
+              <CalendarTodayIcon />
+            </IconButton>
+          </Link>
 
           <div>
             <IconButton
@@ -59,7 +62,9 @@ export default function Footer() {
               onClose={() => setAnchorElPer(null)}
               TransitionComponent={Fade}
             >
-              <MenuItem onClick={() => setAnchorElPer(null)}>Profile</MenuItem>
+              <Link href='/user' passHref>
+                <MenuItem onClick={() => setAnchorElPer(null)}>Profile</MenuItem>
+              </Link>
               <MenuItem
                 onClick={() => {
                   setAnchorElPer(null);
@@ -70,11 +75,11 @@ export default function Footer() {
               </MenuItem>
             </Menu>
           </div>
-
-          <IconButton>
-            <FontAwesomeIcon className='text-[24px] text-neutral-900' icon={faBaby} />
-          </IconButton>
-
+          <Link href='/overview' passHref>
+            <IconButton>
+              <FontAwesomeIcon className='text-[24px] text-neutral-900' icon={faBaby} />
+            </IconButton>
+          </Link>
           <div>
             <IconButton
               className='text-neutral-900'
@@ -97,7 +102,9 @@ export default function Footer() {
               TransitionComponent={Fade}
             >
               <MenuItem onClick={() => setAnchorEl(null)}>Baby Coupons</MenuItem>
-              <MenuItem onClick={() => setAnchorEl(null)}>Notes</MenuItem>
+              <Link href='/notes' passHref>
+                <MenuItem onClick={() => setAnchorEl(null)}>Notes</MenuItem>
+              </Link>
             </Menu>
           </div>
         </div>
