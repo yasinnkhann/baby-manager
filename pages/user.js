@@ -43,6 +43,7 @@ export default function User() {
     e.preventDefault();
     const token = crypto.randomBytes(8).toString('hex');
     const body = {
+      name: user.displayName,
       email: email,
       token: token,
     };
