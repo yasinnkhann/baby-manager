@@ -74,11 +74,11 @@ const Notes = () => {
       <Head>
         <title>BabyManager | Notes</title>
       </Head>
-      <section>
-        <h1>Notes</h1>
+      <section className="font-['Rubik'] h-full mx-auto w-3/4 mt-2 flex flex-col justify-start px-4">
+        <h1 className='font-medium self-center text-[26px] md:text-4xl lg:text-5xl'>Notes</h1>
         <button onClick={() => setIsAddingNote(!isAddingNote)}>Add Note</button>
         {isAddingNote ? renderAddNote() : null}
-        {renderNotes()}
+        <div className='flex flex-col'>{renderNotes()}</div>
       </section>
     </div>
   );

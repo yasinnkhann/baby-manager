@@ -3,16 +3,20 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 import PersonIcon from '@mui/icons-material/Person';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import { faBaby } from '@fortawesome/free-solid-svg-icons';
 import { useState } from 'react';
 import { useRouter } from 'next/router';
 import { signOut } from 'firebase/auth';
 import { auth } from '../firebaseConfig.js';
+import Link from 'next/link';
 
 export default function Navbar() {
   const [anchorElPer, setAnchorElPer] = useState(null);
   const openPer = Boolean(anchorElPer);
   const router = useRouter();
+  const [anchorEl, setAnchorEl] = useState(null);
+  const open = Boolean(anchorEl);
 
   const handleSignOut = async () => {
     try {
@@ -32,13 +36,16 @@ export default function Navbar() {
           <div className='font-["Pacifico"] text-xl self-center'>Baby Manager</div>
         </div>
         <div className='justify-self-end flex flex-row items-center justify-around'>
-          <IconButton className='hidden sm:block mx-[25%] text-neutral-900 text-[24px]'>
-            <FontAwesomeIcon icon={faBaby} />
-          </IconButton>
-
-          <IconButton className='text-neutral-900'>
-            <CalendarTodayIcon className='hidden sm:block mx-[25%]' />
-          </IconButton>
+          <Link href='/overview' passHref>
+            <IconButton className='hidden sm:block mx-[25%] text-neutral-900 text-[24px]'>
+              <FontAwesomeIcon icon={faBaby} />
+            </IconButton>
+          </Link>
+          <Link href='/calendar' passHref>
+            <IconButton className='text-neutral-900'>
+              <CalendarTodayIcon className='hidden sm:block mx-[25%]' />
+            </IconButton>
+          </Link>
 
           <div className='hidden sm:block mx-[15%]'>
             <IconButton
@@ -61,7 +68,9 @@ export default function Navbar() {
               onClose={() => setAnchorElPer(null)}
               TransitionComponent={Fade}
             >
-              <MenuItem onClick={() => setAnchorElPer(null)}>Profile</MenuItem>
+              <Link href='/user' passHref>
+                <MenuItem onClick={() => setAnchorElPer(null)}>Profile</MenuItem>
+              </Link>
               <MenuItem
                 onClick={() => {
                   setAnchorElPer(null);
@@ -70,6 +79,33 @@ export default function Navbar() {
               >
                 Logout
               </MenuItem>
+            </Menu>
+          </div>
+          <div>
+            <IconButton
+              className='text-neutral-900'
+              id='fade-button'
+              aria-controls={open ? 'fade-menu' : undefined}
+              aria-haspopup='true'
+              aria-expanded={open ? 'true' : undefined}
+              onClick={e => setAnchorEl(e.currentTarget)}
+            >
+              <MoreHorizIcon />
+            </IconButton>
+            <Menu
+              id='fade-menu'
+              MenuListProps={{
+                'aria-labelledby': 'fade-button',
+              }}
+              anchorEl={anchorEl}
+              open={open}
+              onClose={() => setAnchorEl(null)}
+              TransitionComponent={Fade}
+            >
+              <MenuItem onClick={() => setAnchorEl(null)}>Baby Coupons</MenuItem>
+              <Link href='/notes' passHref>
+                <MenuItem onClick={() => setAnchorEl(null)}>Notes</MenuItem>
+              </Link>
             </Menu>
           </div>
         </div>
