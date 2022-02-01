@@ -3,6 +3,7 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 import PersonIcon from '@mui/icons-material/Person';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import { faBaby } from '@fortawesome/free-solid-svg-icons';
 import { useState } from 'react';
 import { useRouter } from 'next/router';
@@ -14,6 +15,8 @@ export default function Navbar() {
   const [anchorElPer, setAnchorElPer] = useState(null);
   const openPer = Boolean(anchorElPer);
   const router = useRouter();
+  const [anchorEl, setAnchorEl] = useState(null);
+  const open = Boolean(anchorEl);
 
   const handleSignOut = async () => {
     try {
@@ -76,6 +79,33 @@ export default function Navbar() {
               >
                 Logout
               </MenuItem>
+            </Menu>
+          </div>
+          <div>
+            <IconButton
+              className='text-neutral-900'
+              id='fade-button'
+              aria-controls={open ? 'fade-menu' : undefined}
+              aria-haspopup='true'
+              aria-expanded={open ? 'true' : undefined}
+              onClick={e => setAnchorEl(e.currentTarget)}
+            >
+              <MoreHorizIcon />
+            </IconButton>
+            <Menu
+              id='fade-menu'
+              MenuListProps={{
+                'aria-labelledby': 'fade-button',
+              }}
+              anchorEl={anchorEl}
+              open={open}
+              onClose={() => setAnchorEl(null)}
+              TransitionComponent={Fade}
+            >
+              <MenuItem onClick={() => setAnchorEl(null)}>Baby Coupons</MenuItem>
+              <Link href='/notes' passHref>
+                <MenuItem onClick={() => setAnchorEl(null)}>Notes</MenuItem>
+              </Link>
             </Menu>
           </div>
         </div>
