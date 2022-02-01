@@ -28,7 +28,13 @@ export default function User() {
   };
 
   const createInvitation = async token => {
-    const docRef = await addDoc(collection(db, 'users', user.uid, 'invitations'), {
+    // const docRef = await addDoc(collection(db, 'users', user.uid, 'invitations'), {
+    //   emailSentTo: email,
+    //   token: token,
+    //   accepted: false,
+    // });
+    await addDoc(collection(db, 'invitations'), {
+      inviter_id: user.uid,
       emailSentTo: email,
       token: token,
       accepted: false,
