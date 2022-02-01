@@ -38,7 +38,7 @@ function Calendar() {
       // getCurrentUserBabySleepingEvents();
       // orderEvents();
     }
-  }, [user]); //eslint-disable-line
+  }, [user, selectedDate]); //eslint-disable-line
   //   // var getCurrentUserID = async () => {
   //   //   if (user) {
   //   //     console.log('userID: ', user.uid);
@@ -120,7 +120,7 @@ function Calendar() {
           return sameDay(date, selectedDate);
         });
         var sortedDayEvents = dayEvents.sort((a, b) => {
-          return b.startTime.seconds - a.startTime.seconds;
+          return a.startTime.seconds - b.startTime.seconds;
         });
         setSortedDayEvents(sortedDayEvents);
 
@@ -185,13 +185,14 @@ function Calendar() {
     }
   };
 
-  var setStartDate = function (date) {
+  var setSelectedDate = function (date) {
+    console.log(date);
     setDate(date);
   };
 
   return (
     <>
-      <WeeklyView selectedDate={selectedDate} />
+      <WeeklyView setSelectedDate={setSelectedDate} selectedDate={selectedDate} />
       <ListView sortedDayEvents={sortedDayEvents} selectedDate={selectedDate} />
     </>
   );

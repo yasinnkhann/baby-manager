@@ -7,12 +7,14 @@ import 'react-datepicker/dist/react-datepicker.css';
 // import 'react-datepicker/dist/react-datepicker-cssmodules.css';
 
 function WeeklyView(props) {
-  // const [startDate, setStartDate] = useState(new Date());
+  // const [startDate, setSelectedDate] = useState(new Date());
   return (
     <DatePicker
       className='mt-20'
       selected={props.selectedDate}
-      onChange={date => props.setStartDate}
+      onChange={date => {
+        props.setSelectedDate(date);
+      }}
     />
   );
 }
