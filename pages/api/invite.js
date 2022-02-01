@@ -24,7 +24,7 @@ export default function inviteHandler(req, res) {
       from: process.env.NEXT_PUBLIC_SERVER_EMAIL,
       to: email,
       subject: `${name} has invited you to manage his/her babies!`,
-      text: `You are invited to manage ${name}'s babies. Click the following link to log in or sign up to manage his/her babies! \n\n${INVITE_LINK}. \n\nOnly log in through this link to gain access to {users name}'s babies.`,
+      text: `You are invited to manage ${name}'s babies. Click the following link to log in or sign up to manage his/her babies! \n\n${INVITE_LINK}. \n\nOnly log in through this link to gain access to ${name}'s babies.`,
     };
 
     let data = transporter.sendMail(mailOptions, (err, data) => {
