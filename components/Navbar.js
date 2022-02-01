@@ -81,7 +81,7 @@ export default function Navbar() {
               </MenuItem>
             </Menu>
           </div>
-          <div>
+          <div className='hidden sm:block'>
             <IconButton
               className='text-neutral-900'
               id='fade-button'

@@ -10,6 +10,20 @@ import { useRouter } from 'next/router';
 import Link from 'next/link';
 import { doc, setDoc, serverTimestamp } from 'firebase/firestore';
 
+import {
+  ToggleButtonGroup,
+  ToggleButton,
+  Button,
+  FormLabel,
+  Select,
+  Input,
+  InputLabel,
+  MenuItem,
+  TextField,
+  Slider,
+  FormControl,
+} from '@mui/material';
+
 export default function Login() {
   const [loginInfo, setLoginInfo] = useState({
     email: '',
@@ -42,7 +56,7 @@ export default function Login() {
         { merge: true }
       );
       console.log('USER @ LOGIN: ', user);
-      router.push('/');
+      router.push('/overview');
     } catch (err) {
       console.error(err);
     }
@@ -57,7 +71,7 @@ export default function Login() {
         loginInfo.password
       );
       console.log('LOGGED IN @: ', userCredential);
-      router.push('/');
+      router.push('/overview');
     } catch (err) {
       console.error(err);
       alert(err.message);
@@ -69,21 +83,23 @@ export default function Login() {
   };
 
   return (
-    <div className='h-screen my-[10%]'>
+    <div className='h-screen  flex flex-col content-center font-["Rubik"]'>
       <Head>
         <title>Login</title>
       </Head>
-      <div className='w-full max-w-xs m-auto bg-indigo-100 rounded p-5'>
-        <button
+      <div className='w-full max-w-xs m-auto bg-indigo-100/75 rounded p-5'>
+        <Button
           onClick={googleSignIn}
           className='w-full bg-indigo-700 hover:bg-pink-700 text-white font-bold py-2 px-4 mb-6 rounded'
+          variant='contained'
         >
           Login with Google
-        </button>
+        </Button>
+
         <br />
         <fieldset>
           <form onSubmit={handleSubmit}>
-            <label htmlFor='email' className='block mb-2 text-pink-500'>
+            <label htmlFor='email' className='block mb-2 text-pink-500 font-["Rubik"]'>
               Email:
             </label>
             <input
@@ -94,6 +110,7 @@ export default function Login() {
               onChange={handleChange}
               className='w-full p-2 mb-6 text-pink-700 border-b-2 border-pink-500 outline-none focus:bg-gray-300'
             />
+
             <br />
             <label htmlFor='password' className='block mb-2 text-pink-500'>
               Password:
@@ -107,17 +124,22 @@ export default function Login() {
               className='w-full p-2 mb-6 text-pink-700 border-b-2 border-pink-500 outline-none focus:bg-gray-300'
             />
             <br />
-            <button className='w-full bg-indigo-700 hover:bg-pink-700 text-white font-bold py-2 px-4 mb-6 rounded'>
+            <Button
+              className='w-full bg-indigo-700 hover:bg-pink-700 text-white font-bold py-2 px-4 mb-6 rounded'
+              type='submit'
+            >
               Login
-            </button>
+            </Button>
           </form>
         </fieldset>
 
-        <Link href='/register'>
-          <a className='text-blue-700 hover:text-pink-700 text-sm float-left'>
-            Don&apos;t have an account? Sign up here!
-          </a>
-        </Link>
+        <div className='justify-self-center text-center'>
+          <Link href='/register'>
+            <a className='text-blue-700 hover:text-pink-700 text-sm '>
+              Don&apos;t have an account? Sign up here!
+            </a>
+          </Link>
+        </div>
       </div>
     </div>
   );

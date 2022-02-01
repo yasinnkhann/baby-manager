@@ -32,8 +32,8 @@ export default function Footer() {
   };
 
   return (
-    <footer className='fixed inset-x-0 bottom-0  bg-blue-100 pb:16 bottom sm:hidden md:hidden lg:hidden xl:hidden '>
-      <div className='px-8 py-4 mx-auto'>
+    <footer className='fixed inset-x-0 bottom-0  bg-blue-100 pb:10 bottom sm:hidden md:hidden lg:hidden xl:hidden '>
+      <div className='px-5 py-2 mx-auto'>
         <div className='flex justify-between items-center'>
           <Link href='/calendar' passHref>
             <IconButton className='text-neutral-900'>
