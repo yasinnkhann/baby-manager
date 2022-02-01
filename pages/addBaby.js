@@ -20,6 +20,7 @@ import {
 
 import { auth, db } from '../firebaseConfig.js';
 import { useRouter } from 'next/router';
+import Link from 'next/link';
 import { doc, addDoc, collection } from 'firebase/firestore';
 import { useAuthState } from 'react-firebase-hooks/auth';
 
@@ -28,12 +29,13 @@ export default function AddBaby() {
   const [weightType, setWeightType] = useState('lb');
   const [date, setDate] = useState(null);
   const [user, loading] = useAuthState(auth);
+  const router = useRouter();
 
   useEffect(() => {
     if (!user && !loading) {
       router.push('/login');
     }
-  }, [user, loading]);
+  }, [user, loading, router]);
 
   const handleSubmit = async e => {
     try {
@@ -46,6 +48,7 @@ export default function AddBaby() {
         weight: weight,
         createdAt: new Date().toISOString(),
       });
+      router.push('/overview');
     } catch (err) {
       console.error('Error adding baby document: ', err);
     }
@@ -63,7 +66,6 @@ export default function AddBaby() {
           className='flex flex-col'
           onSubmit={e => {
             handleSubmit(e);
-            // router.push('/overview');
           }}
         >
           <TextField

@@ -8,6 +8,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/router';
 import { signOut } from 'firebase/auth';
 import { auth } from '../firebaseConfig.js';
+import Link from 'next/link';
 
 export default function Navbar() {
   const [anchorElPer, setAnchorElPer] = useState(null);
@@ -32,13 +33,16 @@ export default function Navbar() {
           <div className='font-["Pacifico"] text-xl self-center'>Baby Manager</div>
         </div>
         <div className='justify-self-end flex flex-row items-center justify-around'>
-          <IconButton className='hidden sm:block mx-[25%] text-neutral-900 text-[24px]'>
-            <FontAwesomeIcon icon={faBaby} />
-          </IconButton>
-
-          <IconButton className='text-neutral-900'>
-            <CalendarTodayIcon className='hidden sm:block mx-[25%]' />
-          </IconButton>
+          <Link href='/overview' passHref>
+            <IconButton className='hidden sm:block mx-[25%] text-neutral-900 text-[24px]'>
+              <FontAwesomeIcon icon={faBaby} />
+            </IconButton>
+          </Link>
+          <Link href='/calendar' passHref>
+            <IconButton className='text-neutral-900'>
+              <CalendarTodayIcon className='hidden sm:block mx-[25%]' />
+            </IconButton>
+          </Link>
 
           <div className='hidden sm:block mx-[15%]'>
             <IconButton
@@ -61,7 +65,9 @@ export default function Navbar() {
               onClose={() => setAnchorElPer(null)}
               TransitionComponent={Fade}
             >
-              <MenuItem onClick={() => setAnchorElPer(null)}>Profile</MenuItem>
+              <Link href='/user' passHref>
+                <MenuItem onClick={() => setAnchorElPer(null)}>Profile</MenuItem>
+              </Link>
               <MenuItem
                 onClick={() => {
                   setAnchorElPer(null);

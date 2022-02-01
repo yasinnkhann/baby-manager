@@ -62,7 +62,9 @@ export default function Footer() {
               onClose={() => setAnchorElPer(null)}
               TransitionComponent={Fade}
             >
-              <MenuItem onClick={() => setAnchorElPer(null)}>Profile</MenuItem>
+              <Link href='/user' passHref>
+                <MenuItem onClick={() => setAnchorElPer(null)}>Profile</MenuItem>
+              </Link>
               <MenuItem
                 onClick={() => {
                   setAnchorElPer(null);
@@ -73,11 +75,11 @@ export default function Footer() {
               </MenuItem>
             </Menu>
           </div>
-
-          <IconButton>
-            <FontAwesomeIcon className='text-[24px] text-neutral-900' icon={faBaby} />
-          </IconButton>
-
+          <Link href='/overview' passHref>
+            <IconButton>
+              <FontAwesomeIcon className='text-[24px] text-neutral-900' icon={faBaby} />
+            </IconButton>
+          </Link>
           <div>
             <IconButton
               className='text-neutral-900'
@@ -100,7 +102,9 @@ export default function Footer() {
               TransitionComponent={Fade}
             >
               <MenuItem onClick={() => setAnchorEl(null)}>Baby Coupons</MenuItem>
-              <MenuItem onClick={() => setAnchorEl(null)}>Notes</MenuItem>
+              <Link href='/notes' passHref>
+                <MenuItem onClick={() => setAnchorEl(null)}>Notes</MenuItem>
+              </Link>
             </Menu>
           </div>
         </div>
