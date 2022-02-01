@@ -1,9 +1,15 @@
 import axios from 'axios';
 import Head from 'next/head';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 const Coupons = () => {
   const [coupons, setCoupons] = useState(null);
+
+  useEffect(() => {}, []);
+
+  const fetchCoupons = async () => {
+    const stuff = await axios.get('https://api.discountapi.com/v2/deals', {});
+  };
 
   return (
     <>
