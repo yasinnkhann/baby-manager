@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useState } from 'react';
 import { styled } from '@mui/material/styles';
 import Card from '@mui/material/Card';
 import CardMedia from '@mui/material/CardMedia';
@@ -53,32 +53,45 @@ const MaterialUISwitch = styled(Switch)(({ theme }) => ({
   },
 }));
 
-const babyAsleepImage =
-  'https://cdn0.iconfinder.com/data/icons/family-babies-kids/24/kid-infant-baby-child-children-family-512.png';
-const babyAwakeImage =
-  'https://toppng.com/uploads/preview/babys-room-icon-baby-icon-11553449311dwd4ky7lpi.png';
-
-const baby = {
-  name: 'David',
+const icon = {
+  awake:
+    'https://cdn3.iconfinder.com/data/icons/family-member-flat-happy-family-day/512/Son-256.png',
+  asleep:
+    'https://cdn0.iconfinder.com/data/icons/family-babies-kids/24/kid-infant-baby-child-children-family-512.png',
 };
 
-export default function BabyCard({ isAsleepToggled, onToggle }) {
-  // const { classes } = props;
+export default function BabyCard({ babyName }) {
+  const [babyIcon, setBabyIcon] = useState(icon.awake);
+
+  // need to retrive data from data base to check if the baby is awake
+  const [isBabyAsleep, setIsBabyAsleep] = useState(false);
+
+  const handleBabySleepChange = (e, val) => {
+    isBabyAsleep = val;
+    isBabyAsleep ? setBabyIcon(icon.asleep) : setBabyIcon(icon.awake);
+  };
+
   return (
     <React.Fragment>
-      <Card sx={{ maxWidth: 110 }}>
+      <Card
+        style={{ margin: '5px', padding: '1px', boxShadow: '1px 2px #08F1CF' }}
+        sx={{ maxWidth: 120, maxHeight: 140 }}
+      >
         <FormControlLabel
-          control={<MaterialUISwitch sx={{ m: 1 }} defaultChecked />}
+          labelPlacement='top'
+          control={
+            <MaterialUISwitch onChange={handleBabySleepChange} sx={{ m: 1 }} defaultChecked />
+          }
           label=''
         />
         <CardMedia
+          style={{ height: '50px', width: '50px', margin: 'auto' }}
           component='img'
           height=''
-          // image={babyAwakeImage}
-          image={babyAsleepImage}
+          image={babyIcon}
           alt='babyIcon'
         />
-        <CardContent style={{ textAlign: 'center' }}>{baby.name}</CardContent>
+        <CardContent style={{ textAlign: 'center' }}> {babyName} </CardContent>
       </Card>
     </React.Fragment>
   );
