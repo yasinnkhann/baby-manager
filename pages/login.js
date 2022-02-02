@@ -7,9 +7,8 @@ import {
 } from 'firebase/auth';
 import { auth, provider, db } from '../firebaseConfig.js';
 import { useRouter } from 'next/router';
-import Link from 'next/link';
 import { doc, setDoc, serverTimestamp } from 'firebase/firestore';
-import { Select, MenuItem, TextField, Button } from '@mui/material';
+import { TextField, Button } from '@mui/material';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 export default function Login() {
@@ -89,7 +88,7 @@ export default function Login() {
     });
   };
 
-  const registerButton = () => {
+  const goToRegisterPage = () => {
     if (inviteToken) {
       router.push(
         {
@@ -163,12 +162,9 @@ export default function Login() {
           </fieldset>
 
           <div className='justify-self-center text-center'>
-            <button onClick={registerButton}>Don&apos;t have an account? Sign up here!</button>
-            {/* <Link href='/register'>
-              <a className='text-blue-700 hover:text-pink-700 text-sm '>
-                Don&apos;t have an account? Sign up here!
-              </a>
-            </Link> */}
+            <button onClick={goToRegisterPage} className='text-blue-500 hover:text-pink-700'>
+              Don&apos;t have an account? Sign up here!
+            </button>
           </div>
         </div>
       </div>

@@ -1,6 +1,5 @@
 import Head from 'next/head';
 import React, { useState } from 'react';
-import Link from 'next/link';
 import { auth, db } from '../firebaseConfig.js';
 import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
 import { useRouter } from 'next/router';
@@ -80,7 +79,7 @@ export default function Register() {
     }
   };
 
-  const loginButton = () => {
+  const goToLoginPage = () => {
     if (inviteToken) {
       router.push(
         {
@@ -195,14 +194,12 @@ export default function Register() {
         </form>
 
         <div className='justify-self-center text-center'>
-          <button onClick={loginButton} className='text-blue-500 hover:text-pink-700 text-sm '>
+          <button
+            onClick={goToLoginPage}
+            className='text-blue-500 hover:text-pink-700 text-sm'
+          >
             Have an account? Login here!
           </button>
-          {/* <Link href='/login'>
-            <a className='text-blue-500 hover:text-pink-700 text-sm '>
-              Have an account? Login here!
-            </a>
-          </Link> */}
         </div>
       </div>
     </ThemeProvider>

@@ -52,17 +52,16 @@ export default function Home() {
     if (user) {
       if (inviteToken) {
         router.push({
-          pathname: '/overview', //Change to /overview after testing
+          pathname: '/overview',
           query: inviteToken,
         });
       } else {
-        router.push('/overview'); //Change to /overview after testing
+        router.push('/overview');
       }
     }
 
     if (!user) {
-      // router.push('/login'); //uncomment after testing
-      router.push('/login'); // Derek added, delete after testing
+      router.push('/login');
     }
   };
 
