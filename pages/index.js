@@ -8,6 +8,9 @@ import { doc, setDoc, serverTimestamp, getDoc } from 'firebase/firestore';
 export default function Home() {
   const [user, loading, error] = useAuthState(auth);
   const router = useRouter();
+  const { query } = useRouter();
+  const inviteToken = query;
+  console.log(" '/' inviteToken", inviteToken);
 
   useEffect(() => {
     const updateUsers = async () => {
@@ -47,11 +50,19 @@ export default function Home() {
     }
 
     if (user) {
-      router.push('/overview');
+      if (inviteToken) {
+        router.push({
+          pathname: '/overview', //Change to /overview after testing
+          query: inviteToken,
+        });
+      } else {
+        router.push('/overview'); //Change to /overview after testing
+      }
     }
 
     if (!user) {
-      router.push('/login');
+      // router.push('/login'); //uncomment after testing
+      router.push('/login'); // Derek added, delete after testing
     }
   };
 

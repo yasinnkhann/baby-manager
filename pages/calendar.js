@@ -67,7 +67,8 @@ function Calendar() {
         // const feedingEvents = collection(db, "users", user.uid, "babies", doc.id);
         // const querySnapshot = await getDocs(feedingEvents);
         // console.log(babyName)
-        const babyName = doc.data().babyName;
+        const babyName = doc.data().name;
+        console.log(babyName);
 
         // GET ALL FEEDING EVENTS FOR CURRENT BABY AND PUSH TO feedingEventsArray
 
@@ -138,8 +139,6 @@ function Calendar() {
       const querySnapshot = await getDocs(babies);
 
       querySnapshot.forEach(async doc => {
-        console.log(babyName);
-
         // const feedingEvents = collection(db, "users", user.uid, "babies", doc.id);
         // const querySnapshot = await getDocs(feedingEvents);
         const babyName = doc.data().babyName;
@@ -191,10 +190,12 @@ function Calendar() {
   };
 
   return (
-    <main>
+    <div className='my-[5%]'>
       <WeeklyView setSelectedDate={setSelectedDate} selectedDate={selectedDate} />
-      <ListView sortedDayEvents={sortedDayEvents} selectedDate={selectedDate} />
-    </main>
+      <div className='xsm:w-[300px] md:w-[600px]'>
+        <ListView sortedDayEvents={sortedDayEvents} selectedDate={selectedDate} />
+      </div>
+    </div>
   );
 }
 
