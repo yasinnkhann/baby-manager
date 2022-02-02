@@ -4,7 +4,7 @@
 
 @layer base {
   body {
-    background-image: linear-gradient(#93c5fd, #cffafe, #c1c2ad);
+    background-image: linear-gradient(#a78bfa, #93c5fd, #cffafe, #c1c2ad);
     background-repeat: no-repeat;
     background-size: cover;
     background-attachment: fixed;
