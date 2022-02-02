@@ -1,82 +1,122 @@
-import React, { Component, useState } from 'react';
-import {
-  GoogleMap,
-  LoadScript,
-  Marker,
-  InfoWindow,
-  StandaloneSearchBox,
-} from '@react-google-maps/api';
+import React, { useState } from 'react';
+import { GoogleMap, useLoadScript, Marker, InfoWindow } from '@react-google-maps/api';
 
 const containerStyle = {
   width: '100%',
-  height: '500px',
+  height: '700px',
 };
 
 const API_KEY = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API;
-const libraries = ['places'];
+const LIBRARIES = ['places'];
 
-function MyComponents({ center, zoom }) {
-  const [searchBox, setSearchBox] = useState(null);
-  const onLoad = ref => {
-    searchBox = ref;
-  };
-  const onPlacesChanged = () => setSearchBox(searchBox.getPlaces());
+export default function MyComponent({ center, home, setHome }) {
+  const [map, setMap] = useState(null);
+  const [results, setResults] = useState(null);
+  const [initialize, setInitialize] = useState(0);
+  const [info, setInfo] = useState(null);
 
-  return (
-    <LoadScript googleMapsApiKey={API_KEY} libraries={libraries}>
+  const { isLoaded, loadError } = useLoadScript({
+    googleMapsApiKey: API_KEY, // ,
+    libraries: LIBRARIES,
+    // ...otherOptions
+  });
+
+  const initMap = () => {
+    const onLoad = mapInstance => {
+      setMap(mapInstance);
+      let service = new google.maps.places.PlacesService(mapInstance);
+      let request = {
+        location: center,
+        radius: 10000,
+        keyword: 'restrooms',
+      };
+      service.nearbySearch(request, function (results, status) {
+        setResults(results);
+      });
+    };
+
+    const onDragChange = () => {
+      let service = new google.maps.places.PlacesService(map);
+      let request = {
+        location: { lat: map.center.lat(), lng: map.center.lng() },
+        radius: 10000,
+        keyword: 'restrooms',
+      };
+      service.nearbySearch(request, function (result, status) {
+        setResults(result);
+      });
+      setHome(false);
+    };
+
+    const centerChanged = () => {
+      if ((initialize < 2 && map) || home) {
+        let service = new google.maps.places.PlacesService(map);
+        let request = {
+          location: center,
+          radius: 10000,
+          keyword: 'restrooms',
+        };
+        service.nearbySearch(request, function (results, status) {
+          setResults(results);
+        });
+        setInitialize(initialize + 1);
+      }
+    };
+    const divStyle = {
+      background: `white`,
+      padding: 2,
+      width: '100px',
+    };
+
+    const onMarkerLoad = marker => {
+      marker.addListener('click', () => {
+        let options = {
+          title: marker.title,
+          position: { lat: marker.position.lat(), lng: marker.position.lng() },
+        };
+        setInfo(options);
+      });
+    };
+    return (
       <GoogleMap
         mapContainerStyle={containerStyle}
         center={center}
-        zoom={10}
-        onCenterChanged
-        onZoomChanged
+        zoom={11}
+        onDragEnd={onDragChange}
         clickableIcons={true}
+        onLoad={onLoad}
+        onCenterChanged={centerChanged}
       >
         {/* Child components, such as markers, info windows, etc. */}
-        {searchBox
-          ? searchBox.map(item => {
-              console.log(item.geometry.location.lat());
+        {results
+          ? results.map(item => {
               return (
                 <Marker
                   key={item.place_id}
+                  onLoad={onMarkerLoad}
                   position={{
                     lat: item.geometry.location.lat(),
                     lng: item.geometry.location.lng(),
                   }}
+                  title={`Name: ${item.name} \n Location: ${item.vicinity}`}
                 />
               );
             })
           : null}
 
-        <InfoWindow position={{ lat: 47.5, lng: -122.644 }}>
-          <div>
-            <h1>InfoWindow</h1>
-          </div>
-        </InfoWindow>
-        <StandaloneSearchBox onLoad={onLoad} onPlacesChanged={onPlacesChanged}>
-          <input
-            type='text'
-            placeholder='Search Bathrooms here'
-            style={{
-              boxSizing: `border-box`,
-              border: `1px solid transparent`,
-              width: `240px`,
-              height: `32px`,
-              padding: `0 12px`,
-              borderRadius: `3px`,
-              boxShadow: `0 2px 6px rgba(0, 0, 0, 0.3)`,
-              fontSize: `14px`,
-              outline: `none`,
-              textOverflow: `ellipses`,
-              position: 'absolute',
-              left: '50%',
-              marginLeft: '-120px',
-            }}
-          />
-        </StandaloneSearchBox>
+        {info ? (
+          <InfoWindow position={info.position} onCloseClick={() => setInfo(null)}>
+            <div style={divStyle}>
+              <div>{info.title}</div>
+            </div>
+          </InfoWindow>
+        ) : null}
       </GoogleMap>
-    </LoadScript>
-  );
-}
+    );
+  };
 
-export default MyComponents;
+  if (loadError) {
+    return <div>Map cannot be loaded right now, sorry.</div>;
+  }
+  return isLoaded ? initMap() : <div>no map</div>;
+}
