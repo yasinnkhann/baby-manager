@@ -1,6 +1,7 @@
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 import PersonIcon from '@mui/icons-material/Person';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
+import AddCircleIcon from '@mui/icons-material/AddCircle';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBaby } from '@fortawesome/free-solid-svg-icons';
 import Button from '@mui/material/Button';
@@ -32,8 +33,8 @@ export default function Footer() {
   };
 
   return (
-    <footer className='fixed inset-x-0 bottom-0  bg-blue-100 pb:16 bottom sm:hidden md:hidden lg:hidden xl:hidden '>
-      <div className='px-8 py-4 mx-auto'>
+    <footer className='fixed inset-x-0 bottom-0  bg-blue-100 pb:10 bottom sm:hidden md:hidden lg:hidden xl:hidden '>
+      <div className='px-5 py-2 mx-auto'>
         <div className='flex justify-between items-center'>
           <Link href='/calendar' passHref>
             <IconButton className='text-neutral-900'>
@@ -75,6 +76,13 @@ export default function Footer() {
               </MenuItem>
             </Menu>
           </div>
+
+          <Link href='/addBaby' passHref>
+            <IconButton>
+              <AddCircleIcon className='text-neutral-900 text-[24px]' />
+            </IconButton>
+          </Link>
+
           <Link href='/overview' passHref>
             <IconButton>
               <FontAwesomeIcon className='text-[24px] text-neutral-900' icon={faBaby} />
@@ -104,6 +112,10 @@ export default function Footer() {
               <MenuItem onClick={() => setAnchorEl(null)}>Baby Coupons</MenuItem>
               <Link href='/notes' passHref>
                 <MenuItem onClick={() => setAnchorEl(null)}>Notes</MenuItem>
+              </Link>
+
+              <Link href='/changingRooms' passHref>
+                <MenuItem onClick={() => setAnchorEl(null)}>Changing Stations</MenuItem>
               </Link>
             </Menu>
           </div>
