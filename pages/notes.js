@@ -61,7 +61,13 @@ const Notes = () => {
         onChange={e => setNewNote(e.target.value)}
         autoFocus
       />
-      <button type='submit'>Submit</button>
+      <Button
+        className='min-w-[125px] max-w-[20%] text-stone-900 bg-emerald-50  hover:bg-cyan-200 mt-[4%] '
+        variant='contained'
+        type='submit'
+      >
+        Submit
+      </Button>
     </form>
   );
 

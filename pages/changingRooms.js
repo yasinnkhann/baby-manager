@@ -1,15 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { MyMapComponent } from '../components/ChangingRoom/GoogleMap.js';
 import MyLocationIcon from '@mui/icons-material/MyLocation';
 import axios from 'axios';
+import MyComponents from '../components/ChangingRoom/GoogleMap.js';
 
 export default function ChangingRooms(props) {
-  const [currentLocation, setCurrentLoc] = useState({ lat: 47.5, lng: -122.644 });
-  const [bathrooms, setBathrooms] = useState({});
   const API_KEY = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API;
-  const findBathrooms = () => {
-    axios.get();
-  };
+  const [currentLocation, setCurrentLoc] = useState({ lat: 47.5, lng: -112.644 });
+  const [bathrooms, setBathrooms] = useState({});
+
   const clickHandler = () => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
@@ -29,13 +28,14 @@ export default function ChangingRooms(props) {
   };
   return (
     <div style={{ marginTop: '100px' }}>
-      <form>
+      {/* <form>
         <input type='text' placeholder='search'></input>
         <input type='submit'></input>
-      </form>
+      </form> */}
       <MyLocationIcon onClick={clickHandler} />
       <button onClick={clickHandler}>Current Location</button>
-      <MyMapComponent isMarkerShown location={currentLocation} />
+      {/* <MyMapComponent isMarkerShown location={currentLocation} /> */}
+      <MyComponents center={currentLocation} zoom={10} />
     </div>
   );
 }
