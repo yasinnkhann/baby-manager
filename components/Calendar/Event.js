@@ -10,7 +10,10 @@ function Event(props) {
       <div className='event-left'>
         <div className='start-time'>{props.startTime}</div>
         {props.type === 'eat' ? (
-          <div className='duration text-xs text-slate-400'> 30m </div>
+          <div className='duration text-slate-400'>
+            {' '}
+            {getDuration(props.startTime, props.endTime)}{' '}
+          </div>
         ) : (
           <div className='duration text-slate-400'>
             {' '}

@@ -10,7 +10,7 @@ function WeeklyView(props) {
   // const [startDate, setSelectedDate] = useState(new Date());
   return (
     <DatePicker
-      className='mt-20'
+      className='mt-20 bg-[#CEF5F7] rounded-lg'
       selected={props.selectedDate}
       onChange={date => {
         props.setSelectedDate(date);
