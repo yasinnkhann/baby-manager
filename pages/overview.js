@@ -13,8 +13,6 @@ import { useRouter } from 'next/router';
 //connect to firestore database
 import { collection, addDoc, getDocs, doc } from '@firebase/firestore';
 
-// import Link from 'next/link';
-
 const babyCardInModule = {
   display: 'flex',
   flexDirection: 'row',
@@ -41,8 +39,8 @@ export default function Overview() {
   const [babyData, setBabyData] = useState([]);
 
   //authentication
-  const [user, loading, router] = useAuthState(auth);
-  // const router = useRouter();
+  const [user, loading] = useAuthState(auth);
+  const router = useRouter();
 
   //authentication
   useEffect(() => {
@@ -59,8 +57,8 @@ export default function Overview() {
       const babySnap = await getDocs(babyRef);
       const babyData = [];
       babySnap.forEach(baby => babyData.push({ id: baby.id, data: baby.data() }));
-      // babyData.sort((a, b) => (a.data.createdAt > b.data.createdAt ? -1 : 1));
-      console.log('Print from ', babyData);
+      babyData.sort((a, b) => (a.data.createdAt > b.data.createdAt ? -1 : 1));
+      console.log('Print from BabyData', babyData);
       setBabyData(babyData);
     } catch (err) {
       console.log(err);
@@ -77,7 +75,7 @@ export default function Overview() {
       key={baby.id}
       babyID={baby.id}
       babyName={baby.data.name}
-      // sleepStatus={data.sleep}
+      sleepStatus={baby.data.isAsleep}
       nextFeed={baby.data.nextFeed}
       viewType={view}
     />
