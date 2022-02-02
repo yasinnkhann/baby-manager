@@ -115,9 +115,9 @@ export default function Login() {
 
   return (
     <ThemeProvider theme={theme}>
-      <div className='h-screen  flex flex-col content-center font-["Rubik"]'>
+      <div className='h-screen flex flex-col content-center font-["Rubik"]'>
         <Head>
-          <title>Login</title>
+          <title>BabyManager | Login</title>
         </Head>
         <div className='w-full max-w-xs m-auto bg-indigo-100/75 rounded p-5'>
           <Button

@@ -4,7 +4,7 @@ import { auth, db } from '../firebaseConfig.js';
 import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
 import { useRouter } from 'next/router';
 import { doc, setDoc, serverTimestamp } from 'firebase/firestore';
-import { Select, MenuItem, TextField, Button } from '@mui/material';
+import { TextField, Button } from '@mui/material';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 export default function Register() {
@@ -107,7 +107,7 @@ export default function Register() {
   return (
     <ThemeProvider theme={theme}>
       <Head>
-        <title>Register</title>
+        <title>BabyManager | Register</title>
       </Head>
       <div className='h-screen my-[10%] flex flex-col px-5 font-["Rubik"]'>
         <h1 className='text-blue-500 text-center text-xl mb-10 mt-[10%] '>
