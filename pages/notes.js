@@ -77,14 +77,14 @@ const Notes = () => {
     ));
 
   return (
-    <div className='h-screen my-[10%]'>
+    <div className='h-screen my-[20%] sm:my-[10%]'>
       <Head>
         <title>BabyManager | Notes</title>
       </Head>
 
-      <section className="font-['Rubik'] h-full mx-auto w-3/4 mt-2 flex flex-col justify-start px-4">
+      <section className="font-['Rubik'] h-full mx-auto my-[5%] w-3/4 flex flex-col justify-start px-4">
         <div className='flex flex-row justify-between'>
-          <h1 className='font-medium self-center text-[26px] md:text-4xl lg:text-5xl'>
+          <h1 className='font-medium self-center text-[30px] md:text-4xl lg:text-5xl'>
             Notes
           </h1>
           <Button

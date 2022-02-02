@@ -1,9 +1,10 @@
 import { useState } from 'react';
 import { doc, deleteDoc, updateDoc } from '@firebase/firestore';
 import { db } from '../firebaseConfig';
-import { Paper, Button } from '@mui/material';
+import { Paper, Button, TextField } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
+import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 
 const NoteItem = ({ note, fetchNotes, user }) => {
   const [isEditing, setIsEditing] = useState(false);
@@ -36,37 +37,50 @@ const NoteItem = ({ note, fetchNotes, user }) => {
     <article>
       {isEditing ? (
         <form onSubmit={e => handleEdit(e)}>
-          <input
-            type='text'
-            value={editedNote}
-            onChange={e => setEditedNote(e.target.value)}
-            autoFocus
-          />
-          <Button
-            className='min-w-[125px] max-w-[20%] text-stone-900 bg-emerald-50  hover:bg-cyan-200 mt-[4%] '
-            variant='contained'
-            type='submit'
-          >
-            Submit
-          </Button>
+          <div className='flex flex-col justify-center'>
+            <TextField
+              className='mt-[2%]'
+              type='text'
+              value={editedNote}
+              onChange={e => setEditedNote(e.target.value)}
+              autoFocus
+              variant='outlined'
+            ></TextField>
+
+            <Button
+              className='min-w-[125px] max-w-[20%] text-stone-900 bg-cyan-200  hover:bg-pink-500 mt-[4%] self-center'
+              variant='contained'
+              type='submit'
+              endIcon={<KeyboardArrowUpIcon />}
+            >
+              Submit
+            </Button>
+          </div>
         </form>
       ) : (
-        // <p>{note.data.body}</p>
         <Paper elevation={6} className='p-3 content-center'>
           {note.data.body}
         </Paper>
       )}
-      {/* <button onClick={() => setIsEditing(!isEditing)}>Edit</button> */}
-      <Button
-        className='min-w-[100px] max-w-[20%] text-stone-900 bg-emerald-50  hover:bg-cyan-200 mt-[10px] '
-        onClick={() => setIsEditing(!isEditing)}
-        variant='contained'
-        startIcon={<EditIcon />}
-      >
-        Edit
-      </Button>
+      <div className='mb-[2%]'>
+        <Button
+          className='min-w-[100px] max-w-[20%] text-stone-900 bg-cyan-200  hover:bg-pink-500 my-[10px] mr-[10px]'
+          onClick={() => setIsEditing(!isEditing)}
+          variant='contained'
+          startIcon={<EditIcon />}
+        >
+          Edit
+        </Button>
 
-      <button onClick={handleDelete}>Delete</button>
+        <Button
+          className='min-w-[100px] max-w-[20%] text-stone-900 bg-cyan-200  hover:bg-pink-500 my-[10px] mr-[10px]'
+          onClick={handleDelete}
+          variant='contained'
+          startIcon={<DeleteForeverIcon />}
+        >
+          Delete
+        </Button>
+      </div>
     </article>
   );
 };
