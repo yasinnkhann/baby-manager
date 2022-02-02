@@ -40,6 +40,14 @@
     margin-top: -10px;
   }
 
+  .line {
+    width: 20em;
+    display: block;
+    height: 5px;
+    background-color: red;
+    margin: 60px auto 0;
+  }
+
   .divider {
     height: 50px;
     margin-top: 10px;

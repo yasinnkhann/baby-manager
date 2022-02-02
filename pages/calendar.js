@@ -114,6 +114,18 @@ function Calendar() {
 
         console.log('combinedEvents ', combinedEvents);
 
+        var sortedEvents = combinedEvents.sort((a, b) => {
+          return a.startTime.seconds - b.startTime.seconds;
+        });
+
+        // var sortedEventsNoPastEvents = sortedEvents.filter(event => {
+        //   var seconds = event.startTime.seconds;
+        //   var date = new Date(seconds * 1000);
+        //   return sameDay(date, selectedDate);
+        // });
+
+        // var earliestEvent = sortedEvents[0]
+
         var dayEvents = combinedEvents.filter(event => {
           var seconds = event.startTime.seconds;
           var date = new Date(seconds * 1000);
@@ -193,7 +205,7 @@ function Calendar() {
   return (
     <div className='my-[5%]'>
       <WeeklyView setSelectedDate={setSelectedDate} selectedDate={selectedDate} />
-      <div className='xsm:w-[300px] md:w-[600px]'>
+      <div className='xsm:w-[300px] md:w-[600px] mt-10'>
         <ListView sortedDayEvents={sortedDayEvents} selectedDate={selectedDate} />
       </div>
     </div>

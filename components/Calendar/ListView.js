@@ -1,5 +1,6 @@
 import react, { useState, useEffect } from 'react';
 import Event from './/Event.js';
+import Link from 'next/link';
 
 var events = [
   { babyName: 'Daniel', gender: 'male', type: 'sleep', startTime: '6AM', endTime: '12PM' },
@@ -64,6 +65,15 @@ function ListView(props) {
   //   return today;
   // }
 
+  const [line, setLine] = useState(['not set', null]);
+
+  function handleLine(index, status) {
+    console.log(index);
+    if (status === 'not set') {
+      setLine([set, index]);
+    }
+  }
+
   function convertToTime(seconds) {
     var seconds = seconds - 28800;
     var date = new Date(1970, 0, 1); // Epoch
@@ -102,20 +112,38 @@ function ListView(props) {
     //     );
     //   })}
     // </div>
-    <div className='list-view-container mr-10 mt-10 mb-10'>
-      {props.sortedDayEvents.map((event, i) => {
-        return (
-          <Event
-            key={i}
-            typeOfFood={event.foodType}
-            foodAmount={event.foodAmount}
-            type={event.type}
-            babyName={event.babyName}
-            startTime={convertToTime(event.startTime.seconds)}
-          />
-        );
-      })}
-    </div>
+    <>
+      {props.sortedDayEvents.length === 0 ? (
+        <div className='no-events'>
+          No events on schedule.{' '}
+          <Link className='text-[#00008B]' href='/addBaby'>
+            {' '}
+            "Add A Baby"
+          </Link>{' '}
+          or <Link href='/overview'> go to "Baby Overview" to add a feed/sleep event.</Link>
+        </div>
+      ) : (
+        <div className='list-view-container mr-10 mt-10 mb-10'>
+          {props.sortedDayEvents.map((event, i, array) => {
+            return (
+              <Event
+                key={i}
+                index={i}
+                line={line === i}
+                arrayLength={array.length}
+                foodMetric={event.foodMetric}
+                typeOfFood={event.foodType}
+                foodAmount={event.foodAmount}
+                type={event.type}
+                babyName={event.babyName}
+                eventStartTime={event.startTime.seconds}
+                startTime={convertToTime(event.startTime.seconds)}
+              />
+            );
+          })}
+        </div>
+      )}
+    </>
   );
 }
 export default ListView;
