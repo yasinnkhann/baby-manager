@@ -65,6 +65,7 @@ function ListView(props) {
   // }
 
   function convertToTime(seconds) {
+    var seconds = seconds - 28800;
     var date = new Date(1970, 0, 1); // Epoch
     date = new Date(
       (typeof date === 'string' ? new Date(date) : date).toLocaleString('en-US', {
@@ -81,6 +82,7 @@ function ListView(props) {
     minutes = minutes < 10 ? '0' + minutes : minutes;
     var strTime = hours + ':' + minutes + ' ' + ampm;
 
+    console.log(strTime);
     return strTime;
   }
 
