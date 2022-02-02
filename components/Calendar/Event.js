@@ -36,7 +36,7 @@ function Event(props) {
     <>
       <div className='rounded mb-2  box bg-[#EFF1FA] flex gap-x-20  justify-start border border-gray-600/75'>
         <div className='event-left'>
-          <div className='start-time'>{props.startTime}</div>
+          <div className='start-time text-[#A020F0]'>{props.startTime}</div>
           {props.type === 'eat' ? (
             <div className='duration text-slate-400'>
               {' '}
@@ -67,9 +67,9 @@ function Event(props) {
               <div className='food-calendar align-start'>
                 {props.type === 'eat' ? (
                   <div>
-                    <div className='food-type ml-6'>{props.typeOfFood}</div>
+                    <div className='food-type ml-6 text-[#AA336A]'>{props.typeOfFood}</div>
                     {props.foodMetric ? (
-                      <div className='food-amount ml-6'>{`${props.foodAmount} ${props.foodMetric}`}</div>
+                      <div className='food-amount ml-6 text-[#AA336A]'>{`${props.foodAmount} ${props.foodMetric}`}</div>
                     ) : (
                       <div className='food-amount ml-6'>{`${props.foodAmount}`}</div>
                     )}
