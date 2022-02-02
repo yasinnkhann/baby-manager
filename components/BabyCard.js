@@ -5,6 +5,8 @@ import CardMedia from '@mui/material/CardMedia';
 import CardContent from '@mui/material/CardContent';
 import Switch from '@mui/material/Switch';
 import FormControlLabel from '@mui/material/FormControlLabel';
+import Alert from '@mui/material/Alert';
+import Link from 'next/link';
 
 const MaterialUISwitch = styled(Switch)(({ theme }) => ({
   width: 62,
@@ -60,39 +62,55 @@ const icon = {
     'https://cdn0.iconfinder.com/data/icons/family-babies-kids/24/kid-infant-baby-child-children-family-512.png',
 };
 
-export default function BabyCard({ babyName }) {
-  const [babyIcon, setBabyIcon] = useState(icon.awake);
-
+export default function BabyCard({ babyID, babyName, sleepStatus, nextFeedTime, viewType }) {
+  const [babyIcon, setBabyIcon] = useState(icon.asleep);
   // need to retrive data from data base to check if the baby is awake
-  const [isBabyAsleep, setIsBabyAsleep] = useState(false);
+  const [isBabyAsleep, setIsBabyAsleep] = useState(sleepStatus);
 
-  const handleBabySleepChange = (e, val) => {
-    isBabyAsleep = val;
+  //need to work handle PUT for updating baby status AND Might need to use onlick
+  const handleBabySleepChange = (event, value) => {
+    console.log(value);
+    isBabyAsleep = value;
     isBabyAsleep ? setBabyIcon(icon.asleep) : setBabyIcon(icon.awake);
   };
 
   return (
     <React.Fragment>
-      <Card
-        style={{ margin: '5px', padding: '1px', boxShadow: '1px 2px #08F1CF' }}
-        sx={{ maxWidth: 120, maxHeight: 140 }}
-      >
-        <FormControlLabel
-          labelPlacement='top'
-          control={
-            <MaterialUISwitch onChange={handleBabySleepChange} sx={{ m: 1 }} defaultChecked />
-          }
-          label=''
-        />
-        <CardMedia
-          style={{ height: '50px', width: '50px', margin: 'auto' }}
-          component='img'
-          height=''
-          image={babyIcon}
-          alt='babyIcon'
-        />
-        <CardContent style={{ textAlign: 'center' }}> {babyName} </CardContent>
-      </Card>
+      <div style={{ display: 'flex', flexDirection: 'row' }}>
+        <Card
+          style={{ margin: '5px', padding: '1px', boxShadow: '1px 2px #B5B5B5' }}
+          sx={{ maxWidth: 120, maxHeight: 140 }}
+        >
+          <FormControlLabel
+            labelPlacement='top'
+            control={
+              <MaterialUISwitch
+                checked={sleepStatus}
+                onChange={handleBabySleepChange}
+                sx={{ m: 1 }}
+              />
+            }
+            label=''
+          />
+          <CardMedia
+            style={{ height: '50px', width: '50px', margin: 'auto' }}
+            component='img'
+            height=''
+            image={sleepStatus ? icon.asleep : icon.awake}
+            alt='babyIcon'
+          />
+          <CardContent style={{ textAlign: 'center' }}>
+            <Link href={`/baby/${babyID}`} key={babyID}>
+              <a>{babyName}</a>
+            </Link>
+          </CardContent>
+        </Card>
+        {viewType === 'list' ? (
+          <div style={{ alignSelf: 'center', height: '50px' }}>
+            <Alert severity='info'>Next Feed {nextFeedTime}</Alert>
+          </div>
+        ) : null}
+      </div>
     </React.Fragment>
   );
 }
