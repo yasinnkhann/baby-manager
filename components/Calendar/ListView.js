@@ -117,9 +117,8 @@ function ListView(props) {
         <div className='no-events'>
           No events on schedule.{' '}
           <Link className='text-[#00008B]' href='/addBaby'>
-            {' '}
             "Add A Baby"
-          </Link>{' '}
+          </Link>
           or <Link href='/overview'> go to "Baby Overview" to add a feed/sleep event.</Link>
         </div>
       ) : (

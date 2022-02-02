@@ -67,7 +67,8 @@ function Calendar() {
         // const feedingEvents = collection(db, "users", user.uid, "babies", doc.id);
         // const querySnapshot = await getDocs(feedingEvents);
         // console.log(babyName)
-        const babyName = doc.data().babyName;
+        const babyName = doc.data().name;
+        console.log(babyName);
 
         // GET ALL FEEDING EVENTS FOR CURRENT BABY AND PUSH TO feedingEventsArray
 
@@ -114,18 +115,6 @@ function Calendar() {
 
         console.log('combinedEvents ', combinedEvents);
 
-        var sortedEvents = combinedEvents.sort((a, b) => {
-          return a.startTime.seconds - b.startTime.seconds;
-        });
-
-        // var sortedEventsNoPastEvents = sortedEvents.filter(event => {
-        //   var seconds = event.startTime.seconds;
-        //   var date = new Date(seconds * 1000);
-        //   return sameDay(date, selectedDate);
-        // });
-
-        // var earliestEvent = sortedEvents[0]
-
         var dayEvents = combinedEvents.filter(event => {
           var seconds = event.startTime.seconds;
           var date = new Date(seconds * 1000);
@@ -150,8 +139,6 @@ function Calendar() {
       const querySnapshot = await getDocs(babies);
 
       querySnapshot.forEach(async doc => {
-        console.log(babyName);
-
         // const feedingEvents = collection(db, "users", user.uid, "babies", doc.id);
         // const querySnapshot = await getDocs(feedingEvents);
         const babyName = doc.data().babyName;
@@ -205,7 +192,7 @@ function Calendar() {
   return (
     <div className='my-[5%]'>
       <WeeklyView setSelectedDate={setSelectedDate} selectedDate={selectedDate} />
-      <div className='xsm:w-[300px] md:w-[600px] mt-10'>
+      <div className='xsm:w-[300px] md:w-[600px]'>
         <ListView sortedDayEvents={sortedDayEvents} selectedDate={selectedDate} />
       </div>
     </div>
