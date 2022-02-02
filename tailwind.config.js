@@ -12,6 +12,7 @@ module.exports = {
       },
       colors: {
         slider: '#0f172a',
+        login: '#ec4899',
       },
     },
     fontFamily: {

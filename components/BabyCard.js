@@ -5,8 +5,9 @@ import CardMedia from '@mui/material/CardMedia';
 import CardContent from '@mui/material/CardContent';
 import Switch from '@mui/material/Switch';
 import FormControlLabel from '@mui/material/FormControlLabel';
-import Alert from '@mui/material/Alert';
 import Link from 'next/link';
+
+import Button from '@mui/material/Button';
 
 const MaterialUISwitch = styled(Switch)(({ theme }) => ({
   width: 62,
@@ -62,7 +63,7 @@ const icon = {
     'https://cdn0.iconfinder.com/data/icons/family-babies-kids/24/kid-infant-baby-child-children-family-512.png',
 };
 
-export default function BabyCard({ babyID, babyName, sleepStatus, nextFeedTime, viewType }) {
+export default function BabyCard({ babyID, babyName, sleepStatus, nextFeed, viewType }) {
   const [babyIcon, setBabyIcon] = useState(icon.asleep);
   // need to retrive data from data base to check if the baby is awake
   const [isBabyAsleep, setIsBabyAsleep] = useState(sleepStatus);
@@ -76,9 +77,26 @@ export default function BabyCard({ babyID, babyName, sleepStatus, nextFeedTime, 
 
   return (
     <React.Fragment>
-      <div style={{ display: 'flex', flexDirection: 'row' }}>
+      <div
+        style={
+          viewType === 'list'
+            ? {
+                display: 'flex',
+                margin: '5px',
+                borderRadius: '10px',
+                padding: '1px',
+                boxShadow: '2px 5px #B5B5B5',
+              }
+            : null
+        }
+      >
         <Card
-          style={{ margin: '5px', padding: '1px', boxShadow: '1px 2px #B5B5B5' }}
+          style={{
+            margin: '5px',
+            padding: '1px',
+            borderRadius: '10px',
+            boxShadow: '1px 2px #B5B5B5',
+          }}
           sx={{ maxWidth: 120, maxHeight: 140 }}
         >
           <FormControlLabel
@@ -106,8 +124,26 @@ export default function BabyCard({ babyID, babyName, sleepStatus, nextFeedTime, 
           </CardContent>
         </Card>
         {viewType === 'list' ? (
-          <div style={{ alignSelf: 'center', height: '50px' }}>
-            <Alert severity='info'>Next Feed {nextFeedTime}</Alert>
+          <div style={{ alignSelf: 'center', height: '110px', margin: '10px' }}>
+            <div style={{ margin: '5px' }}>
+              <Button variant='contained'>Next Feed </Button>
+            </div>
+            <div>
+              <Button
+                style={{
+                  margin: '15px',
+                  background: 'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)',
+                  border: 0,
+                  borderRadius: 3,
+                  boxShadow: '0 3px 5px 2px rgba(255, 105, 135, .3)',
+                  color: 'white',
+                  height: 48,
+                  padding: '0 30px',
+                }}
+              >
+                {nextFeed === null ? 'N/A' : nextFeed}
+              </Button>
+            </div>
           </div>
         ) : null}
       </div>
