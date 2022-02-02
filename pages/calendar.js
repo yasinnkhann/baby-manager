@@ -6,6 +6,7 @@ import { collection, getDocs, doc } from 'firebase/firestore';
 import { auth } from '../firebaseConfig.js';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { query, where } from 'firebase/firestore';
+import Head from 'next/head';
 
 function Calendar() {
   const [selectedDate, setDate] = useState(new Date());
@@ -191,6 +192,9 @@ function Calendar() {
 
   return (
     <div className='my-[25%]'>
+      <Head>
+        <title>BabyManager | Calendar</title>
+      </Head>
       <WeeklyView setSelectedDate={setSelectedDate} selectedDate={selectedDate} />
       <div className='xsm:w-[300px] md:w-[600px]'>
         <ListView sortedDayEvents={sortedDayEvents} selectedDate={selectedDate} />
