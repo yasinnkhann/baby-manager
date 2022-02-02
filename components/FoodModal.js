@@ -12,6 +12,23 @@ import StaticTimePicker from '@mui/lab/StaticTimePicker';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import DatePicker from '@mui/lab/DatePicker';
 import Button from '@mui/material/Button';
+import { auth, db } from '../firebaseConfig.js';
+import {
+  collection,
+  query,
+  where,
+  getDocs,
+  doc,
+  setDoc,
+  getDoc,
+  orderBy,
+  limit,
+  addDoc,
+  updateDoc,
+} from 'firebase/firestore';
+import { getAuth } from 'firebase/auth';
+import router, { useRouter } from 'next/router';
+import { useAuthState } from 'react-firebase-hooks/auth';
 
 //work on styling for this, cuts off a little bit at the top when overflow is to big
 const popupStyle = {
@@ -32,7 +49,8 @@ const popupStyle = {
 //------------------Modal Window Section------------------//
 //--------------------------------------------------------//
 
-const FoodModal = () => {
+const FoodModal = ({ babyPath }) => {
+  const [user, loading, error] = useAuthState(auth);
   const [open, setOpen] = React.useState(false);
   const [food, setFood] = React.useState(['Formula', 'Milk', 'Mushy Peas']);
   const [foodValue, setFoodValue] = React.useState('');
@@ -57,7 +75,22 @@ const FoodModal = () => {
   //------------------------------------------//
   //----Scrape Data and prepare for post------//
   //------------------------------------------//
-  const submitFood = () => {};
+  const postNextFood = () => {
+    updateDoc(doc(db, 'users', user.uid, 'babies', babyPath), {
+      nextFeed: feedTime,
+    }).then(res => {
+      addDoc(collection(db, 'users', user.uid, 'babies', babyPath, 'feedingEvents'), {
+        foodAmount: foodAmount,
+        foodMetric: 'oz',
+        foodType: foodValue,
+        startTime: feedTime,
+      }).then(res2 => {
+        console.log('res2', res2);
+      });
+      console.log('res', res);
+    });
+    toClose();
+  };
   //------------------------------------------//
   //------------------------------------------//
   //------------------------------------------//
@@ -84,6 +117,16 @@ const FoodModal = () => {
   //   console.log('Time', feedTime);
   //   console.log('Date', feedDate);
   // }, [foodValue, foodAmount, feedTime, feedDate]);
+
+  useEffect(() => {
+    if (!user && !loading) {
+      router.push('/login');
+    } else if (user) {
+      // console.log('that');
+    }
+    // getLastFeedDatePretty();
+    // getLastNapDatePretty();
+  }, [user]);
 
   useEffect(() => {
     getPrettyDate();
@@ -162,6 +205,7 @@ const FoodModal = () => {
             </div>
             <div style={{ display: 'flex' }} className='flex-col'>
               <Button
+                onClick={postNextFood}
                 style={{ backgroundColor: 'lightgreen', width: '50%' }}
                 className='rounded-md border-2 border-emerald-400 place-self-center'
                 variant='contained'
