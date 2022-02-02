@@ -6,6 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import { faBaby } from '@fortawesome/free-solid-svg-icons';
+import BabyChangingStationIcon from '@mui/icons-material/BabyChangingStation';
 import { useState } from 'react';
 import { useRouter } from 'next/router';
 import { signOut } from 'firebase/auth';
@@ -110,8 +111,12 @@ export default function Navbar() {
               TransitionComponent={Fade}
             >
               <MenuItem onClick={() => setAnchorEl(null)}>Baby Coupons</MenuItem>
+
               <Link href='/notes' passHref>
                 <MenuItem onClick={() => setAnchorEl(null)}>Notes</MenuItem>
+              </Link>
+              <Link href='/changingRooms' passHref>
+                <MenuItem onClick={() => setAnchorEl(null)}>Changing Stations</MenuItem>
               </Link>
             </Menu>
           </div>

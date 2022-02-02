@@ -113,6 +113,10 @@ export default function Footer() {
               <Link href='/notes' passHref>
                 <MenuItem onClick={() => setAnchorEl(null)}>Notes</MenuItem>
               </Link>
+
+              <Link href='/changingRooms' passHref>
+                <MenuItem onClick={() => setAnchorEl(null)}>Changing Stations</MenuItem>
+              </Link>
             </Menu>
           </div>
         </div>
