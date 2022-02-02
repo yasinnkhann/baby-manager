@@ -159,7 +159,9 @@ const NapModal = () => {
                   <MobileTimePicker
                     label='Reminder Time'
                     value={reminderTime}
-                    onChange={time => setReminderTime(time)}
+                    onChange={time => {
+                      setReminderTime(time);
+                    }}
                     renderInput={params => <TextField {...params} />}
                   />
                 </LocalizationProvider>

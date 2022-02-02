@@ -12,6 +12,7 @@ import {
   limit,
 } from 'firebase/firestore';
 import NapModal from '../../components/NapModal.js';
+import React, { useState, useEffect } from 'react';
 
 export const getServerSidePaths = async () => {
   // const res = await fetch(`https://jsonplaceholder.typicode.com/users`);
@@ -96,7 +97,42 @@ export const getServerSideProps = async context => {
 //------------------Render to Page------------------------//
 //--------------------------------------------------------//
 const Baby = ({ baby }) => {
+  const [lastFeed, setLastFeed] = React.useState(null);
+  const [lastSleep, setLastSleep] = React.useState(null);
   let parsedBaby = JSON.parse(baby);
+
+  const getLastFeedDatePretty = () => {
+    const uglyDate = new Date(parsedBaby.lastFeed.startTime.seconds * 1000).toString();
+    const splitDate = uglyDate.split(' ');
+    const uglyTime = splitDate[4].split(':');
+    let prettyTime = null;
+    if (uglyTime[0] > 12) {
+      prettyTime = `${uglyTime[0] % 12}:${uglyTime[1]} pm`;
+    } else {
+      prettyTime = `${uglyTime[0]}:${uglyTime[1]} am`;
+    }
+    const prettyDate = `${splitDate[0]} ${splitDate[1]} ${splitDate[2]}, ${splitDate[3]}, ${prettyTime}`;
+    setLastFeed(prettyDate);
+  };
+
+  const getLastNapDatePretty = () => {
+    const uglyDate = new Date(parsedBaby.lastSleep.startTime.seconds * 1000).toString();
+    const splitDate = uglyDate.split(' ');
+    const uglyTime = splitDate[4].split(':');
+    let prettyTime = null;
+    if (uglyTime[0] > 12) {
+      prettyTime = `${uglyTime[0] % 12}:${uglyTime[1]} pm`;
+    } else {
+      prettyTime = `${uglyTime[0]}:${uglyTime[1]} am`;
+    }
+    const prettyDate = `${splitDate[0]} ${splitDate[1]} ${splitDate[2]}, ${splitDate[3]}, ${prettyTime}`;
+    setLastSleep(prettyDate);
+  };
+
+  useEffect(() => {
+    getLastFeedDatePretty();
+    getLastNapDatePretty();
+  });
   return (
     <>
       <div style={{ paddingTop: '80px' }}></div>
@@ -128,7 +164,7 @@ const Baby = ({ baby }) => {
               <b>Last Feed</b>
             </div>
             <div>
-              <b>{new Date(parsedBaby.lastFeed.startTime.seconds * 1000).toString()}</b>
+              <b>{lastFeed}</b>
             </div>
           </div>
           <div style={{ display: 'grid' }} className='grid-cols-2 text-center sb-buffer'>
@@ -144,7 +180,7 @@ const Baby = ({ baby }) => {
               <b>Last Nap</b>
             </div>
             <div>
-              <b>{new Date(parsedBaby.lastSleep.startTime.seconds * 1000).toString()}</b>
+              <b>{lastSleep}</b>
             </div>
           </div>
           <div style={{ display: 'grid' }} className='grid-cols-2 text-center sb-buffer'>
