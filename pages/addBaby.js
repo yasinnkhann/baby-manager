@@ -6,6 +6,7 @@ import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import DatePicker from '@mui/lab/DatePicker';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
+import Head from 'next/head';
 import {
   ToggleButtonGroup,
   ToggleButton,
@@ -59,6 +60,9 @@ export default function AddBaby() {
 
   return (
     <div className='h-screen mt-[25%]'>
+      <Head>
+        <title>BabyManager | Add A Baby</title>
+      </Head>
       <main className="content-start font-['Rubik'] h-full mx-auto w-3/4 mt-2 flex flex-col justify-start px-4">
         <h1 className='font-medium self-center text-[26px] md:text-4xl lg:text-5xl'>
           Add A Baby
