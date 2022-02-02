@@ -29,6 +29,7 @@ import {
 import { getAuth } from 'firebase/auth';
 import router, { useRouter } from 'next/router';
 import { useAuthState } from 'react-firebase-hooks/auth';
+import Head from 'next/head';
 
 //work on styling for this, cuts off a little bit at the top when overflow is to big
 const popupStyle = {
@@ -139,94 +140,99 @@ const FoodModal = ({ babyPath }) => {
   //----Render Component----------------------//
   //------------------------------------------//
   return (
-    <div>
-      <Button
-        onClick={toOpen}
-        style={{ width: '300px', backgroundColor: 'lightgreen' }}
-        className='rounded-md border-2 border-emerald-400'
-        variant='contained'
-      >
-        Add New Feed
-      </Button>
-      <Modal open={open} onClose={toClose}>
-        <Box sx={popupStyle} className='sm:w-5/5 md:w-3/5'>
-          <b>{date}</b>
-          <hr />
-          <div className='sb-buffer'></div>
-          <FormControl fullWidth noValidate>
-            <InputLabel id='foodLabel'>Type of Food</InputLabel>
-            <Select
-              onChange={e => setFoodValue(e.target.value)}
-              value={foodValue}
-              labelId='foodLabel'
-              id='foodFed'
-              label='Type of Food'
-            >
-              {food.map(food => {
-                return (
-                  <MenuItem key={food} value={food}>
-                    {food}
-                  </MenuItem>
-                );
-              })}
-            </Select>
-            <div className='sb-buffer'>
-              <label id='amountLabel'>
-                {foodAmount} oz. of {foodValue}
-              </label>
-            </div>
-            <Slider
-              className='py-8'
-              valueLabelDisplay='auto'
-              min={0}
-              max={16}
-              step={0.5}
-              onChange={e => setFoodAmount(e.target.value)}
-            ></Slider>
-            <LocalizationProvider dateAdapter={AdapterDateFns}>
-              <DatePicker
-                label='Date of Feeding'
-                value={feedDate}
-                onChange={newValue => {
-                  setFeedDate(newValue);
-                }}
-                renderInput={params => <TextField {...params} />}
-              />
-            </LocalizationProvider>
-            <div style={{ width: '300px' }} className='place-self-center'>
+    <>
+      <Head>
+        <title>Baby Manager</title>
+      </Head>
+      <div>
+        <Button
+          onClick={toOpen}
+          style={{ width: '300px', backgroundColor: 'lightgreen' }}
+          className='rounded-md border-2 border-emerald-400'
+          variant='contained'
+        >
+          Add New Feed
+        </Button>
+        <Modal open={open} onClose={toClose}>
+          <Box sx={popupStyle} className='sm:w-5/5 md:w-3/5'>
+            <b>{date}</b>
+            <hr />
+            <div className='sb-buffer'></div>
+            <FormControl fullWidth noValidate>
+              <InputLabel id='foodLabel'>Type of Food</InputLabel>
+              <Select
+                onChange={e => setFoodValue(e.target.value)}
+                value={foodValue}
+                labelId='foodLabel'
+                id='foodFed'
+                label='Type of Food'
+              >
+                {food.map(food => {
+                  return (
+                    <MenuItem key={food} value={food}>
+                      {food}
+                    </MenuItem>
+                  );
+                })}
+              </Select>
+              <div className='sb-buffer'>
+                <label id='amountLabel'>
+                  {foodAmount} oz. of {foodValue}
+                </label>
+              </div>
+              <Slider
+                className='py-8'
+                valueLabelDisplay='auto'
+                min={0}
+                max={16}
+                step={0.5}
+                onChange={e => setFoodAmount(e.target.value)}
+              ></Slider>
               <LocalizationProvider dateAdapter={AdapterDateFns}>
-                <StaticTimePicker
-                  value={feedTime}
-                  onChange={time => setFeedTime(time)}
+                <DatePicker
+                  label='Date of Feeding'
+                  value={feedDate}
+                  onChange={newValue => {
+                    setFeedDate(newValue);
+                  }}
                   renderInput={params => <TextField {...params} />}
                 />
               </LocalizationProvider>
-              <div className='sb-buffer'></div>
-            </div>
-            <div style={{ display: 'flex' }} className='flex-col'>
-              <Button
-                onClick={postNextFood}
-                style={{ backgroundColor: 'lightgreen', width: '50%' }}
-                className='rounded-md border-2 border-emerald-400 place-self-center'
-                variant='contained'
-                starticon='<Icon />'
-              >
-                Save
-              </Button>
-              <div className='sb-buffer'></div>
-              <Button
-                style={{ backgroundColor: 'lightgreen', width: '50%' }}
-                className='rounded-md border-2 border-emerald-400 place-self-center'
-                variant='contained'
-                onClick={toClose}
-              >
-                Cancel
-              </Button>
-            </div>
-          </FormControl>
-        </Box>
-      </Modal>
-    </div>
+              <div style={{ width: '300px' }} className='place-self-center'>
+                <LocalizationProvider dateAdapter={AdapterDateFns}>
+                  <StaticTimePicker
+                    value={feedTime}
+                    onChange={time => setFeedTime(time)}
+                    renderInput={params => <TextField {...params} />}
+                  />
+                </LocalizationProvider>
+                <div className='sb-buffer'></div>
+              </div>
+              <div style={{ display: 'flex' }} className='flex-col'>
+                <Button
+                  onClick={postNextFood}
+                  style={{ backgroundColor: 'lightgreen', width: '50%' }}
+                  className='rounded-md border-2 border-emerald-400 place-self-center'
+                  variant='contained'
+                  starticon='<Icon />'
+                >
+                  Save
+                </Button>
+                <div className='sb-buffer'></div>
+                <Button
+                  style={{ backgroundColor: 'lightgreen', width: '50%' }}
+                  className='rounded-md border-2 border-emerald-400 place-self-center'
+                  variant='contained'
+                  onClick={toClose}
+                >
+                  Cancel
+                </Button>
+              </div>
+            </FormControl>
+          </Box>
+        </Modal>
+      </div>
+    </>
   );
 };
 //--------------------------------------------------------//
