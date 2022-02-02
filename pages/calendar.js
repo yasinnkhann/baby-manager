@@ -191,7 +191,7 @@ function Calendar() {
   };
 
   return (
-    <div>
+    <div className='my-[5%]'>
       <WeeklyView setSelectedDate={setSelectedDate} selectedDate={selectedDate} />
       <div className='xsm:w-[300px] md:w-[600px]'>
         <ListView sortedDayEvents={sortedDayEvents} selectedDate={selectedDate} />
