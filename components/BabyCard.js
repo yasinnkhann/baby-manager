@@ -62,7 +62,7 @@ const icon = {
     'https://cdn0.iconfinder.com/data/icons/family-babies-kids/24/kid-infant-baby-child-children-family-512.png',
 };
 
-export default function BabyCard({ babyID, babyName, sleepStatus, nextFeedTime, viewType }) {
+export default function BabyCard({ babyID, babyName, sleepStatus, nextFeed, viewType }) {
   const [babyIcon, setBabyIcon] = useState(icon.asleep);
   // need to retrive data from data base to check if the baby is awake
   const [isBabyAsleep, setIsBabyAsleep] = useState(sleepStatus);
@@ -107,7 +107,7 @@ export default function BabyCard({ babyID, babyName, sleepStatus, nextFeedTime, 
         </Card>
         {viewType === 'list' ? (
           <div style={{ alignSelf: 'center', height: '50px' }}>
-            <Alert severity='info'>Next Feed {nextFeedTime}</Alert>
+            <Alert severity='info'>Next Feed {nextFeed}</Alert>
           </div>
         ) : null}
       </div>

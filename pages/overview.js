@@ -13,66 +13,7 @@ import { useRouter } from 'next/router';
 //connect to firestore database
 import { collection, addDoc, getDocs, doc } from '@firebase/firestore';
 
-import Link from 'next/link';
-// import axios from 'axios';
-
-// const baby = {
-//   data: [{
-//     id: 1,
-//     babyName: "Ryne",
-//     sleep: true,
-//     nextFeedTime: '12:30pm'
-//     },
-//     {
-//     id: 2,
-//     babyName: "Alissa",
-//     sleep: false,
-//     nextFeedTime: '13:30pm'
-//     },
-//     {
-//     id: 3,
-//     babyName: "Jake",
-//     sleep: true,
-//     nextFeedTime: '16:34pm'
-//     },
-//     {
-//     id: 4,
-//     babyName: "Hatha",
-//     sleep: false,
-//     nextFeedTime: '13:30pm'
-//     },
-//     {
-//     id: 5,
-//     babyName: "Ryan",
-//     sleep: true,
-//     nextFeedTime: '15:30pm'
-//     },
-//     {
-//     id: 6,
-//     babyName: "Yasin",
-//     sleep: true,
-//     nextFeedTime: '10:30pm'
-//     },
-//     {
-//     id: 7,
-//     babyName: "Edward",
-//     sleep: false,
-//     nextFeedTime: '11:30pm'
-//     },
-//     {
-//     id: 8,
-//     babyName: "Daniel",
-//     sleep: true,
-//     nextFeedTime: '13:30pm'
-//     },
-//     {
-//     id: 9,
-//     babyName: "Derek",
-//     sleep: false,
-//     nextFeedTime: '13:30pm'
-//     },
-//   ],
-// };
+// import Link from 'next/link';
 
 const babyCardInModule = {
   display: 'flex',
@@ -118,7 +59,7 @@ export default function Overview() {
       const babySnap = await getDocs(babyRef);
       const babyData = [];
       babySnap.forEach(baby => babyData.push({ id: baby.id, data: baby.data() }));
-      // notesData.sort((a, b) => (a.data.createdAt > b.data.createdAt ? -1 : 1));
+      // babyData.sort((a, b) => (a.data.createdAt > b.data.createdAt ? -1 : 1));
       console.log('Print from ', babyData);
       setBabyData(babyData);
     } catch (err) {
@@ -131,13 +72,13 @@ export default function Overview() {
     setView(nextView);
   };
 
-  const mappedBabyCard = babyData.map(data => (
+  const mappedBabyCard = babyData.map(baby => (
     <BabyCard
-      key={data.id}
-      babyID={data.id}
-      babyName={data.data.name}
+      key={baby.id}
+      babyID={baby.id}
+      babyName={baby.data.name}
       // sleepStatus={data.sleep}
-      // nextFeedTime={data.nextFeedTime}
+      nextFeed={baby.data.nextFeed}
       viewType={view}
     />
   ));
