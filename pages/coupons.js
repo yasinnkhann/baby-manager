@@ -67,7 +67,7 @@ const Coupons = () => {
   };
 
   return (
-    <>
+    <div className='h-screen my-[20%] sm:my-[10%]'>
       <Head>
         <title>Baby Manager | Coupons</title>
       </Head>
@@ -75,7 +75,7 @@ const Coupons = () => {
       <section>
         <p>Coupons</p>
       </section>
-    </>
+    </div>
   );
 };
 

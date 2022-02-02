@@ -21,7 +21,7 @@ export default function User() {
   };
 
   return (
-    <section className='h-screen my-[10%]'>
+    <section className='h-screen  flex flex-col justify-center mx-[2%]'>
       <div>
         <div>First Name</div>
         <div>Last Name</div>
