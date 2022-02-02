@@ -1,13 +1,17 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import BabyCard from '../components/BabyCard';
 import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import ViewListIcon from '@mui/icons-material/ViewList';
 import ViewModuleIcon from '@mui/icons-material/ViewModule';
 
-const baby = {
-  name: ['Ryne', 'Alisa', 'Jake', ' Ryan', 'Yasin', 'Edward', 'Hatha', 'Daniel', 'Derek'],
-};
+//authentication
+import { useAuthState } from 'react-firebase-hooks/auth';
+import { auth, db } from '../firebaseConfig';
+import { useRouter } from 'next/router';
+
+//connect to firestore database
+import { collection, addDoc, getDocs, doc } from '@firebase/firestore';
 
 const babyCardInModule = {
   display: 'flex',
@@ -16,6 +20,7 @@ const babyCardInModule = {
   alignItems: 'center',
   justifyContent: 'center',
   marginTop: '1px',
+  marginBottom: '80px',
 };
 
 const babyCardInList = {
@@ -31,11 +36,50 @@ const babyCardInList = {
 export default function Overview() {
   const [view, setView] = useState('module');
   const [isViewChange, setViewChange] = useState(babyCardInModule);
+  const [babyData, setBabyData] = useState([]);
+
+  //authentication
+  const [user, loading] = useAuthState(auth);
+  const router = useRouter();
+
+  //authentication
+  useEffect(() => {
+    if (!user && !loading) {
+      router.push('/login');
+    } else if (user) {
+      retrieveSleepData();
+    }
+  }, [user, loading, router]);
+
+  const retrieveSleepData = async () => {
+    try {
+      const babyRef = collection(db, 'users', user.uid, 'babies');
+      const babySnap = await getDocs(babyRef);
+      const babyData = [];
+      babySnap.forEach(baby => babyData.push({ id: baby.id, data: baby.data() }));
+      babyData.sort((a, b) => (a.data.createdAt > b.data.createdAt ? -1 : 1));
+      console.log('Print from BabyData', babyData);
+      setBabyData(babyData);
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   const handleOrientationChange = (event, nextView) => {
     nextView === 'module' ? setViewChange(babyCardInModule) : setViewChange(babyCardInList);
     setView(nextView);
   };
+
+  const mappedBabyCard = babyData.map(baby => (
+    <BabyCard
+      key={baby.id}
+      babyID={baby.id}
+      babyName={baby.data.name}
+      sleepStatus={baby.data.isAsleep}
+      nextFeed={baby.data.nextFeed}
+      viewType={view}
+    />
+  ));
 
   return (
     <React.Fragment>
@@ -62,19 +106,7 @@ export default function Overview() {
           </ToggleButton>
         </ToggleButtonGroup>
       </div>
-
-      <div style={isViewChange}>
-        <BabyCard babyName={baby.name[0]} />
-        <div>{view === 'list' ? <div>Next Feed Time: 12:00pm</div> : null}</div>
-        <BabyCard babyName={baby.name[1]} />
-        <BabyCard babyName={baby.name[2]} />
-        <BabyCard babyName={baby.name[3]} />
-        <BabyCard babyName={baby.name[4]} />
-        <BabyCard babyName={baby.name[5]} />
-        <BabyCard babyName={baby.name[6]} />
-        <BabyCard babyName={baby.name[7]} />
-        <BabyCard babyName={baby.name[8]} />
-      </div>
+      <div style={isViewChange}>{mappedBabyCard}</div>
     </React.Fragment>
   );
 }
