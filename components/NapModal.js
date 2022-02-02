@@ -88,11 +88,17 @@ const NapModal = ({ babyPath }) => {
   //------------------------------------------//
   const postNextNap = () => {
     console.log(napDate);
-    setDoc(collection(db, 'users', user.uid, 'babies', babyPath, 'sleepingEvents'), {
-      startTime: napDate,
+    updateDoc(doc(db, 'users', user.uid, 'babies', babyPath), {
+      nextNap: napDate,
     }).then(res => {
-      console.log(res);
+      addDoc(collection(db, 'users', user.uid, 'babies', babyPath, 'sleepingEvents'), {
+        startTime: napDate,
+      }).then(res2 => {
+        console.log('res2', res2);
+      });
+      console.log('res', res);
     });
+    toClose();
   };
 
   //------------------------------------------//
@@ -127,7 +133,7 @@ const NapModal = ({ babyPath }) => {
     if (!user && !loading) {
       router.push('/login');
     } else if (user) {
-      console.log('that');
+      // console.log('that');
     }
     // getLastFeedDatePretty();
     // getLastNapDatePretty();
