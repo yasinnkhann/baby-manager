@@ -18,13 +18,14 @@ import Button from '@mui/material/Button';
 import Icon from '@mui/material/Icon';
 import NotificationsOffIcon from '@mui/icons-material/NotificationsOff';
 import NotificationsActiveIcon from '@mui/icons-material/NotificationsActive';
-import { db } from '../firebaseConfig.js';
+import { auth, db } from '../firebaseConfig.js';
 import {
   collection,
   query,
   where,
   getDocs,
   doc,
+  setDoc,
   getDoc,
   orderBy,
   limit,
@@ -32,6 +33,8 @@ import {
   updateDoc,
 } from 'firebase/firestore';
 import { getAuth } from 'firebase/auth';
+import router, { useRouter } from 'next/router';
+import { useAuthState } from 'react-firebase-hooks/auth';
 
 const popupStyle = {
   position: 'absolute',
@@ -51,7 +54,8 @@ const popupStyle = {
 //------------------Modal Window Section------------------//
 //--------------------------------------------------------//
 
-const NapModal = () => {
+const NapModal = ({ babyPath }) => {
+  const [user, loading, error] = useAuthState(auth);
   const [open, setOpen] = React.useState(false);
   const [food, setFood] = React.useState(['Formula', 'Milk', 'Mushy Peas']);
   const [foodValue, setFoodValue] = React.useState('');
@@ -84,19 +88,13 @@ const NapModal = () => {
   //------------------------------------------//
   const postNextNap = () => {
     console.log(napDate);
-    addDoc(collection(db, 'baby'), {
-      babyName: 'Zebra3',
-      scheduleSleep: napDate,
+    setDoc(collection(db, 'users', user.uid, 'babies', babyPath, 'sleepingEvents'), {
+      startTime: napDate,
     }).then(res => {
       console.log(res);
     });
   };
 
-  const getCurrentUser = () => {
-    const auth = getAuth();
-    const user = auth.currentUser;
-    console.log(user);
-  };
   //------------------------------------------//
   //------------------------------------------//
   //------------------------------------------//
@@ -124,6 +122,16 @@ const NapModal = () => {
   // console.log('Date', napDate);
   // console.log('ReminderTime', reminderTime);
   // }, [foodValue, foodAmount, feedTime, feedDate]);
+
+  useEffect(() => {
+    if (!user && !loading) {
+      router.push('/login');
+    } else if (user) {
+      console.log('that');
+    }
+    // getLastFeedDatePretty();
+    // getLastNapDatePretty();
+  }, [user]);
 
   useEffect(() => {
     getPrettyDate();
