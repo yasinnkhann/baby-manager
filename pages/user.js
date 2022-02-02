@@ -66,7 +66,7 @@ export default function User() {
 
   return user ? (
     <article>
-      <section className='h-screen my-[10%]'>
+      <section className='h-screen  flex flex-col justify-center mx-[2%]'>
         <div>
           <div>Name: {user.displayName}</div>
           <div>Email: {user.email}</div>

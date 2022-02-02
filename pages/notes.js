@@ -6,7 +6,8 @@ import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth, db } from '../firebaseConfig';
 import { useRouter } from 'next/router';
 import { collection, addDoc, getDocs, doc } from '@firebase/firestore';
-import { Paper, Button } from '@mui/material';
+import { Paper, Button, TextField } from '@mui/material';
+import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 
 const Notes = () => {
   const [notes, setNotes] = useState(null);
@@ -55,19 +56,25 @@ const Notes = () => {
 
   const renderAddNote = () => (
     <form onSubmit={e => handleNewNote(e)}>
-      <input
-        type='text'
-        value={newNote}
-        onChange={e => setNewNote(e.target.value)}
-        autoFocus
-      />
-      <Button
-        className='min-w-[125px] max-w-[20%] text-stone-900 bg-emerald-50  hover:bg-cyan-200 mt-[4%] '
-        variant='contained'
-        type='submit'
-      >
-        Submit
-      </Button>
+      <div className='flex flex-col justify-center'>
+        <TextField
+          className='mt-[2%]'
+          type='text'
+          value={newNote}
+          onChange={e => setNewNote(e.target.value)}
+          autoFocus
+          variant='outlined'
+        ></TextField>
+
+        <Button
+          className='min-w-[125px] max-w-[20%] text-stone-900 bg-cyan-200  hover:bg-pink-500 mb-[5%] mt-[2%]'
+          variant='contained'
+          type='submit'
+          endIcon={<AddCircleOutlineIcon />}
+        >
+          Submit
+        </Button>
+      </div>
     </form>
   );
 
@@ -82,7 +89,7 @@ const Notes = () => {
         <title>BabyManager | Notes</title>
       </Head>
 
-      <section className="font-['Rubik'] h-full mx-auto my-[5%] w-3/4 flex flex-col justify-start px-4">
+      <section className="font-['Rubik'] h-full mx-auto my-[5%] xs:w-5/6 sm:w-3/4 flex flex-col justify-start px-4">
         <div className='flex flex-row justify-between'>
           <h1 className='font-medium self-center text-[30px] md:text-4xl lg:text-5xl'>
             Notes
@@ -97,7 +104,7 @@ const Notes = () => {
         </div>
 
         {isAddingNote ? renderAddNote() : null}
-        <div className='flex flex-col'>{renderNotes()}</div>
+        <div className='flex flex-col overflow-auto'>{renderNotes()}</div>
       </section>
     </div>
   );
