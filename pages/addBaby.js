@@ -51,6 +51,7 @@ export default function AddBaby() {
         isAsleep: false,
         nextFeed: null,
         nextNap: null,
+        babyFoodsArray: ['Milk', 'Formula', 'Corn'],
       });
       router.push('/overview');
     } catch (err) {

@@ -11,6 +11,7 @@ import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import StaticTimePicker from '@mui/lab/StaticTimePicker';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import DatePicker from '@mui/lab/DatePicker';
+import DateTimePicker from '@mui/lab/DateTimePicker';
 import Button from '@mui/material/Button';
 import { auth, db } from '../firebaseConfig.js';
 import {
@@ -50,7 +51,7 @@ const popupStyle = {
 //------------------Modal Window Section------------------//
 //--------------------------------------------------------//
 
-const FoodModal = ({ babyPath }) => {
+const FoodModal = ({ babyPath, babyGet, foodArray, setFoodArray }) => {
   const [user, loading, error] = useAuthState(auth);
   const [open, setOpen] = React.useState(false);
   const [food, setFood] = React.useState(['Formula', 'Milk', 'Mushy Peas']);
@@ -91,6 +92,7 @@ const FoodModal = ({ babyPath }) => {
       console.log('res', res);
     });
     toClose();
+    babyGet();
   };
   //------------------------------------------//
   //------------------------------------------//
@@ -155,6 +157,7 @@ const FoodModal = ({ babyPath }) => {
         </Button>
         <Modal open={open} onClose={toClose}>
           <Box sx={popupStyle} className='sm:w-5/5 md:w-3/5'>
+            <div style={{ width: '300px' }}></div>
             <b>{date}</b>
             <hr />
             <div className='sb-buffer'></div>
@@ -167,7 +170,7 @@ const FoodModal = ({ babyPath }) => {
                 id='foodFed'
                 label='Type of Food'
               >
-                {food.map(food => {
+                {foodArray.map(food => {
                   return (
                     <MenuItem key={food} value={food}>
                       {food}
@@ -188,7 +191,7 @@ const FoodModal = ({ babyPath }) => {
                 step={0.5}
                 onChange={e => setFoodAmount(e.target.value)}
               ></Slider>
-              <LocalizationProvider dateAdapter={AdapterDateFns}>
+              {/* <LocalizationProvider dateAdapter={AdapterDateFns}>
                 <DatePicker
                   label='Date of Feeding'
                   value={feedDate}
@@ -196,13 +199,21 @@ const FoodModal = ({ babyPath }) => {
                     setFeedDate(newValue);
                   }}
                   renderInput={params => <TextField {...params} />}
-                />
-              </LocalizationProvider>
-              <div style={{ width: '300px' }} className='place-self-center'>
+                /> */}
+              {/* </LocalizationProvider> */}
+              <div className='place-self-center'>
                 <LocalizationProvider dateAdapter={AdapterDateFns}>
-                  <StaticTimePicker
+                  {/* <StaticTimePicker
                     value={feedTime}
                     onChange={time => setFeedTime(time)}
+                    renderInput={params => <TextField {...params} />}
+                  /> */}
+                  <DateTimePicker
+                    label='Date of Feed'
+                    value={feedTime}
+                    onChange={newValue => {
+                      setFeedTime(newValue);
+                    }}
                     renderInput={params => <TextField {...params} />}
                   />
                 </LocalizationProvider>

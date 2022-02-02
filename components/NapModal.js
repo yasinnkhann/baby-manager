@@ -54,7 +54,7 @@ const popupStyle = {
 //------------------Modal Window Section------------------//
 //--------------------------------------------------------//
 
-const NapModal = ({ babyPath }) => {
+const NapModal = ({ babyPath, babyGet, babyName }) => {
   const [user, loading, error] = useAuthState(auth);
   const [open, setOpen] = React.useState(false);
   const [food, setFood] = React.useState(['Formula', 'Milk', 'Mushy Peas']);
@@ -69,6 +69,7 @@ const NapModal = ({ babyPath }) => {
   const [reminderState, setReminderState] = React.useState(false);
   const [displayReminderTime, setDisplayReminderTime] = React.useState(true);
   const [reminderTime, setReminderTime] = React.useState(new Date());
+  const [smsNumber, setSmsNumber] = React.useState(null);
 
   //------------------------------------------//
   //----To handle open and close Modal--------//
@@ -99,6 +100,30 @@ const NapModal = ({ babyPath }) => {
       console.log('res', res);
     });
     toClose();
+    babyGet();
+    sendSMS();
+  };
+
+  const sendSMS = async () => {
+    let notificationBody = {
+      to: smsNumber, //this can be number or string
+      body: `This is a nap reminder for ${babyName} scheduled for ${napDate.toLocaleString(
+        'en-US'
+      )}`,
+      date: reminderTime,
+    };
+
+    console.log(notificationBody);
+    const res = await fetch('/api/sendMessage', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(notificationBody),
+    });
+
+    const data = await res.json();
+    console.log(data);
   };
 
   //------------------------------------------//
@@ -124,6 +149,7 @@ const NapModal = ({ babyPath }) => {
   // useEffect(() => {
   //   console.log('Type of Food', foodValue);
   //   console.log('How much Food', foodAmount);
+  // console.log('SMS', smsNumber);
   // console.log('Time', napTime);
   // console.log('Date', napDate);
   // console.log('ReminderTime', reminderTime);
@@ -219,7 +245,12 @@ const NapModal = ({ babyPath }) => {
                 <sub>Please Input Phone Number</sub>
                 <br />
                 <br />
-                <TextField id='telNumber' label='Mobile Number' variant='outlined' />
+                <TextField
+                  id='telNumber'
+                  label='Mobile Number'
+                  variant='outlined'
+                  onChange={e => setSmsNumber(e.target.value)}
+                />
               </div>
             </div>
           </FormControl>
