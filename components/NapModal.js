@@ -18,6 +18,23 @@ import Button from '@mui/material/Button';
 import Icon from '@mui/material/Icon';
 import NotificationsOffIcon from '@mui/icons-material/NotificationsOff';
 import NotificationsActiveIcon from '@mui/icons-material/NotificationsActive';
+import { auth, db } from '../firebaseConfig.js';
+import {
+  collection,
+  query,
+  where,
+  getDocs,
+  doc,
+  setDoc,
+  getDoc,
+  orderBy,
+  limit,
+  addDoc,
+  updateDoc,
+} from 'firebase/firestore';
+import { getAuth } from 'firebase/auth';
+import router, { useRouter } from 'next/router';
+import { useAuthState } from 'react-firebase-hooks/auth';
 
 const popupStyle = {
   position: 'absolute',
@@ -37,14 +54,15 @@ const popupStyle = {
 //------------------Modal Window Section------------------//
 //--------------------------------------------------------//
 
-const NapModal = () => {
+const NapModal = ({ babyPath }) => {
+  const [user, loading, error] = useAuthState(auth);
   const [open, setOpen] = React.useState(false);
   const [food, setFood] = React.useState(['Formula', 'Milk', 'Mushy Peas']);
   const [foodValue, setFoodValue] = React.useState('');
   const [foodAmount, setFoodAmount] = React.useState(0);
   const [date, setDate] = React.useState(null);
-  const [napTime, setNapTime] = React.useState(new Date());
-  const [napDate, setNapDate] = React.useState(new Date().toString());
+  const [napTime, setNapTime] = React.useState(null);
+  const [napDate, setNapDate] = React.useState(null);
   const [reminderIcon, setReminderIcon] = React.useState(
     <NotificationsOffIcon color='disabled' />
   );
@@ -61,6 +79,28 @@ const NapModal = () => {
   const toClose = () => {
     setOpen(false);
   };
+  //------------------------------------------//
+  //------------------------------------------//
+  //------------------------------------------//
+
+  //------------------------------------------//
+  //----Post Request--------------------------//
+  //------------------------------------------//
+  const postNextNap = () => {
+    console.log(napDate);
+    updateDoc(doc(db, 'users', user.uid, 'babies', babyPath), {
+      nextNap: napDate,
+    }).then(res => {
+      addDoc(collection(db, 'users', user.uid, 'babies', babyPath, 'sleepingEvents'), {
+        startTime: napDate,
+      }).then(res2 => {
+        console.log('res2', res2);
+      });
+      console.log('res', res);
+    });
+    toClose();
+  };
+
   //------------------------------------------//
   //------------------------------------------//
   //------------------------------------------//
@@ -88,6 +128,16 @@ const NapModal = () => {
   // console.log('Date', napDate);
   // console.log('ReminderTime', reminderTime);
   // }, [foodValue, foodAmount, feedTime, feedDate]);
+
+  useEffect(() => {
+    if (!user && !loading) {
+      router.push('/login');
+    } else if (user) {
+      // console.log('that');
+    }
+    // getLastFeedDatePretty();
+    // getLastNapDatePretty();
+  }, [user]);
 
   useEffect(() => {
     getPrettyDate();
@@ -176,6 +226,7 @@ const NapModal = () => {
           <div className='sb-buffer'></div>
           <div style={{ display: 'flex' }} className='flex-col'>
             <Button
+              onClick={postNextNap}
               style={{ backgroundColor: 'lightgreen', width: '50%' }}
               className='rounded-md border-2 border-emerald-400 place-self-center'
               variant='contained'
