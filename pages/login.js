@@ -18,6 +18,11 @@ export default function Login() {
     password: '',
   });
   const router = useRouter();
+  const { query } = useRouter();
+  const inviteToken = query;
+  if (inviteToken) {
+    console.log('login form inviteToken:', inviteToken);
+  }
 
   const handleChange = ({ target: { name, value } }) => {
     setLoginInfo({ ...loginInfo, hasChanged: true, [name]: value });
@@ -44,7 +49,14 @@ export default function Login() {
         { merge: true }
       );
       console.log('USER @ LOGIN: ', user);
-      router.push('/overview');
+      if (inviteToken) {
+        router.push({
+          pathname: '/overview',
+          query: inviteToken,
+        });
+      } else {
+        router.push('/overview');
+      }
     } catch (err) {
       console.error(err);
     }
@@ -59,7 +71,14 @@ export default function Login() {
         loginInfo.password
       );
       console.log('LOGGED IN @: ', userCredential);
-      router.push('/overview');
+      if (inviteToken) {
+        router.push({
+          pathname: '/overview',
+          query: inviteToken,
+        });
+      } else {
+        router.push('/overview');
+      }
     } catch (err) {
       console.error(err);
       alert(err.message);
@@ -68,6 +87,20 @@ export default function Login() {
       email: '',
       password: '',
     });
+  };
+
+  const registerButton = () => {
+    if (inviteToken) {
+      router.push(
+        {
+          pathname: '/register',
+          query: inviteToken,
+        },
+        '/'
+      );
+    } else {
+      router.push('/register');
+    }
   };
 
   let theme = createTheme({
@@ -156,11 +189,12 @@ export default function Login() {
           </fieldset>
 
           <div className='justify-self-center text-center'>
-            <Link href='/register'>
+            <button onClick={registerButton}>Don&apos;t have an account? Sign up here!</button>
+            {/* <Link href='/register'>
               <a className='text-blue-700 hover:text-pink-700 text-sm '>
                 Don&apos;t have an account? Sign up here!
               </a>
-            </Link>
+            </Link> */}
           </div>
         </div>
       </div>
