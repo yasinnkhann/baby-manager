@@ -21,7 +21,7 @@
   .list-view-container {
     margin-left: 45px;
     height: 300px;
-    overflow: scroll;
+    /* overflow: scroll; */
   }
 
   .baby-name {
