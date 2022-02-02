@@ -17,6 +17,9 @@ export default function Register() {
     confirmPassword: '',
   });
   const router = useRouter();
+  const { query } = useRouter();
+  const inviteToken = query;
+  console.log('register form inviteToken:', inviteToken);
 
   const handleChange = ({ target: { name, value } }) => {
     setRegisterInfo({ ...registerInfo, hasChanged: true, [name]: value });
@@ -48,7 +51,17 @@ export default function Register() {
         user.phoneNumber = registerInfo.phoneNumber;
 
         console.log('REGISTERED AS: ', user);
-        router.push('/');
+        if (inviteToken) {
+          router.push(
+            {
+              pathname: '/',
+              query: inviteToken,
+            },
+            '/'
+          );
+        } else {
+          router.push('/');
+        }
         setRegisterInfo({
           firstName: '',
           lastName: '',
@@ -63,6 +76,20 @@ export default function Register() {
       }
     } else {
       alert('passwords do not match');
+    }
+  };
+
+  const loginButton = () => {
+    if (inviteToken) {
+      router.push(
+        {
+          pathname: '/login',
+          query: inviteToken,
+        },
+        '/'
+      );
+    } else {
+      router.push('/login');
     }
   };
 
@@ -246,11 +273,14 @@ export default function Register() {
         </form>
 
         <div className='justify-self-center text-center'>
-          <Link href='/login'>
+          <button onClick={loginButton} className='text-blue-500 hover:text-pink-700 text-sm '>
+            Have an account? Login here!
+          </button>
+          {/* <Link href='/login'>
             <a className='text-blue-500 hover:text-pink-700 text-sm '>
               Have an account? Login here!
             </a>
-          </Link>
+          </Link> */}
         </div>
       </div>
     </ThemeProvider>
