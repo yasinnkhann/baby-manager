@@ -52,30 +52,64 @@ var events = [
 
 // })
 
-function ListView() {
-  const [date, setDate] = useState(currentDate());
+function ListView(props) {
+  // const [date, setDate] = useState(currentDate());
 
-  function currentDate() {
-    var today = new Date();
-    var dd = String(today.getDate()).padStart(2, '0');
-    var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
-    var yyyy = today.getFullYear();
-    today = mm + '/' + dd + '/' + yyyy;
-    return today;
+  // function currentDate() {
+  //   var today = new Date();
+  //   var dd = String(today.getDate()).padStart(2, '0');
+  //   var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+  //   var yyyy = today.getFullYear();
+  //   today = mm + '/' + dd + '/' + yyyy;
+  //   return today;
+  // }
+
+  function convertToTime(seconds) {
+    var date = new Date(1970, 0, 1); // Epoch
+    date = new Date(
+      (typeof date === 'string' ? new Date(date) : date).toLocaleString('en-US', {
+        timeZone: 'America/Los_Angeles',
+      })
+    );
+    date.setSeconds(seconds);
+
+    var hours = date.getHours();
+    var minutes = date.getMinutes();
+    var ampm = hours >= 12 ? 'pm' : 'am';
+    hours = hours % 12;
+    hours = hours ? hours : 12; // the hour '0' should be '12'
+    minutes = minutes < 10 ? '0' + minutes : minutes;
+    var strTime = hours + ':' + minutes + ' ' + ampm;
+
+    return strTime;
   }
 
   return (
-    <div className='list-view-container mt-20 mb-10'>
-      {events.map((event, i) => {
+    //   <div className='list-view-container mt-20 mb-10'>
+    //     {console.log(props.sortedDayEvents)}
+    //   {props.sortedDayEvents.map((event, i) => {
+    //     return (
+    //       <Event
+    //         key={i}
+    //         typeOfFood={event.foodType}
+    //         foodAmount={event.foodAmount}
+    //         type={event.type}
+    //         babyName={event.babyName}
+    //         startTime={event.startTime}
+    //       />
+    //     );
+    //   })}
+    // </div>
+    <div className='list-view-container mr-10 mt-10 mb-10'>
+      {props.sortedDayEvents.map((event, i) => {
         return (
           <Event
             key={i}
-            gender={event.gender}
-            typeOfFood={event.typeOfFood}
+            typeOfFood={event.foodType}
             foodAmount={event.foodAmount}
             type={event.type}
             babyName={event.babyName}
-            startTime={event.startTime}
+            startTime={convertToTime(event.startTime.seconds)}
           />
         );
       })}
