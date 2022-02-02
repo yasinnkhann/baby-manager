@@ -79,11 +79,24 @@ export default function BabyCard({ babyID, babyName, sleepStatus, nextFeed, view
     <React.Fragment>
       <div
         style={
-          viewType === 'list' ? { display: 'flex', margin: '5px', border: '1px solid' } : null
+          viewType === 'list'
+            ? {
+                display: 'flex',
+                margin: '5px',
+                borderRadius: '10px',
+                padding: '1px',
+                boxShadow: '2px 5px #B5B5B5',
+              }
+            : null
         }
       >
         <Card
-          style={{ margin: '5px', padding: '1px', boxShadow: '1px 2px #B5B5B5' }}
+          style={{
+            margin: '5px',
+            padding: '1px',
+            borderRadius: '10px',
+            boxShadow: '1px 2px #B5B5B5',
+          }}
           sx={{ maxWidth: 120, maxHeight: 140 }}
         >
           <FormControlLabel
