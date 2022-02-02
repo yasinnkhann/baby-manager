@@ -63,7 +63,7 @@ export default function Overview() {
     } else if (user) {
       retrieveSleepData();
     }
-  }, [user, loading, router]);
+  }, [user, loading]); //eslint-disable-line
 
   const retrieveSleepData = async () => {
     try {
