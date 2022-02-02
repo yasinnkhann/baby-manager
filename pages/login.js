@@ -131,18 +131,6 @@ export default function Login() {
 
           <fieldset>
             <form onSubmit={handleSubmit} className='font-["Rubik"]'>
-              {/* <label htmlFor='email' className='block mb-2 text-pink-500 font-["Rubik"]'>
-                Email:
-              </label>
-              <input
-                type='email'
-                id='email'
-                name='email'
-                value={loginInfo.email}
-                onChange={handleChange}
-                className='w-full p-2 mb-6 text-pink-700 border-b-2 border-pink-500 outline-none focus:bg-gray-300'
-              /> */}
-
               <TextField
                 className='w-full mb-2 '
                 type='email'
@@ -154,18 +142,6 @@ export default function Login() {
                 onChange={handleChange}
                 required
               ></TextField>
-
-              {/* <label htmlFor='password' className='block mb-2 text-pink-500'>
-                Password:
-              </label>
-              <input
-                type='password'
-                id='password'
-                name='password'
-                value={loginInfo.password}
-                onChange={handleChange}
-                className='w-full p-2 mb-6 text-pink-700 border-b-2 border-pink-500 outline-none focus:bg-gray-300'
-              /> */}
 
               <TextField
                 className='w-full mb-2 '
@@ -189,12 +165,9 @@ export default function Login() {
           </fieldset>
 
           <div className='justify-self-center text-center'>
-            <button onClick={registerButton}>Don&apos;t have an account? Sign up here!</button>
-            {/* <Link href='/register'>
-              <a className='text-blue-700 hover:text-pink-700 text-sm '>
-                Don&apos;t have an account? Sign up here!
-              </a>
-            </Link> */}
+            <button className='hover:text-pink-700' onClick={registerButton}>
+              Don&apos;t have an account? Sign up here!
+            </button>
           </div>
         </div>
       </div>

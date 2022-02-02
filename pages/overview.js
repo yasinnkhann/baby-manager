@@ -184,7 +184,7 @@ export default function Overview() {
 
   return (
     <React.Fragment>
-      <div>
+      <div className='my-[12%] mx-[12%]  '>
         {babyData.length === 0 ? (
           <div style={addBabyBtnPosition}>
             <Link href='/addBaby' passHref>
@@ -194,7 +194,7 @@ export default function Overview() {
         ) : (
           <div>
             <div
-              className='mt-[21%]'
+              className='mt-[1%] '
               style={{
                 display: 'flex',
                 flexDirection: 'column',
@@ -203,6 +203,7 @@ export default function Overview() {
               }}
             >
               <ToggleButtonGroup
+                className='mb-[2%]'
                 orientation='horizontal'
                 value={view}
                 exclusive

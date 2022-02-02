@@ -74,12 +74,14 @@ const babyListViewCard = {
   boxShadow: '2px 5px #B5B5B5',
 };
 
-const babyCard = {
-  margin: '5px',
-  padding: '1px',
-  borderRadius: '10px',
-  boxShadow: '1px 2px #B5B5B5',
-};
+// const babyCard = {
+//   margin: '5px',
+//   padding: '1px',
+//   borderRadius: '10px',
+//   boxShadow: '1px 2px #B5B5B5',
+//   width: '400px',
+//   height: '400px'
+// };
 
 const nextFeedBtn = {
   margin: '15px',
@@ -131,10 +133,24 @@ export default function BabyCard({
     }
   };
 
+  // style={babyCard}
+
   return (
     <React.Fragment>
       <div style={viewType === 'list' ? babyListViewCard : null}>
-        <Card className='animatedCard' style={babyCard} sx={{ maxWidth: 120, maxHeight: 140 }}>
+        <Card
+          className='animatedCard'
+          sx={{
+            maxWidth: {
+              xs: '95%',
+              sm: '95%',
+            },
+            maxHeight: {
+              xs: '25%',
+              sm: '95%',
+            },
+          }}
+        >
           <FormControlLabel
             labelPlacement='top'
             label=''
@@ -146,14 +162,14 @@ export default function BabyCard({
               />
             }
           />
-          <CardMedia
-            style={{ height: '50px', width: '50px', margin: 'auto' }}
-            component='img'
-            height=''
-            image={sleepStatus ? icon.asleep : icon.awake}
-            alt='babyIcon'
-          />
+
           <CardContent style={{ textAlign: 'center' }}>
+            {sleepStatus ? (
+              <div className='bg-[url("/asleep-baby.svg")] w-[50px] h-[50px] bg-center bg-cover bg-no-repeat'></div>
+            ) : (
+              <div className='bg-[url("/awake-baby.svg")] w-[50px] h-[50px] bg-center bg-cover bg-no-repeat'></div>
+            )}
+
             <Link href={`/baby/${babyID}`} key={babyID}>
               <a>{babyName}</a>
             </Link>
