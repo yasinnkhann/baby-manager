@@ -125,7 +125,7 @@ export default function Overview() {
             })
             .then(() => {
               updateInvitation().then(async result => {
-                // console.log('result:', result);
+                console.log('result:', result);
                 const updateRef = doc(db, 'invitations', result);
                 await updateDoc(updateRef, {
                   accepted: true,
@@ -178,7 +178,6 @@ export default function Overview() {
       viewType={view}
       retrieveSleepData={retrieveSleepData}
       user={user}
-      babyData={babyData}
     />
   ));
 
