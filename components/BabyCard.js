@@ -101,7 +101,7 @@ export default function BabyCard({
   user,
   babyData,
 }) {
-  const babyRef = doc(db, 'users', user.uid, 'babies', babyID);
+  // const babyRef = doc(db, 'users', user.uid, 'babies', babyID);
 
   //dont really need babyData here for now, may need or delete later
   // console.log(user.uid)
@@ -109,6 +109,8 @@ export default function BabyCard({
   const handleUpdateSleep = async (e, value) => {
     e.preventDefault();
     try {
+      const babyRef = doc(db, 'users', user.uid, 'babies', babyID);
+
       await updateDoc(babyRef, { isAsleep: value });
     } catch (err) {
       console.log(err);
@@ -119,6 +121,7 @@ export default function BabyCard({
 
   const handleDeleteBaby = async () => {
     try {
+      const babyRef = doc(db, 'users', user.uid, 'babies', babyID);
       await deleteDoc(babyRef);
     } catch (err) {
       console.log(err);
