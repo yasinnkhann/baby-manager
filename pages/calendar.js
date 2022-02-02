@@ -191,7 +191,7 @@ function Calendar() {
   };
 
   return (
-    <div className='my-[25%]'>
+    <div className='my-[25%] lg:my-[7%] md:my-[14%]'>
       <Head>
         <title>BabyManager | Calendar</title>
       </Head>

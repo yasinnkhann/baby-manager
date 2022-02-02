@@ -69,8 +69,11 @@ function ListView(props) {
 
   function handleLine(index, status) {
     console.log(index);
-    if (status === 'not set') {
-      setLine([set, index]);
+    if (status === 'set line') {
+      setLine(['set at index', index]);
+    }
+    if (status === 'already set') {
+      setLine(['already set', index]);
     }
   }
 
@@ -132,14 +135,15 @@ function ListView(props) {
         </div>
       ) : (
         <div>
-          <div className='ml-12 mt-5 text-[#A020F0]'>{props.selectedDate.toDateString()}</div>
+          <div className='ml-12 mt-5 text-[#EFF1FA]'>{props.selectedDate.toDateString()}</div>
           <div className='list-view-container mr-10 mt-5 mb-10'>
             {props.sortedDayEvents.map((event, i, array) => {
               return (
                 <Event
                   key={i}
+                  handleLine={handleLine}
                   index={i}
-                  line={line === i}
+                  line={line}
                   arrayLength={array.length}
                   foodMetric={event.foodMetric}
                   typeOfFood={event.foodType}
