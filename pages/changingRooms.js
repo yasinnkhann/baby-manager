@@ -1,18 +1,34 @@
 import React, { useState, useEffect } from 'react';
-import { MyMapComponent } from '../components/ChangingRoom/GoogleMap.js';
 import MyLocationIcon from '@mui/icons-material/MyLocation';
 import axios from 'axios';
-import MyComponents from '../components/ChangingRoom/GoogleMap copy.js';
 import Head from 'next/head';
+import Script from 'next/script';
+import MyComponent from '../components/ChangingRoom/GoogleMap.js';
 
 export default function ChangingRooms(props) {
   const API_KEY = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API;
-  const [currentLocation, setCurrentLoc] = useState({ lat: 0, lng: 0 });
+  const [currentLocation, setCurrentLoc] = useState({ lat: 47.5423222, lng: -122.2329451 });
+  const [home, setHome] = useState(false);
 
-  // useEffect(()=> {
-  // }, [])
+  useEffect(() => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        position => {
+          const pos = {
+            lat: position.coords.latitude,
+            lng: position.coords.longitude,
+          };
+          setCurrentLoc(pos);
+        },
+        () => {
+          console.log('user denied permission');
+        }
+      );
+    }
+  }, []);
 
   const clickHandler = () => {
+    setHome(true);
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         position => {
@@ -31,19 +47,15 @@ export default function ChangingRooms(props) {
 
   return (
     <div style={{ marginTop: '100px' }}>
-      <Head>
-        {/* <script async
-          src={`https://maps.googleapis.com/maps/api/js?key=${API_KEY}`}>
-      </script> */}
-      </Head>
-      {/* <form>
-        <input type='text' placeholder='search'></input>
-        <input type='submit'></input>
-      </form> */}
       <MyLocationIcon onClick={clickHandler} />
       <button onClick={clickHandler}>Current Location</button>
-      {/* <MyMapComponent isMarkerShown location={currentLocation} /> */}
-      <MyComponents center={currentLocation} zoom={10} />
+      <MyComponent
+        home={home}
+        setHome={setHome}
+        center={currentLocation}
+        zoom={10}
+        location={currentLocation}
+      />
     </div>
   );
 }

@@ -1,77 +1,91 @@
-import React, { Component, useState, useEffect } from 'react';
-import {
-  GoogleMap,
-  LoadScript,
-  useLoadScript,
-  Marker,
-  InfoWindow,
-  StandaloneSearchBox,
-} from '@react-google-maps/api';
+import React, { useState } from 'react';
+import { GoogleMap, useLoadScript, Marker, InfoWindow } from '@react-google-maps/api';
 
 const containerStyle = {
   width: '100%',
-  height: '500px',
+  height: '700px',
 };
 
-//clicking multiple times causes error of searchBox.getPlaces()
-//disable person view
-//error blocked by client after logging in
-
 const API_KEY = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API;
-const libraries = ['places'];
+const LIBRARIES = ['places'];
 
-function MyComponents({ center, zoom }) {
-  const [searchBox, setSearchBox] = useState(null);
+export default function MyComponent({ center, home, setHome }) {
+  const [map, setMap] = useState(null);
   const [results, setResults] = useState(null);
-  const [bounds, setBounds] = useState(null);
+  const [initialize, setInitialize] = useState(0);
+  const [info, setInfo] = useState(null);
 
   const { isLoaded, loadError } = useLoadScript({
-    googleMapsApiKey: API_KEY,
+    googleMapsApiKey: API_KEY, // ,
+    libraries: LIBRARIES,
+    // ...otherOptions
   });
 
-  const onLoad = ref => {
-    setResults(ref.getPlaces());
-    // let service = new window.google.maps.places.PlacesService(map);
-    // let request = {
-    //   query: 'bathroom'
-    // }
-    // service.findPlaceFromQuery(request, (results, status) => {
-    //   console.log(results);
-    //   console.log('this is status', status);
-    // })
-  };
-  const onPlacesChanged = () => {
-    setResults(searchBox.getPlaces());
-  };
+  const initMap = () => {
+    const onLoad = mapInstance => {
+      setMap(mapInstance);
+      let service = new google.maps.places.PlacesService(mapInstance);
+      let request = {
+        location: center,
+        radius: 10000,
+        keyword: 'restrooms',
+      };
+      service.nearbySearch(request, function (results, status) {
+        setResults(results);
+      });
+    };
 
-  const onMapLoad = map => {
-    // setResults(searchBox.getPlaces())
-  };
+    const onDragChange = () => {
+      let service = new google.maps.places.PlacesService(map);
+      let request = {
+        location: { lat: map.center.lat(), lng: map.center.lng() },
+        radius: 10000,
+        keyword: 'restrooms',
+      };
+      service.nearbySearch(request, function (result, status) {
+        setResults(result);
+      });
+      setHome(false);
+    };
 
-  // const renderMap = () => {
-  //   const onLoad = React.useCallback(
-  //     function onLoad(mapInstance) {
-  //       //do something
-  //     });
+    const centerChanged = () => {
+      if ((initialize < 2 && map) || home) {
+        let service = new google.maps.places.PlacesService(map);
+        let request = {
+          location: center,
+          radius: 10000,
+          keyword: 'restrooms',
+        };
+        service.nearbySearch(request, function (results, status) {
+          setResults(results);
+        });
+        setInitialize(initialize + 1);
+      }
+    };
+    const divStyle = {
+      background: `white`,
+      padding: 2,
+      width: '100px',
+    };
 
-  //   return (<GoogleMap
-  //     onLoad={onLoad}
-  //     >
-
-  //     </GoogleMap>)
-  // }
-
-  return (
-    <LoadScript googleMapsApiKey={API_KEY} libraries={libraries}>
+    const onMarkerLoad = marker => {
+      marker.addListener('click', () => {
+        let options = {
+          title: marker.title,
+          position: { lat: marker.position.lat(), lng: marker.position.lng() },
+        };
+        setInfo(options);
+      });
+    };
+    return (
       <GoogleMap
         mapContainerStyle={containerStyle}
         center={center}
-        zoom={10}
-        onCenterChanged
-        onZoomChanged
+        zoom={11}
+        onDragEnd={onDragChange}
         clickableIcons={true}
-        onLoad={onMapLoad}
-        // onLoad={(map) => {onMapLoad(map)}}
+        onLoad={onLoad}
+        onCenterChanged={centerChanged}
       >
         {/* Child components, such as markers, info windows, etc. */}
         {results
@@ -79,44 +93,30 @@ function MyComponents({ center, zoom }) {
               return (
                 <Marker
                   key={item.place_id}
+                  onLoad={onMarkerLoad}
                   position={{
                     lat: item.geometry.location.lat(),
                     lng: item.geometry.location.lng(),
                   }}
+                  title={`Name: ${item.name} \n Location: ${item.vicinity}`}
                 />
               );
             })
           : null}
 
-        {/* <InfoWindow position={{ lat: 47.5, lng: -122.644 }}>
-          <div>
-            <h1>InfoWindow</h1>
-          </div>
-        </InfoWindow> */}
-        <StandaloneSearchBox onLoad={onLoad} onPlacesChanged={onPlacesChanged}>
-          <input
-            type='text'
-            placeholder='Search Bathrooms here'
-            style={{
-              boxSizing: `border-box`,
-              border: `1px solid transparent`,
-              width: `240px`,
-              height: `32px`,
-              padding: `0 12px`,
-              borderRadius: `3px`,
-              boxShadow: `0 2px 6px rgba(0, 0, 0, 0.3)`,
-              fontSize: `14px`,
-              outline: `none`,
-              textOverflow: `ellipses`,
-              position: 'absolute',
-              left: '50%',
-              marginLeft: '-120px',
-            }}
-          />
-        </StandaloneSearchBox>
+        {info ? (
+          <InfoWindow position={info.position} onCloseClick={() => setInfo(null)}>
+            <div style={divStyle}>
+              <div>{info.title}</div>
+            </div>
+          </InfoWindow>
+        ) : null}
       </GoogleMap>
-    </LoadScript>
-  );
-}
+    );
+  };
 
-export default MyComponents;
+  if (loadError) {
+    return <div>Map cannot be loaded right now, sorry.</div>;
+  }
+  return isLoaded ? initMap() : <div>no map</div>;
+}
