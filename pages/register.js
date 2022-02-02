@@ -79,10 +79,12 @@ export default function Register() {
 
   return (
     <ThemeProvider theme={theme}>
-      <div className='h-screen my-[10%] flex flex-col px-5'>
-        <h1 className='text-blue-500 text-center text-xl my-3 mt-[10%]'>Create an Account</h1>
+      <div className='h-screen my-[10%] flex flex-col px-5 font-["Rubik"]'>
+        <h1 className='text-blue-500 text-center text-xl mb-10 mt-[10%] '>
+          Create an Account
+        </h1>
 
-        <form className='flex flex-col mx-10' onSubmit={handleSubmit}>
+        <form className='flex flex-col mx-10 font-["Rubik"]' onSubmit={handleSubmit}>
           {/* <label htmlFor='firstName' className='block mb-2 text-pink-500'>
             First Name:
           </label>

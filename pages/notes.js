@@ -6,6 +6,7 @@ import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth, db } from '../firebaseConfig';
 import { useRouter } from 'next/router';
 import { collection, addDoc, getDocs, doc } from '@firebase/firestore';
+import { Paper, Button } from '@mui/material';
 
 const Notes = () => {
   const [notes, setNotes] = useState(null);
@@ -74,9 +75,21 @@ const Notes = () => {
       <Head>
         <title>BabyManager | Notes</title>
       </Head>
+
       <section className="font-['Rubik'] h-full mx-auto w-3/4 mt-2 flex flex-col justify-start px-4">
-        <h1 className='font-medium self-center text-[26px] md:text-4xl lg:text-5xl'>Notes</h1>
-        <button onClick={() => setIsAddingNote(!isAddingNote)}>Add Note</button>
+        <div className='flex flex-row justify-between'>
+          <h1 className='font-medium self-center text-[26px] md:text-4xl lg:text-5xl'>
+            Notes
+          </h1>
+          <Button
+            onClick={() => setIsAddingNote(!isAddingNote)}
+            variant='contained'
+            className='bg-pink-500 m-5 max-w-[25%] self-center'
+          >
+            Add Note
+          </Button>
+        </div>
+
         {isAddingNote ? renderAddNote() : null}
         <div className='flex flex-col'>{renderNotes()}</div>
       </section>
