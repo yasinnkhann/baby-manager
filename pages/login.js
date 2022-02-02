@@ -9,6 +9,8 @@ import { auth, provider, db } from '../firebaseConfig.js';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import { doc, setDoc, serverTimestamp } from 'firebase/firestore';
+import { Select, MenuItem, TextField, Button } from '@mui/material';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 export default function Login() {
   const [loginInfo, setLoginInfo] = useState({
@@ -42,7 +44,7 @@ export default function Login() {
         { merge: true }
       );
       console.log('USER @ LOGIN: ', user);
-      router.push('/');
+      router.push('/overview');
     } catch (err) {
       console.error(err);
     }
@@ -57,7 +59,7 @@ export default function Login() {
         loginInfo.password
       );
       console.log('LOGGED IN @: ', userCredential);
-      router.push('/');
+      router.push('/overview');
     } catch (err) {
       console.error(err);
       alert(err.message);
@@ -68,57 +70,100 @@ export default function Login() {
     });
   };
 
-  return (
-    <div className='h-screen my-[10%]'>
-      <Head>
-        <title>Login</title>
-      </Head>
-      <div className='w-full max-w-xs m-auto bg-indigo-100 rounded p-5'>
-        <button
-          onClick={googleSignIn}
-          className='w-full bg-indigo-700 hover:bg-pink-700 text-white font-bold py-2 px-4 mb-6 rounded'
-        >
-          Login with Google
-        </button>
-        <br />
-        <fieldset>
-          <form onSubmit={handleSubmit}>
-            <label htmlFor='email' className='block mb-2 text-pink-500'>
-              Email:
-            </label>
-            <input
-              type='email'
-              id='email'
-              name='email'
-              value={loginInfo.email}
-              onChange={handleChange}
-              className='w-full p-2 mb-6 text-pink-700 border-b-2 border-pink-500 outline-none focus:bg-gray-300'
-            />
-            <br />
-            <label htmlFor='password' className='block mb-2 text-pink-500'>
-              Password:
-            </label>
-            <input
-              type='password'
-              id='password'
-              name='password'
-              value={loginInfo.password}
-              onChange={handleChange}
-              className='w-full p-2 mb-6 text-pink-700 border-b-2 border-pink-500 outline-none focus:bg-gray-300'
-            />
-            <br />
-            <button className='w-full bg-indigo-700 hover:bg-pink-700 text-white font-bold py-2 px-4 mb-6 rounded'>
-              Login
-            </button>
-          </form>
-        </fieldset>
+  let theme = createTheme({
+    palette: {
+      primary: {
+        main: '#ec4899',
+      },
+      secondary: {
+        main: '#be185d',
+      },
+    },
+  });
 
-        <Link href='/register'>
-          <a className='text-blue-700 hover:text-pink-700 text-sm float-left'>
-            Don&apos;t have an account? Sign up here!
-          </a>
-        </Link>
+  return (
+    <ThemeProvider theme={theme}>
+      <div className='h-screen  flex flex-col content-center font-["Rubik"]'>
+        <Head>
+          <title>Login</title>
+        </Head>
+        <div className='w-full max-w-xs m-auto bg-indigo-100/75 rounded p-5'>
+          <Button
+            onClick={googleSignIn}
+            className='w-full bg-indigo-700 hover:bg-pink-700 text-white font-bold py-2 px-4 mb-6 rounded'
+            variant='contained'
+          >
+            Login with Google
+          </Button>
+
+          <fieldset>
+            <form onSubmit={handleSubmit} className='font-["Rubik"]'>
+              {/* <label htmlFor='email' className='block mb-2 text-pink-500 font-["Rubik"]'>
+                Email:
+              </label>
+              <input
+                type='email'
+                id='email'
+                name='email'
+                value={loginInfo.email}
+                onChange={handleChange}
+                className='w-full p-2 mb-6 text-pink-700 border-b-2 border-pink-500 outline-none focus:bg-gray-300'
+              /> */}
+
+              <TextField
+                className='w-full mb-2 '
+                type='email'
+                color='primary'
+                id='email'
+                label='Email:'
+                name='email'
+                variant='filled'
+                onChange={handleChange}
+                required
+              ></TextField>
+
+              {/* <label htmlFor='password' className='block mb-2 text-pink-500'>
+                Password:
+              </label>
+              <input
+                type='password'
+                id='password'
+                name='password'
+                value={loginInfo.password}
+                onChange={handleChange}
+                className='w-full p-2 mb-6 text-pink-700 border-b-2 border-pink-500 outline-none focus:bg-gray-300'
+              /> */}
+
+              <TextField
+                className='w-full mb-2 '
+                type='password'
+                color='primary'
+                id='password'
+                label='Password:'
+                name='password'
+                variant='filled'
+                onChange={handleChange}
+                required
+              ></TextField>
+
+              <Button
+                className='w-full bg-indigo-700 hover:bg-pink-700 text-white font-bold py-2 px-4 mb-6 rounded'
+                type='submit'
+              >
+                Login
+              </Button>
+            </form>
+          </fieldset>
+
+          <div className='justify-self-center text-center'>
+            <Link href='/register'>
+              <a className='text-blue-700 hover:text-pink-700 text-sm '>
+                Don&apos;t have an account? Sign up here!
+              </a>
+            </Link>
+          </div>
+        </div>
       </div>
-    </div>
+    </ThemeProvider>
   );
 }
