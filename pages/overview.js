@@ -44,7 +44,7 @@ export default function Overview() {
 
   //authentication
   useEffect(() => {
-    if (!user && !loading) {
+    if (!user) {
       router.push('/login');
     } else if (user) {
       retrieveSleepData();
