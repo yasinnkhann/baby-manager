@@ -7,7 +7,6 @@ import MyComponent from '../components/ChangingRoom/GoogleMap.js';
 export default function ChangingRooms(props) {
   const API_KEY = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API;
   const [currentLocation, setCurrentLoc] = useState({ lat: 47.5423222, lng: -122.2329451 });
-  const [home, setHome] = useState(false);
 
   useEffect(() => {
     let isApiSubscribed = true;
@@ -68,17 +67,7 @@ export default function ChangingRooms(props) {
       <Head>
         <title>Baby Manager | Changing Room Locator</title>
       </Head>
-      <button style={buttonStyle} onClick={clickHandler}>
-        {' '}
-        <MyLocationIcon /> <div className='hidden md:inline'>Current Location</div>
-      </button>
-      <MyComponent
-        home={home}
-        setHome={setHome}
-        center={currentLocation}
-        zoom={10}
-        location={currentLocation}
-      />
+      <MyComponent center={currentLocation} />
     </div>
   );
 }
