@@ -37,7 +37,7 @@ const Coupons = () => {
         const { data: local } = await axios.get('https://api.discountapi.com/v2/deals', {
           params: {
             api_key: process.env.NEXT_PUBLIC_DISCOUNTS_API,
-            location: currentLoc,
+            location: JSON.stringify(currentLoc),
             category_slugs: 'baby',
           },
         });
