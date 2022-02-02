@@ -107,7 +107,6 @@ export default function Login() {
                 name='email'
                 variant='filled'
                 onChange={handleChange}
-                required
               ></TextField>
 
               <TextField
@@ -119,7 +118,6 @@ export default function Login() {
                 name='password'
                 variant='filled'
                 onChange={handleChange}
-                required
               ></TextField>
 
               <Button
