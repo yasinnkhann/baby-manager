@@ -5,8 +5,9 @@ import CardMedia from '@mui/material/CardMedia';
 import CardContent from '@mui/material/CardContent';
 import Switch from '@mui/material/Switch';
 import FormControlLabel from '@mui/material/FormControlLabel';
-import Alert from '@mui/material/Alert';
 import Link from 'next/link';
+
+import Button from '@mui/material/Button';
 
 const MaterialUISwitch = styled(Switch)(({ theme }) => ({
   width: 62,
@@ -76,7 +77,11 @@ export default function BabyCard({ babyID, babyName, sleepStatus, nextFeed, view
 
   return (
     <React.Fragment>
-      <div style={viewType === 'list' ? { display: 'flex', margin: 'auto' } : null}>
+      <div
+        style={
+          viewType === 'list' ? { display: 'flex', margin: '5px', border: '1px solid' } : null
+        }
+      >
         <Card
           style={{ margin: '5px', padding: '1px', boxShadow: '1px 2px #B5B5B5' }}
           sx={{ maxWidth: 120, maxHeight: 140 }}
@@ -106,8 +111,26 @@ export default function BabyCard({ babyID, babyName, sleepStatus, nextFeed, view
           </CardContent>
         </Card>
         {viewType === 'list' ? (
-          <div style={{ alignSelf: 'center', height: '50px', margin: 'auto' }}>
-            <Alert severity='info'>Next Feed {nextFeed}</Alert>
+          <div style={{ alignSelf: 'center', height: '110px', margin: '10px' }}>
+            <div style={{ margin: '5px' }}>
+              <Button variant='contained'>Next Feed </Button>
+            </div>
+            <div>
+              <Button
+                style={{
+                  margin: '15px',
+                  background: 'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)',
+                  border: 0,
+                  borderRadius: 3,
+                  boxShadow: '0 3px 5px 2px rgba(255, 105, 135, .3)',
+                  color: 'white',
+                  height: 48,
+                  padding: '0 30px',
+                }}
+              >
+                {nextFeed === null ? 'N/A' : nextFeed}
+              </Button>
+            </div>
           </div>
         ) : null}
       </div>
