@@ -4,13 +4,8 @@ import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import ViewListIcon from '@mui/icons-material/ViewList';
 import ViewModuleIcon from '@mui/icons-material/ViewModule';
-
-//authentication
 import { useAuthState } from 'react-firebase-hooks/auth';
-import { auth, db } from '../firebaseConfig';
 import { useRouter } from 'next/router';
-
-//connect to firestore database
 import {
   collection,
   addDoc,
@@ -21,6 +16,9 @@ import {
   where,
   updateDoc,
 } from '@firebase/firestore';
+import Button from '@mui/material/Button';
+import Link from 'next/link';
+import { auth, db } from '../firebaseConfig';
 
 const babyCardInModule = {
   display: 'flex',
@@ -42,20 +40,36 @@ const babyCardInList = {
   marginBottom: '90px',
 };
 
+const addBabyBtnPosition = {
+  display: 'flex',
+  flexDirection: 'column',
+  flexWrap: 'wrap',
+  alignItems: 'center',
+  justifyContent: 'center',
+  marginTop: '300px',
+};
+
+const babyBtnStyle = {
+  background: 'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)',
+  border: 0,
+  borderRadius: 3,
+  boxShadow: '0 3px 5px 2px rgba(255, 105, 135, .3)',
+  color: 'white',
+  height: 48,
+  padding: '0 30px',
+};
+
 export default function Overview() {
   const [view, setView] = useState('module');
   const [isViewChange, setViewChange] = useState(babyCardInModule);
   const [babyData, setBabyData] = useState([]);
-
-  //authentication
   const [user, loading] = useAuthState(auth);
   const router = useRouter();
   const { query } = useRouter();
   let inviteToken = query.token;
 
-  //authentication
   useEffect(() => {
-    if (!user) {
+    if (!user && !loading) {
       router.push('/login');
     } else if (user) {
       retrieveSleepData();
@@ -143,7 +157,6 @@ export default function Overview() {
       const babyData = [];
       babySnap.forEach(baby => babyData.push({ id: baby.id, data: baby.data() }));
       babyData.sort((a, b) => (a.data.createdAt > b.data.createdAt ? -1 : 1));
-      console.log('Print from BabyData', babyData);
       setBabyData(babyData);
     } catch (err) {
       console.log(err);
@@ -155,7 +168,7 @@ export default function Overview() {
     setView(nextView);
   };
 
-  const mappedBabyCard = babyData.map(baby => (
+  const mappedBabyCard = babyData?.map(baby => (
     <BabyCard
       key={baby.id}
       babyID={baby.id}
@@ -163,35 +176,50 @@ export default function Overview() {
       sleepStatus={baby.data.isAsleep}
       nextFeed={baby.data.nextFeed}
       viewType={view}
+      retrieveSleepData={retrieveSleepData}
+      user={user}
+      babyData={babyData}
     />
   ));
 
   return (
     <React.Fragment>
-      <div
-        className=' mt-[21%]'
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}
-      >
-        <ToggleButtonGroup
-          orientation='horizontal'
-          value={view}
-          exclusive
-          onChange={handleOrientationChange}
-        >
-          <ToggleButton value='module' aria-label='module'>
-            <ViewModuleIcon />
-          </ToggleButton>
-          <ToggleButton value='list' aria-label='list'>
-            <ViewListIcon />
-          </ToggleButton>
-        </ToggleButtonGroup>
+      <div>
+        {babyData.length === 0 ? (
+          <div style={addBabyBtnPosition}>
+            <Link href='/addBaby' passHref>
+              <Button style={babyBtnStyle}>Add Baby</Button>
+            </Link>
+          </div>
+        ) : (
+          <div>
+            <div
+              className='mt-[21%]'
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+            >
+              <ToggleButtonGroup
+                orientation='horizontal'
+                value={view}
+                exclusive
+                onChange={handleOrientationChange}
+              >
+                <ToggleButton value='module' aria-label='module'>
+                  <ViewModuleIcon />
+                </ToggleButton>
+                <ToggleButton value='list' aria-label='list'>
+                  <ViewListIcon />
+                </ToggleButton>
+              </ToggleButtonGroup>
+            </div>
+            <div style={isViewChange}>{mappedBabyCard}</div>
+          </div>
+        )}
       </div>
-      <div style={isViewChange}>{mappedBabyCard}</div>
     </React.Fragment>
   );
 }
