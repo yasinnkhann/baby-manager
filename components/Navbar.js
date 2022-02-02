@@ -31,13 +31,14 @@ export default function Navbar() {
   };
 
   return (
-    <nav className='fixed bg-blue-100 font-["Rubik"] top-0 w-full'>
+    <nav className='fixed bg-blue-100 font-["Rubik"] top-0 w-full z-[300]'>
       <div className='flex justify-between items-center pl-[3%] sm:pr-[12%] md:pr-[10%] lg:pr-[7%] '>
-        <div className='flex flex-row content-center'>
-          <div className='bg-[url("/baby3.svg")] w-[65px] h-[70px] bg-center bg-cover bg-no-repeat'></div>
-          <div className='font-["Pacifico"] text-xl self-center'>Baby Manager</div>
-        </div>
-
+        <Link href='/overview' passHref>
+          <div className='flex flex-row content-center hover:text-pink-500 hover:cursor-pointer'>
+            <div className='bg-[url("/baby3.svg")] w-[65px] h-[70px] bg-center bg-cover bg-no-repeat'></div>
+            <div className='font-["Pacifico"] text-xl self-center '>Baby Manager</div>
+          </div>
+        </Link>
         <div className='justify-self-end flex flex-row items-center justify-around'>
           <Link href='/addBaby' passHref>
             <IconButton className='hidden sm:block text-neutral-900 text-[24px]'>
@@ -110,7 +111,11 @@ export default function Navbar() {
               onClose={() => setAnchorEl(null)}
               TransitionComponent={Fade}
             >
-              <MenuItem onClick={() => setAnchorEl(null)}>Baby Coupons</MenuItem>
+              {/* <MenuItem
+                onClick={() => setAnchorEl(null)}
+              >
+                Baby Coupons
+              </MenuItem> */}
 
               <Link href='/notes' passHref>
                 <MenuItem onClick={() => setAnchorEl(null)}>Notes</MenuItem>

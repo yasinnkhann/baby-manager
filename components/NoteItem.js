@@ -48,7 +48,7 @@ const NoteItem = ({ note, fetchNotes, user }) => {
             ></TextField>
 
             <Button
-              className='min-w-[125px] max-w-[20%] text-stone-900 bg-cyan-200  hover:bg-pink-500 mt-[4%] self-center'
+              className='min-w-[125px] max-w-[20%] text-stone-900 bg-cyan-200  hover:bg-pink-500 mt-[2%] mb-[5%] '
               variant='contained'
               type='submit'
               endIcon={<KeyboardArrowUpIcon />}
