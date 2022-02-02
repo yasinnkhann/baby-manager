@@ -6,8 +6,10 @@ import CardContent from '@mui/material/CardContent';
 import Switch from '@mui/material/Switch';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Link from 'next/link';
-
+import { doc, deleteDoc, updateDoc } from '@firebase/firestore';
 import Button from '@mui/material/Button';
+import DeleteIcon from '@mui/icons-material/Delete';
+import { db } from '../firebaseConfig';
 
 const MaterialUISwitch = styled(Switch)(({ theme }) => ({
   width: 62,
@@ -63,52 +65,85 @@ const icon = {
     'https://cdn0.iconfinder.com/data/icons/family-babies-kids/24/kid-infant-baby-child-children-family-512.png',
 };
 
-export default function BabyCard({ babyID, babyName, sleepStatus, nextFeed, viewType }) {
-  const [babyIcon, setBabyIcon] = useState(icon.asleep);
-  // need to retrive data from data base to check if the baby is awake
-  const [isBabyAsleep, setIsBabyAsleep] = useState(sleepStatus);
+const babyListViewCard = {
+  display: 'flex',
+  margin: '5px',
+  borderRadius: '10px',
+  padding: '1px',
+  boxShadow: '2px 5px #B5B5B5',
+};
 
-  //need to work handle PUT for updating baby status AND Might need to use onlick
-  const handleBabySleepChange = (event, value) => {
-    console.log(value);
-    isBabyAsleep = value;
-    isBabyAsleep ? setBabyIcon(icon.asleep) : setBabyIcon(icon.awake);
+const babyCard = {
+  margin: '5px',
+  padding: '1px',
+  borderRadius: '10px',
+  boxShadow: '1px 2px #B5B5B5',
+};
+
+const nextFeedBtn = {
+  margin: '15px',
+  background: 'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)',
+  border: 0,
+  borderRadius: 3,
+  boxShadow: '0 3px 5px 2px rgba(255, 105, 135, .3)',
+  color: 'white',
+  height: 48,
+  padding: '0 30px',
+};
+
+export default function BabyCard({
+  babyID,
+  babyName,
+  sleepStatus,
+  nextFeed,
+  viewType,
+  retrieveSleepData,
+  user,
+  babyData,
+}) {
+  // const babyRef = doc(db, 'users', user.uid, 'babies', babyID);
+
+  //dont really need babyData here for now, may need or delete later
+  // console.log(user.uid)
+
+  const handleUpdateSleep = async (e, value) => {
+    e.preventDefault();
+    try {
+      const babyRef = doc(db, 'users', user.uid, 'babies', babyID);
+
+      await updateDoc(babyRef, { isAsleep: value });
+    } catch (err) {
+      console.log(err);
+    } finally {
+      retrieveSleepData();
+    }
+  };
+
+  const handleDeleteBaby = async () => {
+    try {
+      const babyRef = doc(db, 'users', user.uid, 'babies', babyID);
+      await deleteDoc(babyRef);
+    } catch (err) {
+      console.log(err);
+    } finally {
+      retrieveSleepData();
+    }
   };
 
   return (
     <React.Fragment>
-      <div
-        style={
-          viewType === 'list'
-            ? {
-                display: 'flex',
-                margin: '5px',
-                borderRadius: '10px',
-                padding: '1px',
-                boxShadow: '2px 5px #B5B5B5',
-              }
-            : null
-        }
-      >
-        <Card
-          style={{
-            margin: '5px',
-            padding: '1px',
-            borderRadius: '10px',
-            boxShadow: '1px 2px #B5B5B5',
-          }}
-          sx={{ maxWidth: 120, maxHeight: 140 }}
-        >
+      <div style={viewType === 'list' ? babyListViewCard : null}>
+        <Card className='animatedCard' style={babyCard} sx={{ maxWidth: 120, maxHeight: 140 }}>
           <FormControlLabel
             labelPlacement='top'
+            label=''
             control={
               <MaterialUISwitch
                 checked={sleepStatus}
-                onChange={handleBabySleepChange}
+                onChange={handleUpdateSleep}
                 sx={{ m: 1 }}
               />
             }
-            label=''
           />
           <CardMedia
             style={{ height: '50px', width: '50px', margin: 'auto' }}
@@ -124,25 +159,34 @@ export default function BabyCard({ babyID, babyName, sleepStatus, nextFeed, view
           </CardContent>
         </Card>
         {viewType === 'list' ? (
-          <div style={{ alignSelf: 'center', height: '110px', margin: '10px' }}>
-            <div style={{ margin: '5px' }}>
-              <Button variant='contained'>Next Feed </Button>
-            </div>
-            <div>
-              <Button
-                style={{
-                  margin: '15px',
-                  background: 'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)',
-                  border: 0,
-                  borderRadius: 3,
-                  boxShadow: '0 3px 5px 2px rgba(255, 105, 135, .3)',
-                  color: 'white',
-                  height: 48,
-                  padding: '0 30px',
-                }}
-              >
-                {nextFeed === null ? 'N/A' : nextFeed}
-              </Button>
+          <div className='flip-card'>
+            <div className='flip-card-inner'>
+              <div className='flip-card-front'>
+                <div style={{ alignSelf: 'center', height: '110px', margin: '10px' }}>
+                  <div style={{ margin: '20px' }}>
+                    <Button style={{ color: 'black' }} variant='contained'>
+                      Next Feed{' '}
+                    </Button>
+                  </div>
+                  <div>
+                    <Button style={nextFeedBtn}>
+                      {' '}
+                      {nextFeed === null ? 'N/A' : nextFeed}{' '}
+                    </Button>
+                  </div>
+                </div>
+              </div>
+              <div className='flip-card-back'>
+                <Button
+                  onClick={handleDeleteBaby}
+                  style={{ marginTop: '50px' }}
+                  variant='outlined'
+                  startIcon={<DeleteIcon />}
+                >
+                  {' '}
+                  Delete{' '}
+                </Button>
+              </div>
             </div>
           </div>
         ) : null}
