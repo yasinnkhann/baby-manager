@@ -1,6 +1,7 @@
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 import PersonIcon from '@mui/icons-material/Person';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
+import AddCircleIcon from '@mui/icons-material/AddCircle';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBaby } from '@fortawesome/free-solid-svg-icons';
 import Button from '@mui/material/Button';
@@ -75,6 +76,13 @@ export default function Footer() {
               </MenuItem>
             </Menu>
           </div>
+
+          <Link href='/addBaby' passHref>
+            <IconButton>
+              <AddCircleIcon className='text-neutral-900 text-[24px]' />
+            </IconButton>
+          </Link>
+
           <Link href='/overview' passHref>
             <IconButton>
               <FontAwesomeIcon className='text-[24px] text-neutral-900' icon={faBaby} />
