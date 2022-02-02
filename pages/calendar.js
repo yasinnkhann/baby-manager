@@ -6,6 +6,7 @@ import { collection, getDocs, doc } from 'firebase/firestore';
 import { auth } from '../firebaseConfig.js';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { query, where } from 'firebase/firestore';
+import Head from 'next/head';
 
 function Calendar() {
   const [selectedDate, setDate] = useState(new Date());
@@ -67,7 +68,8 @@ function Calendar() {
         // const feedingEvents = collection(db, "users", user.uid, "babies", doc.id);
         // const querySnapshot = await getDocs(feedingEvents);
         // console.log(babyName)
-        const babyName = doc.data().babyName;
+        const babyName = doc.data().name;
+        console.log(babyName);
 
         // GET ALL FEEDING EVENTS FOR CURRENT BABY AND PUSH TO feedingEventsArray
 
@@ -138,8 +140,6 @@ function Calendar() {
       const querySnapshot = await getDocs(babies);
 
       querySnapshot.forEach(async doc => {
-        console.log(babyName);
-
         // const feedingEvents = collection(db, "users", user.uid, "babies", doc.id);
         // const querySnapshot = await getDocs(feedingEvents);
         const babyName = doc.data().babyName;
@@ -191,10 +191,15 @@ function Calendar() {
   };
 
   return (
-    <main>
+    <div className='my-[25%] lg:my-[7%] md:my-[14%]'>
+      <Head>
+        <title>BabyManager | Calendar</title>
+      </Head>
       <WeeklyView setSelectedDate={setSelectedDate} selectedDate={selectedDate} />
-      <ListView sortedDayEvents={sortedDayEvents} selectedDate={selectedDate} />
-    </main>
+      <div className='xsm:w-[300px] md:w-[600px]'>
+        <ListView sortedDayEvents={sortedDayEvents} selectedDate={selectedDate} />
+      </div>
+    </div>
   );
 }
 

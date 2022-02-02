@@ -61,6 +61,7 @@ const MaterialUISwitch = styled(Switch)(({ theme }) => ({
 const icon = {
   awake:
     'https://cdn3.iconfinder.com/data/icons/family-member-flat-happy-family-day/512/Son-256.png',
+
   asleep:
     'https://cdn0.iconfinder.com/data/icons/family-babies-kids/24/kid-infant-baby-child-children-family-512.png',
 };

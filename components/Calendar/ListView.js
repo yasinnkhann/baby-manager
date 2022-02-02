@@ -1,5 +1,6 @@
 import react, { useState, useEffect } from 'react';
 import Event from './/Event.js';
+import Link from 'next/link';
 
 var events = [
   { babyName: 'Daniel', gender: 'male', type: 'sleep', startTime: '6AM', endTime: '12PM' },
@@ -64,7 +65,20 @@ function ListView(props) {
   //   return today;
   // }
 
+  const [line, setLine] = useState(['not set', null]);
+
+  function handleLine(index, status) {
+    console.log(index);
+    if (status === 'set line') {
+      setLine(['set at index', index]);
+    }
+    if (status === 'already set') {
+      setLine(['already set', index]);
+    }
+  }
+
   function convertToTime(seconds) {
+    var seconds = seconds - 28800;
     var date = new Date(1970, 0, 1); // Epoch
     date = new Date(
       (typeof date === 'string' ? new Date(date) : date).toLocaleString('en-US', {
@@ -81,6 +95,7 @@ function ListView(props) {
     minutes = minutes < 10 ? '0' + minutes : minutes;
     var strTime = hours + ':' + minutes + ' ' + ampm;
 
+    console.log(strTime);
     return strTime;
   }
 
@@ -100,20 +115,50 @@ function ListView(props) {
     //     );
     //   })}
     // </div>
-    <div className='list-view-container mr-10 mt-10 mb-10'>
-      {props.sortedDayEvents.map((event, i) => {
-        return (
-          <Event
-            key={i}
-            typeOfFood={event.foodType}
-            foodAmount={event.foodAmount}
-            type={event.type}
-            babyName={event.babyName}
-            startTime={convertToTime(event.startTime.seconds)}
-          />
-        );
-      })}
-    </div>
+    <>
+      {props.sortedDayEvents.length === 0 ? (
+        <div className='no-events mt-[20px] ml-5 text-[#A020F0]'>
+          Oops, your calendar is empty.{' '}
+          <div className='underline inline'>
+            {' '}
+            <br></br> <br></br>
+            <Link className='text-[#A020F0]' href='/addBaby'>
+              "Add A Baby"
+            </Link>{' '}
+          </div>
+          {'or go to '}{' '}
+          <div className='underline inline'>
+            {' '}
+            <Link href='/overview'> "Baby Overview"</Link>{' '}
+          </div>{' '}
+          to add feed/sleep events.
+        </div>
+      ) : (
+        <div>
+          <div className='ml-12 mt-5 text-[#EFF1FA]'>{props.selectedDate.toDateString()}</div>
+          <div className='list-view-container mr-10 mt-5 mb-10'>
+            {props.sortedDayEvents.map((event, i, array) => {
+              return (
+                <Event
+                  key={i}
+                  handleLine={handleLine}
+                  index={i}
+                  line={line}
+                  arrayLength={array.length}
+                  foodMetric={event.foodMetric}
+                  typeOfFood={event.foodType}
+                  foodAmount={event.foodAmount}
+                  type={event.type}
+                  babyName={event.babyName}
+                  eventStartTime={event.startTime.seconds}
+                  startTime={convertToTime(event.startTime.seconds)}
+                />
+              );
+            })}
+          </div>
+        </div>
+      )}
+    </>
   );
 }
 export default ListView;
