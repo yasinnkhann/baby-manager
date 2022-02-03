@@ -103,8 +103,8 @@
 }
 /* Baby animated overview card*/
 .animatedCard {
-  width: 115px;
-  height: 140px;
+  /* width: 115px; */
+  /* height: 140px; */
   position: relative;
   flex-direction: row;
 
