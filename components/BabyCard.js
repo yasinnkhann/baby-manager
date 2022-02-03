@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { styled } from '@mui/material/styles';
 import Card from '@mui/material/Card';
-import CardMedia from '@mui/material/CardMedia';
+// import CardMedia from '@mui/material/CardMedia';
 import CardContent from '@mui/material/CardContent';
 import Switch from '@mui/material/Switch';
 import FormControlLabel from '@mui/material/FormControlLabel';
@@ -144,24 +144,15 @@ export default function BabyCard({
     }
   };
 
-  // style={babyCard}
+  // <Card className='animatedCard' style={babyCard} sx={{ maxWidth: 120, maxHeight: 140 }}>
 
   return (
     <React.Fragment>
-      <div style={viewType === 'list' ? babyListViewCard : null}>
-        <Card
-          className='animatedCard'
-          sx={{
-            maxWidth: {
-              xs: '95%',
-              sm: '95%',
-            },
-            maxHeight: {
-              xs: '25%',
-              sm: '95%',
-            },
-          }}
-        >
+      <div
+        className='mt-[2%] h-[200px] w-[275px] sm:h-[275px] sm:w-[350px] md:h-[550px] md:w-[750px] '
+        style={viewType === 'list' ? babyListViewCard : null}
+      >
+        <Card className='animatedCard h-[100%] w-[60%]'>
           <FormControlLabel
             labelPlacement='top'
             label=''
@@ -173,18 +164,16 @@ export default function BabyCard({
               />
             }
           />
-
-          <CardContent style={{ textAlign: 'center' }}>
-            {sleepStatus ? (
-              <div className='bg-[url("/asleep-baby.svg")] w-[100px] h-[100px] bg-center bg-cover bg-no-repeat'></div>
-            ) : (
-              <div className='bg-[url("/awake-baby.svg")] w-[100px] h-[100px] bg-center bg-cover bg-no-repeat'></div>
-            )}
-
-            <Link href={`/baby/${babyID}`} key={babyID}>
+          <Link href={`/baby/${babyID}`} key={babyID} passHref>
+            <CardContent style={{ textAlign: 'center' }}>
+              {sleepStatus ? (
+                <div className='bg-[url("/asleep-baby.svg")] w-[100px] h-[100px] bg-center bg-cover bg-no-repeat'></div>
+              ) : (
+                <div className='bg-[url("/awake-baby.svg")] w-[100px] h-[100px] bg-center bg-cover bg-no-repeat'></div>
+              )}
               <a>{babyName}</a>
-            </Link>
-          </CardContent>
+            </CardContent>
+          </Link>
         </Card>
         {viewType === 'list' ? (
           <div className='flip-card'>
