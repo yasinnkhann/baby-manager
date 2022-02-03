@@ -123,8 +123,12 @@ const Baby = ({ baby }) => {
     } else {
       prettyTime = `${uglyTime[0]}:${uglyTime[1]} am`;
     }
-    const prettyDate = `${splitDate[0]} ${splitDate[1]} ${splitDate[2]}, ${splitDate[3]}, ${prettyTime}`;
-    setNextFeed(prettyDate);
+    if (currentBaby.nextFeed.seconds * 1000 > Date.now()) {
+      const prettyDate = `${splitDate[0]} ${splitDate[1]} ${splitDate[2]}, ${splitDate[3]}, ${prettyTime}`;
+      setNextFeed(prettyDate);
+    } else {
+      setNextFeed('Nothing Scheduled');
+    }
   };
 
   const getLastNapDatePretty = () => {
@@ -163,8 +167,13 @@ const Baby = ({ baby }) => {
     } else {
       prettyTime = `${uglyTime[0]}:${uglyTime[1]} am`;
     }
-    const prettyDate = `${splitDate[0]} ${splitDate[1]} ${splitDate[2]}, ${splitDate[3]}, ${prettyTime}`;
-    setNextSleep(prettyDate);
+    //check to see if date even makes sense
+    if (currentBaby.nextNap.seconds * 1000 > Date.now()) {
+      const prettyDate = `${splitDate[0]} ${splitDate[1]} ${splitDate[2]}, ${splitDate[3]}, ${prettyTime}`;
+      setNextSleep(prettyDate);
+    } else {
+      setNextSleep('Nothing Scheduled');
+    }
   };
 
   useEffect(() => {

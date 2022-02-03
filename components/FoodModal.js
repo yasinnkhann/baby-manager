@@ -81,6 +81,10 @@ const FoodModal = ({ babyPath, babyGet, foodArray, setFoodArray }) => {
   //----Scrape Data and prepare for post------//
   //------------------------------------------//
   const postNextFood = () => {
+    if (feedTime.getTime() < Date.now()) {
+      window.alert('Please input a valid Date and Time.');
+      return;
+    }
     updateDoc(doc(db, 'users', user.uid, 'babies', babyPath), {
       nextFeed: feedTime,
     }).then(res => {

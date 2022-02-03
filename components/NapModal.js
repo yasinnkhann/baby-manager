@@ -88,6 +88,10 @@ const NapModal = ({ babyPath, babyGet, babyName }) => {
   //----Post Request--------------------------//
   //------------------------------------------//
   const postNextNap = () => {
+    if (napDate.getTime() < Date.now()) {
+      window.alert('Please Select a valid Date and Time');
+      return;
+    }
     if (smsNumber !== null) {
       updateDoc(doc(db, 'users', user.uid, 'babies', babyPath), {
         nextNap: napDate,
