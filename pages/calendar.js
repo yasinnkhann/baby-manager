@@ -23,6 +23,14 @@ function Calendar() {
     );
   }
 
+  function categorizeStatus(seconds) {
+    if (seconds < new Date().getTime() / 1000) {
+      return 'completed';
+    } else {
+      return 'upcoming';
+    }
+  }
+
   // var orderEvents = async ()=> {
   //   console.log('dayEvents in orderEvents()', dayEvents  )
   //   var sortedDayEvents = dayEvents.sort( (a, b) => {
@@ -86,6 +94,7 @@ function Calendar() {
           var feedingEvent = doc.data();
           feedingEvent['babyName'] = babyName;
           feedingEvent['type'] = 'eat';
+          feedingEvent['status'] = categorizeStatus(doc.data().startTime.seconds);
           feedingEventsArray.push(feedingEvent);
         });
         console.log('feedingEvents: ', feedingEventsArray);
@@ -106,6 +115,7 @@ function Calendar() {
           var sleepingEvent = doc.data();
           sleepingEvent['babyName'] = babyName;
           sleepingEvent['type'] = 'sleep';
+          sleepingEvent['status'] = categorizeStatus(doc.data().startTime.seconds);
           sleepingEventsArray.push(sleepingEvent);
           // console.log(new Date(events[0].startTime.seconds * 1000));
         });

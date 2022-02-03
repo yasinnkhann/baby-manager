@@ -67,6 +67,8 @@ function ListView(props) {
 
   const [line, setLine] = useState(['not set', null]);
 
+  const [view, setView] = useState('upcoming');
+
   function handleLine(index, status) {
     console.log(index);
     if (status === 'set line') {
@@ -138,22 +140,25 @@ function ListView(props) {
           <div className='ml-12 mt-5 text-[#EFF1FA]'>{props.selectedDate.toDateString()}</div>
           <div className='list-view-container mr-10 mt-5 mb-10'>
             {props.sortedDayEvents.map((event, i, array) => {
-              return (
-                <Event
-                  key={i}
-                  handleLine={handleLine}
-                  index={i}
-                  line={line}
-                  arrayLength={array.length}
-                  foodMetric={event.foodMetric}
-                  typeOfFood={event.foodType}
-                  foodAmount={event.foodAmount}
-                  type={event.type}
-                  babyName={event.babyName}
-                  eventStartTime={event.startTime.seconds}
-                  startTime={convertToTime(event.startTime.seconds)}
-                />
-              );
+              console.log(event.status, view);
+              if (view === event.status) {
+                return (
+                  <Event
+                    key={i}
+                    handleLine={handleLine}
+                    index={i}
+                    line={line}
+                    arrayLength={array.length}
+                    foodMetric={event.foodMetric}
+                    typeOfFood={event.foodType}
+                    foodAmount={event.foodAmount}
+                    type={event.type}
+                    babyName={event.babyName}
+                    eventStartTime={event.startTime.seconds}
+                    startTime={convertToTime(event.startTime.seconds)}
+                  />
+                );
+              }
             })}
           </div>
         </div>
