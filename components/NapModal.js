@@ -87,34 +87,34 @@ const NapModal = ({ babyPath, babyGet, babyName }) => {
   //------------------------------------------//
   //----Post Request--------------------------//
   //------------------------------------------//
-  const postNextNap = () => {
+  const postNextNap = async () => {
     if (napDate.getTime() < Date.now()) {
       window.alert('Please Select a valid Date and Time');
       return;
     }
     if (smsNumber !== null) {
-      updateDoc(doc(db, 'users', user.uid, 'babies', babyPath), {
+      await updateDoc(doc(db, 'users', user.uid, 'babies', babyPath), {
         nextNap: napDate,
       }).then(res => {
         addDoc(collection(db, 'users', user.uid, 'babies', babyPath, 'sleepingEvents'), {
           startTime: napDate,
         }).then(res2 => {
-          console.log('res2', res2);
-          console.log('res', res);
+          // console.log('res2', res2);
+          // console.log('res', res);
         });
       });
       toClose();
       babyGet();
       sendSMS();
     } else {
-      updateDoc(doc(db, 'users', user.uid, 'babies', babyPath), {
+      await updateDoc(doc(db, 'users', user.uid, 'babies', babyPath), {
         nextNap: napDate,
       }).then(res => {
         addDoc(collection(db, 'users', user.uid, 'babies', babyPath, 'sleepingEvents'), {
           startTime: napDate,
         }).then(res2 => {
-          console.log('res2', res2);
-          console.log('res', res);
+          // console.log('res2', res2);
+          // console.log('res', res);
         });
       });
       toClose();
@@ -229,6 +229,9 @@ const NapModal = ({ babyPath, babyGet, babyName }) => {
             </div>
             <div style={{ display: 'flex' }} className='flex-col'>
               <p className='text-center'>Send a Text Reminder?</p>
+              <p className='text-center text-xs'>
+                Reminder must be set at least 60 mins in advance.
+              </p>
               <Button
                 style={{ backgroundColor: 'lightgreen' }}
                 className='w-[25px] place-self-center'
