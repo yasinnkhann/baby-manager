@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { styled } from '@mui/material/styles';
 import Card from '@mui/material/Card';
-import CardMedia from '@mui/material/CardMedia';
+// import CardMedia from '@mui/material/CardMedia';
 import CardContent from '@mui/material/CardContent';
 import Switch from '@mui/material/Switch';
 import FormControlLabel from '@mui/material/FormControlLabel';
@@ -10,6 +10,8 @@ import { doc, deleteDoc, updateDoc } from '@firebase/firestore';
 import Button from '@mui/material/Button';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { db } from '../firebaseConfig';
+import EditIcon from '@mui/icons-material/Edit';
+import { Paper, TextField } from '@mui/material';
 
 const MaterialUISwitch = styled(Switch)(({ theme }) => ({
   width: 62,
@@ -101,6 +103,9 @@ export default function BabyCard({
   retrieveSleepData,
   user,
 }) {
+  const [isEditing, setIsEditing] = useState(false);
+  const [editedName, setEditedName] = useState(babyName);
+
   const handleUpdateSleep = async (e, value) => {
     e.preventDefault();
     try {
@@ -110,6 +115,19 @@ export default function BabyCard({
       console.log(err);
     } finally {
       retrieveSleepData();
+    }
+  };
+
+  const handleUpdateBabyName = async e => {
+    e.preventDefault();
+    try {
+      const babyRef = doc(db, 'users', user.uid, 'babies', babyID);
+      await updateDoc(babyRef, { name: editedName });
+    } catch (err) {
+      console.log(err);
+    } finally {
+      retrieveSleepData();
+      setIsEditing(false);
     }
   };
 
@@ -124,10 +142,15 @@ export default function BabyCard({
     }
   };
 
+  // <Card className='animatedCard' style={babyCard} sx={{ maxWidth: 120, maxHeight: 140 }}>
+
   return (
     <React.Fragment>
-      <div style={viewType === 'list' ? babyListViewCard : null}>
-        <Card className='animatedCard' style={babyCard} sx={{ maxWidth: 120, maxHeight: 140 }}>
+      <div
+        className='mt-[2%] h-[200px] w-[275px] sm:h-[275px] sm:w-[350px] md:h-[550px] md:w-[750px] '
+        style={viewType === 'list' ? babyListViewCard : null}
+      >
+        <Card className='animatedCard h-[100%] w-[60%]'>
           <FormControlLabel
             labelPlacement='top'
             label=''
@@ -140,18 +163,14 @@ export default function BabyCard({
             }
           />
           <Link href={`/baby/${babyID}`} key={babyID} passHref>
-            <div style={{ cursor: 'context-menu' }}>
-              <CardMedia
-                style={{ height: '50px', width: '50px', margin: 'auto' }}
-                component='img'
-                height=''
-                image={sleepStatus ? icon.asleep : icon.awake}
-                alt='babyIcon'
-              />
-              <CardContent style={{ textAlign: 'center' }}>
-                <a>{babyName}</a>
-              </CardContent>
-            </div>
+            <CardContent style={{ textAlign: 'center' }}>
+              {sleepStatus ? (
+                <div className='bg-[url("/asleep-baby.svg")] w-[100px] h-[100px] bg-center bg-cover bg-no-repeat'></div>
+              ) : (
+                <div className='bg-[url("/awake-baby.svg")] w-[100px] h-[100px] bg-center bg-cover bg-no-repeat'></div>
+              )}
+              <a>{babyName}</a>
+            </CardContent>
           </Link>
         </Card>
         {viewType === 'list' ? (
@@ -180,13 +199,42 @@ export default function BabyCard({
               <div className='flip-card-back'>
                 <Button
                   onClick={handleDeleteBaby}
-                  style={{ marginTop: '50px' }}
+                  style={{ marginTop: '13px' }}
                   variant='outlined'
                   startIcon={<DeleteIcon />}
                 >
                   {' '}
                   Delete{' '}
                 </Button>
+
+                {isEditing ? (
+                  <form onSubmit={e => handleUpdateBabyName(e)}>
+                    <div>
+                      <Button style={{ marginTop: '2px' }} type='submit' variant='outlined'>
+                        Submit
+                      </Button>
+                      <TextField
+                        style={{
+                          margin: '2px',
+                          backgroundColor: 'transparent',
+                          color: 'black',
+                        }}
+                        type='text'
+                        value={editedName}
+                        onChange={e => setEditedName(e.target.value)}
+                      />
+                    </div>
+                  </form>
+                ) : (
+                  <Button
+                    onClick={() => setIsEditing(!isEditing)}
+                    style={{ margin: '5px' }}
+                    variant='outlined'
+                    startIcon={<EditIcon />}
+                  >
+                    Edit Name
+                  </Button>
+                )}
               </div>
             </div>
           </div>
