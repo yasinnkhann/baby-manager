@@ -10,6 +10,8 @@ import { doc, deleteDoc, updateDoc } from '@firebase/firestore';
 import Button from '@mui/material/Button';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { db } from '../firebaseConfig';
+import EditIcon from '@mui/icons-material/Edit';
+import { Paper, TextField } from '@mui/material';
 
 const MaterialUISwitch = styled(Switch)(({ theme }) => ({
   width: 62,
@@ -103,6 +105,9 @@ export default function BabyCard({
   retrieveSleepData,
   user,
 }) {
+  const [isEditing, setIsEditing] = useState(false);
+  const [editedName, setEditedName] = useState(babyName);
+
   const handleUpdateSleep = async (e, value) => {
     e.preventDefault();
     try {
@@ -112,6 +117,19 @@ export default function BabyCard({
       console.log(err);
     } finally {
       retrieveSleepData();
+    }
+  };
+
+  const handleUpdateBabyName = async e => {
+    e.preventDefault();
+    try {
+      const babyRef = doc(db, 'users', user.uid, 'babies', babyID);
+      await updateDoc(babyRef, { name: editedName });
+    } catch (err) {
+      console.log(err);
+    } finally {
+      retrieveSleepData();
+      setIsEditing(false);
     }
   };
 
@@ -194,13 +212,42 @@ export default function BabyCard({
               <div className='flip-card-back'>
                 <Button
                   onClick={handleDeleteBaby}
-                  style={{ marginTop: '50px' }}
+                  style={{ marginTop: '13px' }}
                   variant='outlined'
                   startIcon={<DeleteIcon />}
                 >
                   {' '}
                   Delete{' '}
                 </Button>
+
+                {isEditing ? (
+                  <form onSubmit={e => handleUpdateBabyName(e)}>
+                    <div>
+                      <Button style={{ marginTop: '2px' }} type='submit' variant='outlined'>
+                        Submit
+                      </Button>
+                      <TextField
+                        style={{
+                          margin: '2px',
+                          backgroundColor: 'transparent',
+                          color: 'black',
+                        }}
+                        type='text'
+                        value={editedName}
+                        onChange={e => setEditedName(e.target.value)}
+                      />
+                    </div>
+                  </form>
+                ) : (
+                  <Button
+                    onClick={() => setIsEditing(!isEditing)}
+                    style={{ margin: '5px' }}
+                    variant='outlined'
+                    startIcon={<EditIcon />}
+                  >
+                    Edit Name
+                  </Button>
+                )}
               </div>
             </div>
           </div>

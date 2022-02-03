@@ -36,6 +36,7 @@ const Baby = ({ baby }) => {
   const [sleepingEvents, setSleepingEvents] = React.useState(null);
   const [feedingEvents, setFeedingEvents] = React.useState(null);
   const [isAsleep, setIsAsleep] = React.useState('Asleep');
+  const [foodArray, setFoodArray] = React.useState(['Loading', 'One Sec']);
   const { asPath } = useRouter();
   const path = asPath.split('/baby/')[1];
 
@@ -97,6 +98,9 @@ const Baby = ({ baby }) => {
     let prettyTime = null;
     if (uglyTime[0] > 12) {
       prettyTime = `${uglyTime[0] % 12}:${uglyTime[1]} pm`;
+    } else if (uglyTime[0] == 0) {
+      uglyTime[0] = 12;
+      prettyTime = `${uglyTime[0]}:${uglyTime[1]} am`;
     } else {
       prettyTime = `${uglyTime[0]}:${uglyTime[1]} am`;
     }
@@ -113,11 +117,18 @@ const Baby = ({ baby }) => {
     let prettyTime = null;
     if (uglyTime[0] > 12) {
       prettyTime = `${uglyTime[0] % 12}:${uglyTime[1]} pm`;
+    } else if (uglyTime[0] == 0) {
+      uglyTime[0] = 12;
+      prettyTime = `${uglyTime[0]}:${uglyTime[1]} am`;
     } else {
       prettyTime = `${uglyTime[0]}:${uglyTime[1]} am`;
     }
-    const prettyDate = `${splitDate[0]} ${splitDate[1]} ${splitDate[2]}, ${splitDate[3]}, ${prettyTime}`;
-    setNextFeed(prettyDate);
+    if (currentBaby.nextFeed.seconds * 1000 > Date.now()) {
+      const prettyDate = `${splitDate[0]} ${splitDate[1]} ${splitDate[2]}, ${splitDate[3]}, ${prettyTime}`;
+      setNextFeed(prettyDate);
+    } else {
+      setNextFeed('Nothing Scheduled');
+    }
   };
 
   const getLastNapDatePretty = () => {
@@ -128,6 +139,9 @@ const Baby = ({ baby }) => {
     let prettyTime = null;
     if (uglyTime[0] > 12) {
       prettyTime = `${uglyTime[0] % 12}:${uglyTime[1]} pm`;
+    } else if (uglyTime[0] == 0) {
+      uglyTime[0] = 12;
+      prettyTime = `${uglyTime[0]}:${uglyTime[1]} am`;
     } else {
       prettyTime = `${uglyTime[0]}:${uglyTime[1]} am`;
     }
@@ -137,6 +151,9 @@ const Baby = ({ baby }) => {
 
   const getNextNapDatePretty = () => {
     if (currentBaby === null) return;
+    setBabyName(currentBaby.name);
+    setFoodArray(currentBaby.babyFoodsArray);
+    babySleep();
     if (currentBaby.nextNap === null) return;
     const uglyDate = new Date(currentBaby.nextNap.seconds * 1000).toString();
     const splitDate = uglyDate.split(' ');
@@ -144,15 +161,19 @@ const Baby = ({ baby }) => {
     let prettyTime = null;
     if (uglyTime[0] > 12) {
       prettyTime = `${uglyTime[0] % 12}:${uglyTime[1]} pm`;
+    } else if (uglyTime[0] == 0) {
+      uglyTime[0] = 12;
+      prettyTime = `${uglyTime[0]}:${uglyTime[1]} am`;
     } else {
       prettyTime = `${uglyTime[0]}:${uglyTime[1]} am`;
     }
-    const prettyDate = `${splitDate[0]} ${splitDate[1]} ${splitDate[2]}, ${splitDate[3]}, ${prettyTime}`;
-    setNextSleep(prettyDate);
-    //
-    setBabyName(currentBaby.name);
-    babySleep();
-    // getLastFeedDatePretty();
+    //check to see if date even makes sense
+    if (currentBaby.nextNap.seconds * 1000 > Date.now()) {
+      const prettyDate = `${splitDate[0]} ${splitDate[1]} ${splitDate[2]}, ${splitDate[3]}, ${prettyTime}`;
+      setNextSleep(prettyDate);
+    } else {
+      setNextSleep('Nothing Scheduled');
+    }
   };
 
   useEffect(() => {
@@ -231,12 +252,17 @@ const Baby = ({ baby }) => {
           </div>
           <div style={{ display: 'grid' }} className='grid-cols-1 text-center'>
             <div className='sb-buffer'>
-              <FoodModal babyPath={path} />
+              <FoodModal
+                babyPath={path}
+                babyGet={babyGet}
+                foodArray={foodArray}
+                setFoodArray={setFoodArray}
+              />
             </div>
           </div>
           <div style={{ display: 'grid' }} className='grid-cols-1 text-center'>
             <div className='sb-buffer'>
-              <NapModal babyPath={path} />
+              <NapModal babyPath={path} babyGet={babyGet} babyName={babyName} />
             </div>
           </div>
         </div>

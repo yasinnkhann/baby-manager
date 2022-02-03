@@ -11,6 +11,7 @@ import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import StaticTimePicker from '@mui/lab/StaticTimePicker';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import DatePicker from '@mui/lab/DatePicker';
+import DateTimePicker from '@mui/lab/DateTimePicker';
 import Button from '@mui/material/Button';
 import { auth, db } from '../firebaseConfig.js';
 import {
@@ -29,6 +30,9 @@ import {
 import { getAuth } from 'firebase/auth';
 import router, { useRouter } from 'next/router';
 import { useAuthState } from 'react-firebase-hooks/auth';
+import Head from 'next/head';
+import InputAdornment from '@mui/material/InputAdornment';
+import AddCircleIcon from '@mui/icons-material/AddCircle';
 
 //work on styling for this, cuts off a little bit at the top when overflow is to big
 const popupStyle = {
@@ -49,7 +53,7 @@ const popupStyle = {
 //------------------Modal Window Section------------------//
 //--------------------------------------------------------//
 
-const FoodModal = ({ babyPath }) => {
+const FoodModal = ({ babyPath, babyGet, foodArray, setFoodArray }) => {
   const [user, loading, error] = useAuthState(auth);
   const [open, setOpen] = React.useState(false);
   const [food, setFood] = React.useState(['Formula', 'Milk', 'Mushy Peas']);
@@ -58,6 +62,7 @@ const FoodModal = ({ babyPath }) => {
   const [date, setDate] = React.useState(null);
   const [feedTime, setFeedTime] = React.useState(new Date());
   const [feedDate, setFeedDate] = React.useState(new Date().toString());
+  const [newFood, setNewFood] = React.useState('');
 
   //------------------------------------------//
   //----To handle open and close Modal--------//
@@ -76,6 +81,10 @@ const FoodModal = ({ babyPath }) => {
   //----Scrape Data and prepare for post------//
   //------------------------------------------//
   const postNextFood = () => {
+    if (feedTime.getTime() < Date.now()) {
+      window.alert('Please input a valid Date and Time.');
+      return;
+    }
     updateDoc(doc(db, 'users', user.uid, 'babies', babyPath), {
       nextFeed: feedTime,
     }).then(res => {
@@ -90,6 +99,24 @@ const FoodModal = ({ babyPath }) => {
       console.log('res', res);
     });
     toClose();
+    babyGet();
+  };
+
+  const addNewFood = () => {
+    if (newFood === '') {
+      window.alert('Please input a new type of food');
+      return;
+    }
+    let newFoodArray = foodArray.slice();
+    newFoodArray.push(newFood);
+    console.log(newFoodArray);
+    updateDoc(doc(db, 'users', user.uid, 'babies', babyPath), {
+      babyFoodsArray: newFoodArray,
+    }).then(res => {
+      console.log(res);
+    });
+    setFoodArray(newFoodArray);
+    setNewFood('');
   };
   //------------------------------------------//
   //------------------------------------------//
@@ -115,6 +142,7 @@ const FoodModal = ({ babyPath }) => {
   //   console.log('Type of Food', foodValue);
   //   console.log('How much Food', foodAmount);
   //   console.log('Time', feedTime);
+  // console.log(newFood);
   //   console.log('Date', feedDate);
   // }, [foodValue, foodAmount, feedTime, feedDate]);
 
@@ -139,94 +167,111 @@ const FoodModal = ({ babyPath }) => {
   //----Render Component----------------------//
   //------------------------------------------//
   return (
-    <div>
-      <Button
-        onClick={toOpen}
-        style={{ width: '300px', backgroundColor: 'lightgreen' }}
-        className='rounded-md border-2 border-emerald-400'
-        variant='contained'
-      >
-        Add New Feed
-      </Button>
-      <Modal open={open} onClose={toClose}>
-        <Box sx={popupStyle} className='sm:w-5/5 md:w-3/5'>
-          <b>{date}</b>
-          <hr />
-          <div className='sb-buffer'></div>
-          <FormControl fullWidth noValidate>
-            <InputLabel id='foodLabel'>Type of Food</InputLabel>
-            <Select
-              onChange={e => setFoodValue(e.target.value)}
-              value={foodValue}
-              labelId='foodLabel'
-              id='foodFed'
-              label='Type of Food'
-            >
-              {food.map(food => {
-                return (
-                  <MenuItem key={food} value={food}>
-                    {food}
-                  </MenuItem>
-                );
-              })}
-            </Select>
-            <div className='sb-buffer'>
-              <label id='amountLabel'>
-                {foodAmount} oz. of {foodValue}
-              </label>
-            </div>
-            <Slider
-              className='py-8'
-              valueLabelDisplay='auto'
-              min={0}
-              max={16}
-              step={0.5}
-              onChange={e => setFoodAmount(e.target.value)}
-            ></Slider>
-            <LocalizationProvider dateAdapter={AdapterDateFns}>
-              <DatePicker
-                label='Date of Feeding'
-                value={feedDate}
-                onChange={newValue => {
-                  setFeedDate(newValue);
-                }}
-                renderInput={params => <TextField {...params} />}
-              />
-            </LocalizationProvider>
-            <div style={{ width: '300px' }} className='place-self-center'>
-              <LocalizationProvider dateAdapter={AdapterDateFns}>
-                <StaticTimePicker
-                  value={feedTime}
-                  onChange={time => setFeedTime(time)}
-                  renderInput={params => <TextField {...params} />}
-                />
-              </LocalizationProvider>
-              <div className='sb-buffer'></div>
-            </div>
-            <div style={{ display: 'flex' }} className='flex-col'>
-              <Button
-                onClick={postNextFood}
-                style={{ backgroundColor: 'lightgreen', width: '50%' }}
-                className='rounded-md border-2 border-emerald-400 place-self-center'
-                variant='contained'
-                starticon='<Icon />'
+    <>
+      <Head>
+        <title>Baby Manager</title>
+      </Head>
+      <div>
+        <Button
+          onClick={toOpen}
+          style={{ width: '300px', backgroundColor: 'lightgreen' }}
+          className='rounded-md border-2 border-emerald-400'
+          variant='contained'
+        >
+          Add New Feed
+        </Button>
+        <Modal open={open} onClose={toClose}>
+          <Box sx={popupStyle} className='sm:w-5/5 md:w-3/5'>
+            <div style={{ width: '300px' }}></div>
+            <b>{date}</b>
+            <hr />
+            <div className='sb-buffer'></div>
+            <FormControl fullWidth noValidate>
+              <InputLabel id='foodLabel'>Type of Food</InputLabel>
+              <Select
+                onChange={e => setFoodValue(e.target.value)}
+                value={foodValue}
+                labelId='foodLabel'
+                id='foodFed'
+                label='Type of Food'
               >
-                Save
-              </Button>
+                {foodArray.map(food => {
+                  return (
+                    <MenuItem key={food} value={food}>
+                      {food}
+                    </MenuItem>
+                  );
+                })}
+              </Select>
               <div className='sb-buffer'></div>
-              <Button
-                style={{ backgroundColor: 'lightgreen', width: '50%' }}
-                className='rounded-md border-2 border-emerald-400 place-self-center'
-                variant='contained'
-                onClick={toClose}
-              >
-                Cancel
-              </Button>
-            </div>
-          </FormControl>
-        </Box>
-      </Modal>
-    </div>
+              <div className='place-self-center'>
+                <Box sx={{ display: 'flex', alignItems: 'flex-end' }}>
+                  <TextField
+                    id='input-with-sx'
+                    label='Input New Food'
+                    variant='standard'
+                    value={newFood}
+                    onChange={e => {
+                      setNewFood(e.target.value);
+                    }}
+                  />
+                  <AddCircleIcon
+                    onClick={addNewFood}
+                    sx={{ color: 'lightgreen', cursor: 'pointer', mr: 1, my: 0.5 }}
+                  />
+                </Box>
+              </div>
+              <div className='sb-buffer'>
+                <label id='amountLabel'>
+                  {foodAmount} oz. of {foodValue}
+                </label>
+              </div>
+              <Slider
+                className='py-8'
+                valueLabelDisplay='auto'
+                min={0}
+                max={16}
+                step={0.5}
+                onChange={e => setFoodAmount(e.target.value)}
+              ></Slider>
+              <div className='place-self-center'>
+                <LocalizationProvider dateAdapter={AdapterDateFns}>
+                  <DateTimePicker
+                    label='Date of Feed'
+                    value={feedTime}
+                    onChange={newValue => {
+                      setFeedTime(newValue);
+                    }}
+                    renderInput={params => <TextField {...params} />}
+                  />
+                </LocalizationProvider>
+                <div className='sb-buffer'></div>
+              </div>
+              <div style={{ display: 'flex' }} className='flex-col'>
+                <Button
+                  onClick={postNextFood}
+                  style={{ backgroundColor: 'lightgreen', width: '50%' }}
+                  className='rounded-md border-2 border-emerald-400 place-self-center'
+                  variant='contained'
+                  starticon='<Icon />'
+                >
+                  Save
+                </Button>
+                <div className='sb-buffer'></div>
+                <Button
+                  style={{ backgroundColor: 'lightgreen', width: '50%' }}
+                  className='rounded-md border-2 border-emerald-400 place-self-center'
+                  variant='contained'
+                  onClick={toClose}
+                >
+                  Cancel
+                </Button>
+              </div>
+            </FormControl>
+          </Box>
+        </Modal>
+      </div>
+    </>
   );
 };
 //--------------------------------------------------------//
