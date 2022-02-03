@@ -67,7 +67,6 @@ export default function MyComponent({ center }) {
         };
         setInfo(options);
       });
-      console.log(results);
     };
 
     const onUnmount = map => {
