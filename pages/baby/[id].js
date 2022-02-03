@@ -268,6 +268,7 @@ const Baby = ({ baby }) => {
                 babyGet={babyGet}
                 foodArray={foodArray}
                 setFoodArray={setFoodArray}
+                babyName={babyName}
               />
             </div>
           </div>
