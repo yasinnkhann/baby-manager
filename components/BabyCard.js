@@ -158,9 +158,9 @@ export default function BabyCard({
 
           <CardContent style={{ textAlign: 'center' }}>
             {sleepStatus ? (
-              <div className='bg-[url("/asleep-baby.svg")] w-[50px] h-[50px] bg-center bg-cover bg-no-repeat'></div>
+              <div className='bg-[url("/asleep-baby.svg")] w-[100px] h-[100px] bg-center bg-cover bg-no-repeat'></div>
             ) : (
-              <div className='bg-[url("/awake-baby.svg")] w-[50px] h-[50px] bg-center bg-cover bg-no-repeat'></div>
+              <div className='bg-[url("/awake-baby.svg")] w-[100px] h-[100px] bg-center bg-cover bg-no-repeat'></div>
             )}
 
             <Link href={`/baby/${babyID}`} key={babyID}>

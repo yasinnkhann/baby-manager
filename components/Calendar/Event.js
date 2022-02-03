@@ -47,7 +47,7 @@ function Event(props) {
     <>
       <Paper
         elevation={6}
-        className='p-2  mb-2 content-center my-[1%] flex flex-row gap-x-20  justify-around items-center box'
+        className='px-5 py-6 w-[100%]  mb-5 content-center my-[1%] flex flex-row justify-between items-center  shrink'
       >
         {/* <div className='rounded mb-2  box bg-[#DCEBFE] flex gap-x-20  justify-start border border-gray-600/75'> */}
         <div className='event-left'>
@@ -64,38 +64,31 @@ function Event(props) {
             </div>
           )}
         </div>
-        <div className='divider border border-[#164e63] opacity-25'></div>
-        <div className='my-6 event-right'>
-          <div className='flex border-solid border-3 border-sky-500'>
-            {!props.gender ? (
-              <div className='baby-name text-[#164e63] mr-2 font-[600]'> {props.babyName}</div>
-            ) : (
-              <div className='baby-name text-[#164e63] mr-5 font-bold'> {props.babyName}</div>
-            )}
-            {props.type === 'eat' ? <DiningIcon /> : <SleepingIcon />}
-            {props.babyName === 'JakeB' ? (
-              <div className='food-calendar align-start'>
-                <div className='food-type ml-6'>protein</div>
-                <div className='food-amount ml-6'>1000 grams</div>
+        {/* <div className='border-solid border-2 border-pink-500'> */}
+        {/* <div className='flex border-solid border-2 border-pink-500'> */}
+
+        <div className='baby-name text-[#164e63] font-bold'> {props.babyName}</div>
+
+        {props.type === 'eat' ? <DiningIcon /> : <SleepingIcon />}
+        {props.babyName === 'JakeB' ? (
+          <div className='food-calendar align-start'>
+            <div className='food-type ml-6'>protein</div>
+            <div className='food-amount ml-6'>1000 grams</div>
+          </div>
+        ) : (
+          <div>
+            {props.type === 'eat' ? (
+              <div className='self-center flex flex-row flex-wrap'>
+                <div>{`${props.foodAmount} ${props.foodMetric}`}</div>
+                <div>{`${props.typeOfFood}`}</div>
               </div>
             ) : (
-              <div className='food-calendar align-start'>
-                {props.type === 'eat' ? (
-                  <div>
-                    <div className='food-type ml-6 text-[#AA336A]'>{props.typeOfFood}</div>
-                    {props.foodMetric ? (
-                      <div className='food-amount ml-6 text-[#AA336A]'>{`${props.foodAmount} ${props.foodMetric}`}</div>
-                    ) : (
-                      <div className='food-amount ml-6'>{`${props.foodAmount}`}</div>
-                    )}
-                  </div>
-                ) : (
-                  ''
-                )}
-              </div>
+              ''
             )}
           </div>
-        </div>
+        )}
+        {/* </div> */}
+        {/* </div> */}
         {/* </div> */}
       </Paper>
     </>

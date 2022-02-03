@@ -162,7 +162,7 @@ export default function Login() {
           </fieldset>
 
           <div className='justify-self-center text-center'>
-            <button className='hover:text-pink-700' onClick={registerButton}>
+            <button className='hover:text-pink-700' onClick={goToRegisterPage}>
               Don&apos;t have an account? Sign up here!
             </button>
           </div>

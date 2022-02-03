@@ -191,12 +191,12 @@ function Calendar() {
   };
 
   return (
-    <div className='my-[25%] lg:my-[7%] md:my-[14%]'>
+    <div className='flex flex-col my-[25%] lg:my-[10%]'>
       <Head>
         <title>BabyManager | Calendar</title>
       </Head>
-      <WeeklyView setSelectedDate={setSelectedDate} selectedDate={selectedDate} />
-      <div className='xsm:w-[300px] md:w-[600px]'>
+      <WeeklyView className='' setSelectedDate={setSelectedDate} selectedDate={selectedDate} />
+      <div className='sm:w-[75%] md:w-[100%] self-center'>
         <ListView sortedDayEvents={sortedDayEvents} selectedDate={selectedDate} />
       </div>
     </div>

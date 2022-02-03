@@ -22,11 +22,11 @@
     height: 75px;
   }
 
-  .list-view-container {
+  /* .list-view-container {
     margin-left: 45px;
     height: 300px;
-    /* overflow: scroll; */
-  }
+
+  } */
 
   .food-calendar {
     margin-top: -10px;

@@ -111,11 +111,11 @@ function ListView(props) {
     //         type={event.type}
     //         babyName={event.babyName}
     //         startTime={event.startTime}
-    //       />
+    //       />   border-solid border-4 border-blue-500
     //     );
     //   })}
     // </div>
-    <>
+    <div className=' w-screen h-full'>
       {props.sortedDayEvents.length === 0 ? (
         <div className='no-events mt-[20px] ml-5 text-[#A020F0]'>
           Oops, your calendar is empty.{' '}
@@ -134,9 +134,9 @@ function ListView(props) {
           to add feed/sleep events.
         </div>
       ) : (
-        <div>
-          <div className='ml-12 mt-5 text-[#EFF1FA]'>{props.selectedDate.toDateString()}</div>
-          <div className='list-view-container mr-10 mt-5 mb-10'>
+        <div className='flex flex-col items-center  w-[100%]'>
+          <div className='mt-5 text-[#EFF1FA]'>{props.selectedDate.toDateString()}</div>
+          <div className='  mt-5 mb-10 w-[95%]'>
             {props.sortedDayEvents.map((event, i, array) => {
               return (
                 <Event
@@ -158,7 +158,7 @@ function ListView(props) {
           </div>
         </div>
       )}
-    </>
+    </div>
   );
 }
 export default ListView;
