@@ -90,13 +90,13 @@ const FoodModal = ({ babyPath, babyGet, foodArray, setFoodArray, babyName }) => 
   //------------------------------------------//
   //----Scrape Data and prepare for post------//
   //------------------------------------------//
-  const postNextFood = () => {
+  const postNextFood = async () => {
     if (smsNumber !== null) {
       if (feedTime.getTime() < Date.now()) {
         window.alert('Please input a valid Date and Time.');
         return;
       }
-      updateDoc(doc(db, 'users', user.uid, 'babies', babyPath), {
+      await updateDoc(doc(db, 'users', user.uid, 'babies', babyPath), {
         nextFeed: feedTime,
       }).then(res => {
         addDoc(collection(db, 'users', user.uid, 'babies', babyPath, 'feedingEvents'), {
@@ -117,7 +117,7 @@ const FoodModal = ({ babyPath, babyGet, foodArray, setFoodArray, babyName }) => 
         window.alert('Please input a valid Date and Time.');
         return;
       }
-      updateDoc(doc(db, 'users', user.uid, 'babies', babyPath), {
+      await updateDoc(doc(db, 'users', user.uid, 'babies', babyPath), {
         nextFeed: feedTime,
       }).then(res => {
         addDoc(collection(db, 'users', user.uid, 'babies', babyPath, 'feedingEvents'), {
@@ -158,7 +158,7 @@ const FoodModal = ({ babyPath, babyGet, foodArray, setFoodArray, babyName }) => 
     setSmsNumber(null);
   };
 
-  const addNewFood = () => {
+  const addNewFood = async () => {
     if (newFood === '') {
       window.alert('Please input a new type of food');
       return;
@@ -166,7 +166,7 @@ const FoodModal = ({ babyPath, babyGet, foodArray, setFoodArray, babyName }) => 
     let newFoodArray = foodArray.slice();
     newFoodArray.push(newFood);
     console.log(newFoodArray);
-    updateDoc(doc(db, 'users', user.uid, 'babies', babyPath), {
+    await updateDoc(doc(db, 'users', user.uid, 'babies', babyPath), {
       babyFoodsArray: newFoodArray,
     }).then(res => {
       console.log(res);

@@ -87,13 +87,13 @@ const NapModal = ({ babyPath, babyGet, babyName }) => {
   //------------------------------------------//
   //----Post Request--------------------------//
   //------------------------------------------//
-  const postNextNap = () => {
+  const postNextNap = async () => {
     if (napDate.getTime() < Date.now()) {
       window.alert('Please Select a valid Date and Time');
       return;
     }
     if (smsNumber !== null) {
-      updateDoc(doc(db, 'users', user.uid, 'babies', babyPath), {
+      await updateDoc(doc(db, 'users', user.uid, 'babies', babyPath), {
         nextNap: napDate,
       }).then(res => {
         addDoc(collection(db, 'users', user.uid, 'babies', babyPath, 'sleepingEvents'), {
@@ -107,7 +107,7 @@ const NapModal = ({ babyPath, babyGet, babyName }) => {
       babyGet();
       sendSMS();
     } else {
-      updateDoc(doc(db, 'users', user.uid, 'babies', babyPath), {
+      await updateDoc(doc(db, 'users', user.uid, 'babies', babyPath), {
         nextNap: napDate,
       }).then(res => {
         addDoc(collection(db, 'users', user.uid, 'babies', babyPath, 'sleepingEvents'), {
