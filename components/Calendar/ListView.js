@@ -127,7 +127,6 @@ function ListView(props) {
   }
 
   function handleToggleChange(view) {
-    debugger;
     console.log(view);
     setView(view);
   }
