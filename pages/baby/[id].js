@@ -63,8 +63,12 @@ const Baby = ({ baby }) => {
       id: doc.id,
       ...doc.data(),
     }));
+    if (sortedSleeps.length < 1) return;
     for (var i = 0; i < sortedSleeps.length; i++) {
-      if (sortedSleeps[i].startTime.seconds < currentBaby.nextNap.seconds) {
+      if (
+        sortedSleeps[i].startTime.seconds <= currentBaby.nextNap.seconds &&
+        sortedSleeps[i].startTime.seconds * 1000 < Date.now()
+      ) {
         setSleepingEvents(sortedSleeps[i].startTime.seconds);
         return;
       } else {
@@ -79,8 +83,12 @@ const Baby = ({ baby }) => {
     const babyQuery = query(babyData, orderBy('startTime', 'desc'), limit(10));
     const feeds = await getDocs(babyQuery);
     const sortedFeeds = feeds.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+    if (sortedFeeds.length < 1) return;
     for (var i = 0; i < sortedFeeds.length; i++) {
-      if (sortedFeeds[i].startTime.seconds < currentBaby.nextFeed.seconds) {
+      if (
+        sortedFeeds[i].startTime.seconds <= currentBaby.nextFeed.seconds &&
+        sortedFeeds[i].startTime.seconds * 1000 < Date.now()
+      ) {
         setFeedingEvents(sortedFeeds[i].startTime.seconds);
         return;
       } else {
@@ -110,6 +118,7 @@ const Baby = ({ baby }) => {
 
   const getNextFeedDatePretty = () => {
     if (currentBaby === null) return;
+    setBabyName(currentBaby.name);
     if (currentBaby.nextFeed === null) return;
     const uglyDate = new Date(currentBaby.nextFeed.seconds * 1000).toString();
     const splitDate = uglyDate.split(' ');
@@ -123,6 +132,7 @@ const Baby = ({ baby }) => {
     } else {
       prettyTime = `${uglyTime[0]}:${uglyTime[1]} am`;
     }
+    //check to see if date makes sense
     if (currentBaby.nextFeed.seconds * 1000 > Date.now()) {
       const prettyDate = `${splitDate[0]} ${splitDate[1]} ${splitDate[2]}, ${splitDate[3]}, ${prettyTime}`;
       setNextFeed(prettyDate);
@@ -211,13 +221,14 @@ const Baby = ({ baby }) => {
         <div className='md:sb-container md:grid-cols-1'>
           <div style={{ display: 'grid' }} className='grid-cols-2 text-center'>
             <div className='place-self-center'>
-              <div className='bg-[url("/baby3.svg")] w-[125px] h-[125px] bg-center bg-cover bg-no-repeat'></div>
+              <div className='bg-[url("/awake-baby.svg")] w-[125px] h-[125px] bg-center bg-cover bg-no-repeat'></div>
             </div>
             <div>
               <div className='sb-buffer'></div>
               <b>The baby is {isAsleep}</b>
             </div>
           </div>
+          <div className='sb-buffer'></div>
           <div style={{ display: 'grid' }} className='grid-cols-2 text-center sb-buffer'>
             <div>
               <b>Last Feed</b>
@@ -257,6 +268,7 @@ const Baby = ({ baby }) => {
                 babyGet={babyGet}
                 foodArray={foodArray}
                 setFoodArray={setFoodArray}
+                babyName={babyName}
               />
             </div>
           </div>

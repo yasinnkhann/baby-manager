@@ -7,22 +7,26 @@ const client = require('twilio')(
 );
 
 export default async (req, res) => {
-  res.statusCode = 200;
-  res.setHeader('Content-Type', 'application/json');
+  return new Promise((resolve, reject) => {
+    res.statusCode = 200;
+    res.setHeader('Content-Type', 'application/json');
 
-  client.messages
-    .create({
-      from: process.env.NEXT_PUBLIC_MESSAGING_SERVICE_SID,
-      to: req.body.to,
-      body: req.body.body,
-      scheduleType: 'fixed',
-      sendAt: req.body.date,
-    })
-    .then(() => {
-      res.send(JSON.stringify({ success: true }));
-    })
-    .catch(err => {
-      console.log(err);
-      res.send(JSON.stringify({ success: false }));
-    });
+    client.messages
+      .create({
+        from: process.env.NEXT_PUBLIC_REACT_APP_TWILIO_PHONE_NUMBER,
+        to: req.body.to,
+        body: req.body.body,
+        scheduleType: 'fixed',
+        sendAt: req.body.date,
+      })
+      .then(() => {
+        res.send(JSON.stringify({ success: true }));
+        resolve();
+      })
+      .catch(err => {
+        console.log(err);
+        res.send(JSON.stringify({ success: false }));
+        resolve();
+      });
+  });
 };
