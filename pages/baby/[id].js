@@ -63,7 +63,7 @@ const Baby = ({ baby }) => {
       id: doc.id,
       ...doc.data(),
     }));
-    if (sortedSleeps.length === 0) return;
+    if (sortedSleeps.length < 1) return;
     for (var i = 0; i < sortedSleeps.length; i++) {
       if (
         sortedSleeps[i].startTime.seconds <= currentBaby.nextNap.seconds &&
@@ -83,7 +83,7 @@ const Baby = ({ baby }) => {
     const babyQuery = query(babyData, orderBy('startTime', 'desc'), limit(10));
     const feeds = await getDocs(babyQuery);
     const sortedFeeds = feeds.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-    if (sortedFeeds.length === 0) return;
+    if (sortedFeeds.length < 1) return;
     for (var i = 0; i < sortedFeeds.length; i++) {
       if (
         sortedFeeds[i].startTime.seconds <= currentBaby.nextFeed.seconds &&
@@ -268,6 +268,7 @@ const Baby = ({ baby }) => {
                 babyGet={babyGet}
                 foodArray={foodArray}
                 setFoodArray={setFoodArray}
+                babyName={babyName}
               />
             </div>
           </div>
