@@ -148,7 +148,7 @@ export default function Overview() {
       // Add new user to inviter's authorized users subcollection/array
       // Set the invitation document's accepted field to "true"
     }
-  }, [user, loading, router, inviteToken]);
+  }, [user, loading, router]);
 
   const retrieveSleepData = async () => {
     try {
