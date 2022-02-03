@@ -31,6 +31,8 @@ import { getAuth } from 'firebase/auth';
 import router, { useRouter } from 'next/router';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import Head from 'next/head';
+import InputAdornment from '@mui/material/InputAdornment';
+import AddCircleIcon from '@mui/icons-material/AddCircle';
 
 //work on styling for this, cuts off a little bit at the top when overflow is to big
 const popupStyle = {
@@ -60,6 +62,7 @@ const FoodModal = ({ babyPath, babyGet, foodArray, setFoodArray }) => {
   const [date, setDate] = React.useState(null);
   const [feedTime, setFeedTime] = React.useState(new Date());
   const [feedDate, setFeedDate] = React.useState(new Date().toString());
+  const [newFood, setNewFood] = React.useState('');
 
   //------------------------------------------//
   //----To handle open and close Modal--------//
@@ -94,6 +97,23 @@ const FoodModal = ({ babyPath, babyGet, foodArray, setFoodArray }) => {
     toClose();
     babyGet();
   };
+
+  const addNewFood = () => {
+    if (newFood === '') {
+      window.alert('Please input a new type of food');
+      return;
+    }
+    let newFoodArray = foodArray.slice();
+    newFoodArray.push(newFood);
+    console.log(newFoodArray);
+    updateDoc(doc(db, 'users', user.uid, 'babies', babyPath), {
+      babyFoodsArray: newFoodArray,
+    }).then(res => {
+      console.log(res);
+    });
+    setFoodArray(newFoodArray);
+    setNewFood('');
+  };
   //------------------------------------------//
   //------------------------------------------//
   //------------------------------------------//
@@ -118,6 +138,7 @@ const FoodModal = ({ babyPath, babyGet, foodArray, setFoodArray }) => {
   //   console.log('Type of Food', foodValue);
   //   console.log('How much Food', foodAmount);
   //   console.log('Time', feedTime);
+  // console.log(newFood);
   //   console.log('Date', feedDate);
   // }, [foodValue, foodAmount, feedTime, feedDate]);
 
@@ -178,6 +199,24 @@ const FoodModal = ({ babyPath, babyGet, foodArray, setFoodArray }) => {
                   );
                 })}
               </Select>
+              <div className='sb-buffer'></div>
+              <div className='place-self-center'>
+                <Box sx={{ display: 'flex', alignItems: 'flex-end' }}>
+                  <TextField
+                    id='input-with-sx'
+                    label='Input New Food'
+                    variant='standard'
+                    value={newFood}
+                    onChange={e => {
+                      setNewFood(e.target.value);
+                    }}
+                  />
+                  <AddCircleIcon
+                    onClick={addNewFood}
+                    sx={{ color: 'lightgreen', cursor: 'pointer', mr: 1, my: 0.5 }}
+                  />
+                </Box>
+              </div>
               <div className='sb-buffer'>
                 <label id='amountLabel'>
                   {foodAmount} oz. of {foodValue}
@@ -191,23 +230,8 @@ const FoodModal = ({ babyPath, babyGet, foodArray, setFoodArray }) => {
                 step={0.5}
                 onChange={e => setFoodAmount(e.target.value)}
               ></Slider>
-              {/* <LocalizationProvider dateAdapter={AdapterDateFns}>
-                <DatePicker
-                  label='Date of Feeding'
-                  value={feedDate}
-                  onChange={newValue => {
-                    setFeedDate(newValue);
-                  }}
-                  renderInput={params => <TextField {...params} />}
-                /> */}
-              {/* </LocalizationProvider> */}
               <div className='place-self-center'>
                 <LocalizationProvider dateAdapter={AdapterDateFns}>
-                  {/* <StaticTimePicker
-                    value={feedTime}
-                    onChange={time => setFeedTime(time)}
-                    renderInput={params => <TextField {...params} />}
-                  /> */}
                   <DateTimePicker
                     label='Date of Feed'
                     value={feedTime}

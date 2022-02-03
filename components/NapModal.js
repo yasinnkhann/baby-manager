@@ -88,20 +88,34 @@ const NapModal = ({ babyPath, babyGet, babyName }) => {
   //----Post Request--------------------------//
   //------------------------------------------//
   const postNextNap = () => {
-    console.log(napDate);
-    updateDoc(doc(db, 'users', user.uid, 'babies', babyPath), {
-      nextNap: napDate,
-    }).then(res => {
-      addDoc(collection(db, 'users', user.uid, 'babies', babyPath, 'sleepingEvents'), {
-        startTime: napDate,
-      }).then(res2 => {
-        console.log('res2', res2);
+    if (smsNumber !== null) {
+      updateDoc(doc(db, 'users', user.uid, 'babies', babyPath), {
+        nextNap: napDate,
+      }).then(res => {
+        addDoc(collection(db, 'users', user.uid, 'babies', babyPath, 'sleepingEvents'), {
+          startTime: napDate,
+        }).then(res2 => {
+          console.log('res2', res2);
+          console.log('res', res);
+        });
       });
-      console.log('res', res);
-    });
-    toClose();
-    babyGet();
-    sendSMS();
+      toClose();
+      babyGet();
+      sendSMS();
+    } else {
+      updateDoc(doc(db, 'users', user.uid, 'babies', babyPath), {
+        nextNap: napDate,
+      }).then(res => {
+        addDoc(collection(db, 'users', user.uid, 'babies', babyPath, 'sleepingEvents'), {
+          startTime: napDate,
+        }).then(res2 => {
+          console.log('res2', res2);
+          console.log('res', res);
+        });
+      });
+      toClose();
+      babyGet();
+    }
   };
 
   const sendSMS = async () => {
@@ -110,7 +124,7 @@ const NapModal = ({ babyPath, babyGet, babyName }) => {
       body: `This is a nap reminder for ${babyName} scheduled for ${napDate.toLocaleString(
         'en-US'
       )}`,
-      date: reminderTime,
+      date: reminderTime.toISOString(),
     };
 
     console.log(notificationBody);
@@ -124,6 +138,7 @@ const NapModal = ({ babyPath, babyGet, babyName }) => {
 
     const data = await res.json();
     console.log(data);
+    setSmsNumber(null);
   };
 
   //------------------------------------------//

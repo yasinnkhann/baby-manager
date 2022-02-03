@@ -2,7 +2,8 @@
 const client = require('twilio')(
   process.env.NEXT_PUBLIC_REACT_APP_TWILIO_ACCOUNT_SID,
   process.env.NEXT_PUBLIC_REACT_APP_TWILIO_AUTH_TOKEN,
-  process.env.NEXT_PUBLIC_MESSAGING_SERVICE_SID
+  process.env.NEXT_PUBLIC_MESSAGING_SERVICE_SID,
+  process.env.NEXT_PUBLIC_REACT_APP_TWILIO_PHONE_NUMBER
 );
 
 export default async (req, res) => {
@@ -11,7 +12,7 @@ export default async (req, res) => {
 
   client.messages
     .create({
-      from: process.env.NEXT_PUBLIC_MESSAGING_SERVICE_SID,
+      from: process.env.NEXT_PUBLIC_REACT_APP_TWILIO_PHONE_NUMBER,
       to: req.body.to,
       body: req.body.body,
       scheduleType: 'fixed',

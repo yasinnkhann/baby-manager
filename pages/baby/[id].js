@@ -145,8 +145,8 @@ const Baby = ({ baby }) => {
   const getNextNapDatePretty = () => {
     if (currentBaby === null) return;
     setBabyName(currentBaby.name);
-    babySleep();
     setFoodArray(currentBaby.babyFoodsArray);
+    babySleep();
     if (currentBaby.nextNap === null) return;
     const uglyDate = new Date(currentBaby.nextNap.seconds * 1000).toString();
     const splitDate = uglyDate.split(' ');
