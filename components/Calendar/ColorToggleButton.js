@@ -6,6 +6,11 @@ export default function ColorToggleButton(props) {
   const [alignment, setAlignment] = React.useState('upcoming');
 
   const handleChange = (event, newAlignment) => {
+    // console.log(event)
+    // console.log(newAlignment)
+    if (alignment === event.target.value) {
+      return;
+    }
     setAlignment(newAlignment);
     props.handleToggleChange(newAlignment);
   };

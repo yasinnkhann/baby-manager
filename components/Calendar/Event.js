@@ -27,10 +27,7 @@ function Event(props) {
 
   var lineOutput = '';
   if (new Date().getSeconds() < props.eventStartTime) {
-    console.log('props.line', props.line);
     if (props.line[0] === 'not set') {
-      console.log('running', props.line);
-
       props.handleLine(props.index, 'set line');
     }
     if (props.line === 'set at line') {
@@ -40,8 +37,6 @@ function Event(props) {
       }
     }
   }
-
-  console.log(props.line);
 
   return (
     <>
@@ -71,7 +66,7 @@ function Event(props) {
             <>
               {props.type === 'eat' ? (
                 <div className='food-type self-center '>
-                  {`${props.typeOfFood}, `}
+                  {`${props.typeOfFood}`}
                   {props.foodMetric ? (
                     <div className='food-amount self-center '>{`${props.foodAmount} ${props.foodMetric}`}</div>
                   ) : (
