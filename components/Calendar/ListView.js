@@ -4,7 +4,13 @@ import Link from 'next/link';
 import BasicSelect from './BasicSelect.js';
 import ColorToggleButton from './ColorToggleButton.js';
 var events = [
-  { babyName: 'Daniel', gender: 'male', type: 'sleep', startTime: '6AM', endTime: '12PM' },
+  {
+    babyName: 'Daniel',
+    gender: 'male',
+    type: 'sleep',
+    startTime: '6AM',
+    endTime: '12PM',
+  },
   {
     babyName: 'Alissa',
     gender: 'female',
@@ -13,7 +19,13 @@ var events = [
     foodAmount: '28oz',
     startTime: '8AM',
   },
-  { babyName: 'Derek', gender: 'male', type: 'sleep', startTime: '9AM', endTime: '12PM' },
+  {
+    babyName: 'Derek',
+    gender: 'male',
+    type: 'sleep',
+    startTime: '9AM',
+    endTime: '12PM',
+  },
   {
     babyName: 'JakeB',
     gender: 'male',
@@ -22,7 +34,13 @@ var events = [
     foodAmount: '28oz',
     startTime: '11AM',
   },
-  { babyName: 'Ryan', gender: 'female', type: 'sleep', startTime: '3PM', endTime: '12PM' },
+  {
+    babyName: 'Ryan',
+    gender: 'female',
+    type: 'sleep',
+    startTime: '3PM',
+    endTime: '12PM',
+  },
   {
     babyName: 'Yasin',
     gender: 'male',
@@ -31,7 +49,13 @@ var events = [
     foodAmount: '28oz',
     startTime: '4PM',
   },
-  { babyName: 'Edward', gender: 'male', type: 'sleep', startTime: '7PM', endTime: '12PM' },
+  {
+    babyName: 'Edward',
+    gender: 'male',
+    type: 'sleep',
+    startTime: '7PM',
+    endTime: '12PM',
+  },
   {
     babyName: 'Hatha',
     gender: 'male',
@@ -103,7 +127,6 @@ function ListView(props) {
   }
 
   function handleToggleChange(view) {
-    debugger;
     console.log(view);
     setView(view);
   }
@@ -146,13 +169,13 @@ function ListView(props) {
               {' '}
               <br></br> <br></br>
               <Link className='text-[#A020F0]' href='/addBaby'>
-                "Add A Baby"
+                &quot;Add A Baby&quot;
               </Link>{' '}
             </div>
             {'or go to '}{' '}
             <div className='underline inline'>
               {' '}
-              <Link href='/overview'> "Baby Overview"</Link>{' '}
+              <Link href='/overview'>&quot;Baby Overview&quot;</Link>{' '}
             </div>{' '}
             to add feed/sleep events.
           </div>
