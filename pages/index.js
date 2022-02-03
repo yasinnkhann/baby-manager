@@ -1,9 +1,7 @@
-import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth, db } from '../firebaseConfig.js';
 import LoadingPage from '../components/LoadingPage.js';
-import { signOut } from 'firebase/auth';
 import { useEffect } from 'react';
 import { doc, setDoc, serverTimestamp, getDoc } from 'firebase/firestore';
 
@@ -37,16 +35,6 @@ export default function Home() {
     };
     updateUsers();
   }, [user]);
-
-  const handleSignOut = async () => {
-    try {
-      await signOut(auth);
-      console.log('signed out!');
-      router.push('/login');
-    } catch (err) {
-      console.error(err);
-    }
-  };
 
   const handleUser = () => {
     if (loading) {

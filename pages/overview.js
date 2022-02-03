@@ -131,7 +131,7 @@ export default function Overview() {
     } else if (user) {
       retrieveSleepData();
     }
-  }, [user, loading, router, inviteToken]);
+  }, [user, loading, router]);
 
   const retrieveSleepData = async () => {
     try {

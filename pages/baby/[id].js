@@ -58,7 +58,10 @@ const Baby = ({ baby }) => {
     const babyData = collection(db, 'users', user.uid, 'babies', path, 'sleepingEvents');
     const babyQuery = query(babyData, orderBy('startTime', 'desc'), limit(10));
     const sleeps = await getDocs(babyQuery);
-    const sortedSleeps = sleeps.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+    const sortedSleeps = sleeps.docs.map(doc => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
     for (var i = 0; i < sortedSleeps.length; i++) {
       if (sortedSleeps[i].startTime.seconds < currentBaby.nextNap.seconds) {
         setSleepingEvents(sortedSleeps[i].startTime.seconds);
