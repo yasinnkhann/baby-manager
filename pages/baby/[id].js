@@ -36,6 +36,7 @@ const Baby = ({ baby }) => {
   const [sleepingEvents, setSleepingEvents] = React.useState(null);
   const [feedingEvents, setFeedingEvents] = React.useState(null);
   const [isAsleep, setIsAsleep] = React.useState('Asleep');
+  const [foodArray, setFoodArray] = React.useState(['Loading', 'One Sec']);
   const { asPath } = useRouter();
   const path = asPath.split('/baby/')[1];
 
@@ -62,8 +63,12 @@ const Baby = ({ baby }) => {
       id: doc.id,
       ...doc.data(),
     }));
+    if (sortedSleeps.length === 0) return;
     for (var i = 0; i < sortedSleeps.length; i++) {
-      if (sortedSleeps[i].startTime.seconds < currentBaby.nextNap.seconds) {
+      if (
+        sortedSleeps[i].startTime.seconds <= currentBaby.nextNap.seconds &&
+        sortedSleeps[i].startTime.seconds * 1000 < Date.now()
+      ) {
         setSleepingEvents(sortedSleeps[i].startTime.seconds);
         return;
       } else {
@@ -78,8 +83,12 @@ const Baby = ({ baby }) => {
     const babyQuery = query(babyData, orderBy('startTime', 'desc'), limit(10));
     const feeds = await getDocs(babyQuery);
     const sortedFeeds = feeds.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+    if (sortedFeeds.length === 0) return;
     for (var i = 0; i < sortedFeeds.length; i++) {
-      if (sortedFeeds[i].startTime.seconds < currentBaby.nextFeed.seconds) {
+      if (
+        sortedFeeds[i].startTime.seconds <= currentBaby.nextFeed.seconds &&
+        sortedFeeds[i].startTime.seconds * 1000 < Date.now()
+      ) {
         setFeedingEvents(sortedFeeds[i].startTime.seconds);
         return;
       } else {
@@ -97,6 +106,9 @@ const Baby = ({ baby }) => {
     let prettyTime = null;
     if (uglyTime[0] > 12) {
       prettyTime = `${uglyTime[0] % 12}:${uglyTime[1]} pm`;
+    } else if (uglyTime[0] == 0) {
+      uglyTime[0] = 12;
+      prettyTime = `${uglyTime[0]}:${uglyTime[1]} am`;
     } else {
       prettyTime = `${uglyTime[0]}:${uglyTime[1]} am`;
     }
@@ -106,6 +118,7 @@ const Baby = ({ baby }) => {
 
   const getNextFeedDatePretty = () => {
     if (currentBaby === null) return;
+    setBabyName(currentBaby.name);
     if (currentBaby.nextFeed === null) return;
     const uglyDate = new Date(currentBaby.nextFeed.seconds * 1000).toString();
     const splitDate = uglyDate.split(' ');
@@ -113,11 +126,19 @@ const Baby = ({ baby }) => {
     let prettyTime = null;
     if (uglyTime[0] > 12) {
       prettyTime = `${uglyTime[0] % 12}:${uglyTime[1]} pm`;
+    } else if (uglyTime[0] == 0) {
+      uglyTime[0] = 12;
+      prettyTime = `${uglyTime[0]}:${uglyTime[1]} am`;
     } else {
       prettyTime = `${uglyTime[0]}:${uglyTime[1]} am`;
     }
-    const prettyDate = `${splitDate[0]} ${splitDate[1]} ${splitDate[2]}, ${splitDate[3]}, ${prettyTime}`;
-    setNextFeed(prettyDate);
+    //check to see if date makes sense
+    if (currentBaby.nextFeed.seconds * 1000 > Date.now()) {
+      const prettyDate = `${splitDate[0]} ${splitDate[1]} ${splitDate[2]}, ${splitDate[3]}, ${prettyTime}`;
+      setNextFeed(prettyDate);
+    } else {
+      setNextFeed('Nothing Scheduled');
+    }
   };
 
   const getLastNapDatePretty = () => {
@@ -128,6 +149,9 @@ const Baby = ({ baby }) => {
     let prettyTime = null;
     if (uglyTime[0] > 12) {
       prettyTime = `${uglyTime[0] % 12}:${uglyTime[1]} pm`;
+    } else if (uglyTime[0] == 0) {
+      uglyTime[0] = 12;
+      prettyTime = `${uglyTime[0]}:${uglyTime[1]} am`;
     } else {
       prettyTime = `${uglyTime[0]}:${uglyTime[1]} am`;
     }
@@ -137,6 +161,9 @@ const Baby = ({ baby }) => {
 
   const getNextNapDatePretty = () => {
     if (currentBaby === null) return;
+    setBabyName(currentBaby.name);
+    setFoodArray(currentBaby.babyFoodsArray);
+    babySleep();
     if (currentBaby.nextNap === null) return;
     const uglyDate = new Date(currentBaby.nextNap.seconds * 1000).toString();
     const splitDate = uglyDate.split(' ');
@@ -144,15 +171,19 @@ const Baby = ({ baby }) => {
     let prettyTime = null;
     if (uglyTime[0] > 12) {
       prettyTime = `${uglyTime[0] % 12}:${uglyTime[1]} pm`;
+    } else if (uglyTime[0] == 0) {
+      uglyTime[0] = 12;
+      prettyTime = `${uglyTime[0]}:${uglyTime[1]} am`;
     } else {
       prettyTime = `${uglyTime[0]}:${uglyTime[1]} am`;
     }
-    const prettyDate = `${splitDate[0]} ${splitDate[1]} ${splitDate[2]}, ${splitDate[3]}, ${prettyTime}`;
-    setNextSleep(prettyDate);
-    //
-    setBabyName(currentBaby.name);
-    babySleep();
-    // getLastFeedDatePretty();
+    //check to see if date even makes sense
+    if (currentBaby.nextNap.seconds * 1000 > Date.now()) {
+      const prettyDate = `${splitDate[0]} ${splitDate[1]} ${splitDate[2]}, ${splitDate[3]}, ${prettyTime}`;
+      setNextSleep(prettyDate);
+    } else {
+      setNextSleep('Nothing Scheduled');
+    }
   };
 
   useEffect(() => {
@@ -190,13 +221,14 @@ const Baby = ({ baby }) => {
         <div className='md:sb-container md:grid-cols-1'>
           <div style={{ display: 'grid' }} className='grid-cols-2 text-center'>
             <div className='place-self-center'>
-              <div className='bg-[url("/baby3.svg")] w-[125px] h-[125px] bg-center bg-cover bg-no-repeat'></div>
+              <div className='bg-[url("/awake-baby.svg")] w-[125px] h-[125px] bg-center bg-cover bg-no-repeat'></div>
             </div>
             <div>
               <div className='sb-buffer'></div>
               <b>The baby is {isAsleep}</b>
             </div>
           </div>
+          <div className='sb-buffer'></div>
           <div style={{ display: 'grid' }} className='grid-cols-2 text-center sb-buffer'>
             <div>
               <b>Last Feed</b>
@@ -231,12 +263,17 @@ const Baby = ({ baby }) => {
           </div>
           <div style={{ display: 'grid' }} className='grid-cols-1 text-center'>
             <div className='sb-buffer'>
-              <FoodModal babyPath={path} />
+              <FoodModal
+                babyPath={path}
+                babyGet={babyGet}
+                foodArray={foodArray}
+                setFoodArray={setFoodArray}
+              />
             </div>
           </div>
           <div style={{ display: 'grid' }} className='grid-cols-1 text-center'>
             <div className='sb-buffer'>
-              <NapModal babyPath={path} />
+              <NapModal babyPath={path} babyGet={babyGet} babyName={babyName} />
             </div>
           </div>
         </div>
