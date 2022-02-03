@@ -1,38 +1,35 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth, db } from '../firebaseConfig.js';
-import { collection, doc, setDoc, getDoc, updateDoc, addDoc } from 'firebase/firestore';
-import Link from 'next/link';
+import {
+  collection,
+  doc,
+  setDoc,
+  getDoc,
+  updateDoc,
+  addDoc,
+  getDocs,
+  query,
+} from 'firebase/firestore';
+import { useRouter } from 'next/router';
 const crypto = require('crypto');
 
 export default function User() {
   const [email, setEmail] = useState('');
   const [user, loading, error] = useAuthState(auth);
+  const [authorizedUsers, setAuthorizedUsers] = useState([]);
+  const router = useRouter();
+  // console.log('authorizedUsers:', authorizedUsers);
 
   useEffect(() => {
-    if (user) {
-      console.log(user);
+    if (!user) {
+      router.push('/login');
+    } else if (user) {
+      getAuthorizedUsers().then(() => console.log('authorizedUsers:', authorizedUsers));
     }
   }, [user]);
 
-  const getUserInfo = async () => {
-    const userRef = doc(db, 'users', user.uid);
-    const docSnap = await getDoc(userRef);
-
-    if (docSnap.exists()) {
-      console.log('Document data:', docSnap.data());
-    } else {
-      // doc.data() will be undefined in this case
-      console.log('No such document!');
-    }
-  };
-
   const createInvitation = async token => {
-    // const docRef = await addDoc(collection(db, 'users', user.uid, 'invitations'), {
-    //   emailSentTo: email,
-    //   token: token,
-    //   accepted: false,
-    // });
     await addDoc(collection(db, 'invitations'), {
       inviter_id: user.uid,
       emailSentTo: email,
@@ -64,28 +61,61 @@ export default function User() {
     alert('Invite Sent!');
   };
 
+  const getAuthorizedUsers = async () => {
+    console.log('getAuthorizedUsers invoked...');
+    // const q = query(collection(db, 'users', user.uid, 'authorized_users'));
+    const q = collection(db, 'users', user.uid, 'authorized_users');
+    const querySnapshot = await getDocs(q);
+    console.log('querySnapshot:', querySnapshot);
+
+    // const querySnapshot = await getDocs(db, 'users', user.uid, 'authorized_users');
+    let authorizedUsersData = [];
+    querySnapshot.forEach(async doc1 => {
+      const docRef = doc(db, 'users', doc1.data().userId);
+      const docSnap = await getDoc(docRef);
+      console.log('docSnap.data():', docSnap.data());
+      console.log(doc1.id, ' => ', doc1.data());
+      console.log(`first: ${docSnap.data().firstName + ' last: ' + docSnap.data().lastName}`);
+      authorizedUsersData.push(`${docSnap.data().firstName + ' ' + docSnap.data().lastName}`);
+
+      setAuthorizedUsers(authorizedUsersData);
+
+      // setAuthorizedUsers(authorizedUsersData);
+    });
+    // console.log('authorizedUsersData:', authorizedUsersData);
+    // setAuthorizedUsers(authorizedUsersData);
+    // return authorizedUsers;
+  };
+
   return user ? (
     <article>
       <section className='h-screen  flex flex-col justify-center mx-[2%]'>
+        <div>User Profile</div>
         <div>
           <div>Name: {user.displayName}</div>
           <div>Email: {user.email}</div>
           <div>Phone Number: {user.phoneNumber}</div>
         </div>
         <div>
-          <div>[List of names that are authorized to manage your baby details]</div>
+          <br />
           <div>Invite another user to manage your babies</div>
           <div>
             <form onSubmit={handleInviteButton}>
               <input type='email' onChange={handleChange}></input>
               <button type='submit'>Invite User</button>
             </form>
-            <button onClick={getUserInfo}>Print User Info</button>
-            {/* <Link href='/'>
-              <a>Invitation Link</a>
-            </Link> */}
+          </div>
+          <br />
+          <div>
             <div>
-              <button>Sign Out Button</button>
+              Users that can manage your babies:
+              <div>User 1</div>
+              <div>User 2</div>
+              <div>User 3</div>
+              <br />
+              {authorizedUsers
+                ? authorizedUsers.map((user, index) => <div key={index}>{user}</div>)
+                : null}
             </div>
           </div>
         </div>

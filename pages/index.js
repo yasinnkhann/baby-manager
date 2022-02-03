@@ -12,7 +12,7 @@ export default function Home() {
   const router = useRouter();
   const { query } = useRouter();
   const inviteToken = query;
-  console.log(" '/' inviteToken", inviteToken);
+  // console.log('"/" form inviteToken:', inviteToken);
 
   useEffect(() => {
     const updateUsers = async () => {
@@ -42,8 +42,7 @@ export default function Home() {
     try {
       await signOut(auth);
       console.log('signed out!');
-      // router.push('/login'); //uncomment after testing
-      router.push('/login'); // Derek added, delete after testing
+      router.push('/login');
     } catch (err) {
       console.error(err);
     }
@@ -62,31 +61,26 @@ export default function Home() {
       );
     }
 
-    const registerButton = () => {
-      if (inviteToken) {
-        router.push({
-          pathname: '/register',
-          query: inviteToken,
-        });
-      } else {
-        router.push('/register');
-      }
-    };
-
     if (user) {
       if (inviteToken) {
         router.push({
-          pathname: '/overview', //Change to /overview after testing
+          pathname: '/overview',
           query: inviteToken,
         });
       } else {
-        router.push('/overview'); //Change to /overview after testing
+        router.push('/overview');
       }
     }
 
     if (!user) {
-      // router.push('/login'); //uncomment after testing
-      router.push('/login'); // Derek added, delete after testing
+      if (inviteToken) {
+        router.push({
+          pathname: '/login',
+          query: inviteToken,
+        });
+      } else {
+        router.push('/login');
+      }
     }
   };
 

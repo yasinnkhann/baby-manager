@@ -19,7 +19,7 @@ export default function Register() {
   const router = useRouter();
   const { query } = useRouter();
   const inviteToken = query;
-  console.log('register form inviteToken:', inviteToken);
+  // console.log('register form inviteToken:', inviteToken);
 
   const handleChange = ({ target: { name, value } }) => {
     setRegisterInfo({ ...registerInfo, hasChanged: true, [name]: value });

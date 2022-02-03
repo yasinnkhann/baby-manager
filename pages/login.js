@@ -20,9 +20,7 @@ export default function Login() {
   const router = useRouter();
   const { query } = useRouter();
   const inviteToken = query;
-  if (inviteToken) {
-    console.log('login form inviteToken:', inviteToken);
-  }
+  // console.log('login form inviteToken:', inviteToken);
 
   const handleChange = ({ target: { name, value } }) => {
     setLoginInfo({ ...loginInfo, hasChanged: true, [name]: value });
