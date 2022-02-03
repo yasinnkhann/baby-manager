@@ -102,18 +102,11 @@ export default function BabyCard({
   viewType,
   retrieveSleepData,
   user,
-  babyData,
 }) {
-  // const babyRef = doc(db, 'users', user.uid, 'babies', babyID);
-
-  //dont really need babyData here for now, may need or delete later
-  // console.log(user.uid)
-
   const handleUpdateSleep = async (e, value) => {
     e.preventDefault();
     try {
       const babyRef = doc(db, 'users', user.uid, 'babies', babyID);
-
       await updateDoc(babyRef, { isAsleep: value });
     } catch (err) {
       console.log(err);
@@ -188,7 +181,12 @@ export default function BabyCard({
                   <div>
                     <Button style={nextFeedBtn}>
                       {' '}
-                      {nextFeed === null ? 'N/A' : nextFeed}{' '}
+                      {nextFeed === null
+                        ? 'N/A'
+                        : `${new Date(nextFeed * 1000).toLocaleTimeString([], {
+                            hour: '2-digit',
+                            minute: '2-digit',
+                          })}`}{' '}
                     </Button>
                   </div>
                 </div>

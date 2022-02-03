@@ -89,13 +89,13 @@
   color: white;
   transform: rotateY(180deg);
 }
-/* Baby overview card*/
+/* Baby animated overview card*/
 .animatedCard {
   position: relative;
   flex-direction: row;
 
   animation-name: example;
-  animation-duration: 4s;
+  animation-duration: 3s;
   animation-delay: -2s;
 }
 
