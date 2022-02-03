@@ -1,6 +1,7 @@
 import react, { useState, useEffect } from 'react';
 import DiningIcon from '@mui/icons-material/Dining';
 import SleepingIcon from '@mui/icons-material/LocalHotel';
+import { Paper } from '@mui/material';
 
 function Event(props) {
   function getDuration(startTime, endTime) {}
@@ -44,28 +45,32 @@ function Event(props) {
 
   return (
     <>
-      <div className='rounded mb-2  box bg-[#DCEBFE] flex gap-x-20  justify-start border border-gray-600/75'>
+      <Paper
+        elevation={6}
+        className='p-2  mb-2 content-center my-[1%] flex flex-row gap-x-20  justify-around items-center box'
+      >
+        {/* <div className='rounded mb-2  box bg-[#DCEBFE] flex gap-x-20  justify-start border border-gray-600/75'> */}
         <div className='event-left'>
-          <div className='start-time text-[#A020F0] ml-1'>{props.startTime}</div>
+          <div className='text-[#A020F0] ml-1'>{props.startTime}</div>
           {props.type === 'eat' ? (
-            <div className='duration text-slate-400'>
+            <div className=' text-slate-400'>
               {' '}
               {getDuration(props.startTime, props.endTime)}{' '}
             </div>
           ) : (
-            <div className='duration text-slate-400'>
+            <div className=' text-slate-400'>
               {' '}
               {getDuration(props.startTime, props.endTime)}{' '}
             </div>
           )}
         </div>
-        <div className='divider border border-[#AA336A] opacity-25'></div>
+        <div className='divider border border-[#164e63] opacity-25'></div>
         <div className='my-6 event-right'>
-          <div className='right-subcontainer'>
+          <div className='flex border-solid border-3 border-sky-500'>
             {!props.gender ? (
-              <div className='baby-name text-[#85C9EA] mr-7 font-[600]'> {props.babyName}</div>
+              <div className='baby-name text-[#164e63] mr-2 font-[600]'> {props.babyName}</div>
             ) : (
-              <div className='baby-name text-[#FF92B1] mr-7 font-bold'> {props.babyName}</div>
+              <div className='baby-name text-[#164e63] mr-5 font-bold'> {props.babyName}</div>
             )}
             {props.type === 'eat' ? <DiningIcon /> : <SleepingIcon />}
             {props.babyName === 'JakeB' ? (
@@ -91,7 +96,8 @@ function Event(props) {
             )}
           </div>
         </div>
-      </div>
+        {/* </div> */}
+      </Paper>
     </>
   );
 }

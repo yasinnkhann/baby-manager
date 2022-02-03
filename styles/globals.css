@@ -28,18 +28,6 @@
     /* overflow: scroll; */
   }
 
-  .baby-name {
-    /* font-family: 'Courier New', Courier, monospace */
-  }
-
-  .right-subcontainer {
-    display: flex;
-  }
-
-  .start-time {
-    /* font-family: 'Courier New', Courier, monospace */
-  }
-
   .food-calendar {
     margin-top: -10px;
   }

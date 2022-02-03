@@ -184,7 +184,7 @@ export default function Overview() {
 
   return (
     <React.Fragment>
-      <div className='my-[12%] mx-[12%]  '>
+      <div className='my-[25%] mx-[4%]  '>
         {babyData.length === 0 ? (
           <div style={addBabyBtnPosition}>
             <Link href='/addBaby' passHref>
@@ -194,7 +194,7 @@ export default function Overview() {
         ) : (
           <div>
             <div
-              className='mt-[1%] '
+              className='mb-[2%] '
               style={{
                 display: 'flex',
                 flexDirection: 'column',
