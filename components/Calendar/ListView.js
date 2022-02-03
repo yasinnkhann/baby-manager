@@ -149,11 +149,11 @@ function ListView(props) {
       {(view === 'upcoming' && props.upcomingEvents.length === 0) ||
       (view === 'completed' && props.pastEvents.length === 0) ? (
         <div>
-          <div className='flex'>
-            <div className='ml-10 mt-7 text-lg text-[#EFF1FA] mr-5'>
+          <div className='flex justify-around lg:justify-around'>
+            <div className='self-center text-lg text-[#EFF1FA]  '>
               {props.selectedDate.toDateString().slice(0, -5)}
             </div>
-            <div className='ml-10 mt-5'>
+            <div className=''>
               <ColorToggleButton handleToggleChange={handleToggleChange} />
             </div>
             {/* <button onClick = {() => setView('upcoming') }>Upcoming</button>
@@ -179,11 +179,11 @@ function ListView(props) {
         </div>
       ) : (
         <div>
-          <div className='flex'>
-            <div className='ml-10 mt-7 text-lg text-[#EFF1FA] mr-5'>
+          <div className='flex justify-around lg:justify-around'>
+            <div className='self-center text-lg text-[#EFF1FA] '>
               {props.selectedDate.toDateString().slice(0, -5)}
             </div>
-            <div className='ml-10 mt-5 lg:ml-20'>
+            <div className=''>
               <ColorToggleButton handleToggleChange={handleToggleChange} />
             </div>
             {/* <button onClick = {() => setView('upcoming') }>Upcoming</button>

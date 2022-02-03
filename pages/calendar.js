@@ -201,18 +201,20 @@ function Calendar() {
   };
 
   return (
-    <div className='my-[25%] lg:my-[7%] md:my-[14%]'>
+    <div className='my-[25%] flex justify-center lg:my-[7%] md:my-[14%]'>
       <Head>
         <title>BabyManager | Calendar</title>
       </Head>
-      <WeeklyView setSelectedDate={setSelectedDate} selectedDate={selectedDate} />
-      <div className='xsm:w-[300px] md:w-[600px]'>
-        <ListView
-          upcomingEvents={upcomingEvents}
-          pastEvents={pastEvents}
-          sortedDayEvents={sortedDayEvents}
-          selectedDate={selectedDate}
-        />
+      <div className=''>
+        <WeeklyView setSelectedDate={setSelectedDate} selectedDate={selectedDate} />
+        <div className='xsm:w-[300px] md:w-[600px]'>
+          <ListView
+            upcomingEvents={upcomingEvents}
+            pastEvents={pastEvents}
+            sortedDayEvents={sortedDayEvents}
+            selectedDate={selectedDate}
+          />
+        </div>
       </div>
     </div>
   );

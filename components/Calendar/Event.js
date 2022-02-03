@@ -66,7 +66,7 @@ function Event(props) {
             <>
               {props.type === 'eat' ? (
                 <div className='food-type self-center '>
-                  {`${props.typeOfFood}, `}
+                  {`${props.typeOfFood}`}
                   {props.foodMetric ? (
                     <div className='food-amount self-center '>{`${props.foodAmount} ${props.foodMetric}`}</div>
                   ) : (
