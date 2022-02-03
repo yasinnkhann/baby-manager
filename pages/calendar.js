@@ -13,6 +13,9 @@ function Calendar() {
   // const [allEvents, setAllEvents] = useState([]);
   const [dayEvents, setDayEvents] = useState([]);
   const [sortedDayEvents, setSortedDayEvents] = useState([]);
+  const [upcomingEvents, setUpcomingEvents] = useState([]);
+  const [pastEvents, setPastEvents] = useState([]);
+
   const [user, loading, error] = useAuthState(auth);
 
   function sameDay(d1, d2) {
@@ -136,7 +139,17 @@ function Calendar() {
         });
         setSortedDayEvents(sortedDayEvents);
 
-        console.log('sortedEvents', sortedDayEvents);
+        console.log('sortedDayEvents', sortedDayEvents);
+
+        var upcomingEvents = sortedDayEvents.filter(event => {
+          return event.status === 'upcoming';
+        });
+        setUpcomingEvents(upcomingEvents);
+
+        var pastEvents = sortedDayEvents.filter(event => {
+          return event.status === 'completed';
+        });
+        setPastEvents(pastEvents);
       });
       // feedingEventsArray.push(feedingEventsData);
     } catch {
@@ -207,7 +220,12 @@ function Calendar() {
       </Head>
       <WeeklyView setSelectedDate={setSelectedDate} selectedDate={selectedDate} />
       <div className='xsm:w-[300px] md:w-[600px]'>
-        <ListView sortedDayEvents={sortedDayEvents} selectedDate={selectedDate} />
+        <ListView
+          upcomingEvents={upcomingEvents}
+          pastEvents={pastEvents}
+          sortedDayEvents={sortedDayEvents}
+          selectedDate={selectedDate}
+        />
       </div>
     </div>
   );
