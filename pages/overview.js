@@ -161,7 +161,6 @@ export default function Overview() {
       viewType={view}
       retrieveSleepData={retrieveSleepData}
       user={user}
-      babyData={babyData}
     />
   ));
 
