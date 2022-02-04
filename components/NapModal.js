@@ -198,7 +198,10 @@ const NapModal = ({ babyPath, babyGet, babyName }) => {
     <div>
       <Button
         onClick={toOpen}
-        style={{ width: '300px', backgroundColor: 'lightgreen' }}
+        style={{
+          width: '300px',
+          background: 'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)',
+        }}
         className='rounded-md border-2 border-emerald-400'
         variant='contained'
         color='success'
@@ -233,7 +236,7 @@ const NapModal = ({ babyPath, babyGet, babyName }) => {
                 Reminder must be set at least 60 mins in advance.
               </p>
               <Button
-                style={{ backgroundColor: 'lightgreen' }}
+                style={{ background: 'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)' }}
                 className='w-[25px] place-self-center'
                 onClick={() => {
                   if (reminderState) {
@@ -242,7 +245,7 @@ const NapModal = ({ babyPath, babyGet, babyName }) => {
                     setDisplayReminderTime(true);
                   }
                   if (!reminderState) {
-                    setReminderIcon(<NotificationsActiveIcon sx={{ color: 'green' }} />);
+                    setReminderIcon(<NotificationsActiveIcon sx={{ color: 'gold' }} />);
                     setReminderState(true);
                     setDisplayReminderTime(false);
                   }
@@ -280,7 +283,10 @@ const NapModal = ({ babyPath, babyGet, babyName }) => {
           <div style={{ display: 'flex' }} className='flex-col'>
             <Button
               onClick={postNextNap}
-              style={{ backgroundColor: 'lightgreen', width: '50%' }}
+              style={{
+                background: 'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)',
+                width: '50%',
+              }}
               className='rounded-md border-2 border-emerald-400 place-self-center'
               variant='contained'
             >
@@ -288,7 +294,10 @@ const NapModal = ({ babyPath, babyGet, babyName }) => {
             </Button>
             <div className='sb-buffer'></div>
             <Button
-              style={{ backgroundColor: 'lightgreen', width: '50%' }}
+              style={{
+                background: 'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)',
+                width: '50%',
+              }}
               className='rounded-md border-2 border-emerald-400 place-self-center'
               variant='contained'
               onClick={toClose}
