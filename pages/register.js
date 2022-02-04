@@ -54,13 +54,13 @@ export default function Register() {
         if (inviteToken) {
           router.push(
             {
-              pathname: '/',
+              pathname: '/overview',
               query: inviteToken,
             },
             '/'
           );
         } else {
-          router.push('/');
+          router.push('/overview');
         }
         setRegisterInfo({
           firstName: '',

@@ -75,7 +75,6 @@ export default function Overview() {
     } else if (user && inviteToken) {
       const getInvitationDoc = async () => {
         const q = qr(collection(db, 'invitations'), where('token', '==', inviteToken));
-
         const querySnapshot = await getDocs(q);
         let invitationDoc = null;
         querySnapshot.forEach(doc => {
@@ -92,13 +91,18 @@ export default function Overview() {
 
       const getInvitationId = async () => {
         const q = qr(collection(db, 'invitations'), where('token', '==', inviteToken));
-
         const querySnapshot = await getDocs(q);
         let invitationId = null;
         querySnapshot.forEach(doc => {
           invitationId = doc.id;
         });
         return invitationId;
+      };
+
+      const addAuthorizers = async inviterId => {
+        await addDoc(collection(db, 'users', user.uid, 'authorizers'), {
+          inviter_id: inviterId,
+        });
       };
 
       getInvitationDoc().then(result => {
@@ -116,13 +120,17 @@ export default function Overview() {
               console.log("Added new user to inviter's authorized collection");
             })
             .then(() => {
-              getInvitationId().then(async result => {
-                const updateRef = doc(db, 'invitations', result);
-                await updateDoc(updateRef, {
-                  accepted: true,
+              getInvitationId()
+                .then(async result => {
+                  const updateRef = doc(db, 'invitations', result);
+                  await updateDoc(updateRef, {
+                    accepted: true,
+                  });
+                  inviteToken = null;
+                })
+                .then(() => {
+                  addAuthorizers(inviterId);
                 });
-                inviteToken = null;
-              });
             });
         } else {
           console.log('Invalid invitation token');

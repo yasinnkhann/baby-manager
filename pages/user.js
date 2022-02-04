@@ -102,7 +102,11 @@ export default function User() {
               <div>Email: {user.email}</div>
               <div>Phone Number: {user.phoneNumber}</div>
               <div>Users that can manage your babies:</div>
-              <ul>{authorizedUsers ? authorizedUsers.map(user => <li>{user}</li>) : null}</ul>
+              <ul>
+                {authorizedUsers
+                  ? authorizedUsers.map((user, index) => <li key={index}>{user}</li>)
+                  : null}
+              </ul>
             </div>
           </Paper>
 
