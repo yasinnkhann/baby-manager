@@ -51,36 +51,33 @@ function Event(props) {
             {' '}
             {props.babyName}
           </div>
+          {props.type === 'eat' ? (
+            <DiningIcon className='self-center' />
+          ) : (
+            <SleepingIcon className='self-center' />
+          )}
 
-          <div className='flex flex-row justify-between w-[25%] '>
-            {props.type === 'eat' ? (
-              <DiningIcon className='self-center' />
-            ) : (
-              <SleepingIcon className='self-center' />
-            )}
-
-            {props.babyName === 'Jake' && props.type === 'eat' ? (
-              <div className='food-type self-center '>
-                {`protein, `}
-                <div className='food-amount self-center'>{`1000 grams`}</div>
-              </div>
-            ) : (
-              <>
-                {props.type === 'eat' ? (
-                  <div className='food-type self-center '>
-                    {`${props.typeOfFood}, ${props.foodAmount} ${props.foodMetric}`}
-                    {/* {props.foodMetric ? (
+          {props.babyName === 'Jake' && props.type === 'eat' ? (
+            <div className='food-type self-center '>
+              {`protein, `}
+              <div className='food-amount self-center'>{`1000 grams`}</div>
+            </div>
+          ) : (
+            <>
+              {props.type === 'eat' ? (
+                <div className='food-type self-center '>
+                  {`${props.typeOfFood}, ${props.foodAmount} ${props.foodMetric}`}
+                  {/* {props.foodMetric ? (
                     <div className='food-amount self-center '>{`${props.foodAmount} ${props.foodMetric}`}</div>
                   ) : (
                     <div className='food-amount self-center'>{`${props.foodAmount}`}</div>
                   )} */}
-                  </div>
-                ) : (
-                  ''
-                )}
-              </>
-            )}
-          </div>
+                </div>
+              ) : (
+                ''
+              )}
+            </>
+          )}
         </div>
       </Paper>
     </>
