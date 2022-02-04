@@ -39,7 +39,7 @@ export default function MyComponent({ center }) {
 
     const onLoad = mapInstance => {
       setMap(mapInstance);
-      // fetchBathroom(mapInstance, center);
+      fetchBathroom(mapInstance, center);
     };
 
     const onDragChange = () => {
@@ -67,7 +67,6 @@ export default function MyComponent({ center }) {
         };
         setInfo(options);
       });
-      console.log(results);
     };
 
     const onUnmount = map => {

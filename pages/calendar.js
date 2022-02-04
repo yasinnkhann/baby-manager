@@ -80,7 +80,6 @@ function Calendar() {
         // const querySnapshot = await getDocs(feedingEvents);
         // console.log(babyName)
         const babyName = doc.data().name;
-        console.log(babyName);
 
         // GET ALL FEEDING EVENTS FOR CURRENT BABY AND PUSH TO feedingEventsArray
 
@@ -100,7 +99,6 @@ function Calendar() {
           feedingEvent['status'] = categorizeStatus(doc.data().startTime.seconds);
           feedingEventsArray.push(feedingEvent);
         });
-        console.log('feedingEvents: ', feedingEventsArray);
 
         // GET ALL SLEEPING EVENTS FOR CURRENT BABY AND PUSH TO sleepingEventsArray
 
@@ -123,11 +121,7 @@ function Calendar() {
           // console.log(new Date(events[0].startTime.seconds * 1000));
         });
 
-        console.log('sleepingEventsArray ', sleepingEventsArray);
-
         var combinedEvents = feedingEventsArray.flat().concat(sleepingEventsArray.flat());
-
-        console.log('combinedEvents ', combinedEvents);
 
         var dayEvents = combinedEvents.filter(event => {
           var seconds = event.startTime.seconds;
@@ -138,8 +132,6 @@ function Calendar() {
           return a.startTime.seconds - b.startTime.seconds;
         });
         setSortedDayEvents(sortedDayEvents);
-
-        console.log('sortedDayEvents', sortedDayEvents);
 
         var upcomingEvents = sortedDayEvents.filter(event => {
           return event.status === 'upcoming';
@@ -188,19 +180,15 @@ function Calendar() {
         // console.log('allEvents ', allEvents);
 
         var combinedEvents = feedingEventsArray.flat().concat(sleepingEventsData.flat());
-        console.log('combinedEvents ', combinedEvents);
 
         var dayEvents = combinedEvents.filter(event => {
-          console.log(combinedEvents);
           var seconds = event.startTime.seconds;
           var date = new Date(seconds * 1000);
           return sameDay(date, selectedDate);
         });
-        console.log('combined dayevents ', dayEvents);
         var sortedDayEvents = dayEvents.sort((a, b) => {
           return a.startTime.seconds - b.startTime.seconds;
         });
-        console.log('sorted dayevents ', sortedDayEvents);
         setSortedDayEvents(sortedDayEvents);
       });
     } catch {
@@ -209,23 +197,24 @@ function Calendar() {
   };
 
   var setSelectedDate = function (date) {
-    console.log(date);
     setDate(date);
   };
 
   return (
-    <div className='flex flex-col my-[25%] lg:my-[10%]'>
+    <div className='my-[25%] flex justify-center lg:my-[7%] md:my-[14%]'>
       <Head>
         <title>BabyManager | Calendar</title>
       </Head>
-      <WeeklyView setSelectedDate={setSelectedDate} selectedDate={selectedDate} />
-      <div className='xsm:w-[300px] md:w-[600px]'>
-        <ListView
-          upcomingEvents={upcomingEvents}
-          pastEvents={pastEvents}
-          sortedDayEvents={sortedDayEvents}
-          selectedDate={selectedDate}
-        />
+      <div className=''>
+        <WeeklyView setSelectedDate={setSelectedDate} selectedDate={selectedDate} />
+        <div className='xsm:w-[300px] md:w-[600px]'>
+          <ListView
+            upcomingEvents={upcomingEvents}
+            pastEvents={pastEvents}
+            sortedDayEvents={sortedDayEvents}
+            selectedDate={selectedDate}
+          />
+        </div>
       </div>
     </div>
   );

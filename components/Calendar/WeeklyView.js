@@ -12,7 +12,7 @@ import BasicDatePicker from './BasicDatePicker.js';
 function WeeklyView(props) {
   // const [startDate, setSelectedDate] = useState(new Date());
   return (
-    <div className='self-center'>
+    <div className='flex justify-center mb-4'>
       <BasicDatePicker setSelectedDate={props.setSelectedDate} />
       {/* <DatePicker
     //   className='mt-20 bg-[#ffe4e8] rounded-lg mx-[45px]'
