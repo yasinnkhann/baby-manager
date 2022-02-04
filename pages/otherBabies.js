@@ -62,7 +62,7 @@ const babyBtnStyle = {
 export default function OtherBabies() {
   const [view, setView] = useState('module');
   const [isViewChange, setViewChange] = useState(babyCardInModule);
-  const [authorizersBabyData, setAuthorizersBabyData] = useState(null);
+  const [babyData, setBabyData] = useState(null);
   const [user, loading] = useAuthState(auth);
   const router = useRouter();
 
@@ -99,13 +99,13 @@ export default function OtherBabies() {
             uid: user.inviter_id,
           });
         });
-        setAuthorizersBabyData(allAuthorizersBabies);
+        setBabyData(allAuthorizersBabies);
       });
       // console.log('typeof allAuthorizersBabies:', typeof allAuthorizersBabies);
       // console.log('allAuthorizersBabies[1]:', allAuthorizersBabies[1]);
       // console.log('allAuthorizersBabies:', allAuthorizersBabies);
       // await setAuthorizersBabyData(allAuthorizersBabies);
-      // console.log('authorizersBabyData after setting state:', authorizersBabyData);
+      // console.log('authorizersBabyData after setting state:', babyData);
     } catch (err) {
       console.log(err);
     }
@@ -118,11 +118,11 @@ export default function OtherBabies() {
 
   return (
     <React.Fragment>
-      <div>
-        {authorizersBabyData ? (
+      <div className='mt-[25%] sm:mt-[10%] mx-[4%]  '>
+        {babyData ? (
           <div>
             <div
-              className='mt-[21%]'
+              className='mt-[75px] sm:mt-[75px]'
               style={{
                 display: 'flex',
                 flexDirection: 'column',
@@ -131,6 +131,7 @@ export default function OtherBabies() {
               }}
             >
               <ToggleButtonGroup
+                className='mb-[2%]'
                 orientation='horizontal'
                 value={view}
                 exclusive
@@ -145,14 +146,15 @@ export default function OtherBabies() {
               </ToggleButtonGroup>
             </div>
             <div style={isViewChange}>
-              {authorizersBabyData.map(baby => (
+              {babyData.map(baby => (
                 <BabyCard
                   key={baby.id}
                   babyID={baby.id}
-                  babyName={baby.name}
-                  sleepStatus={baby.sleep}
-                  nextFeed={baby.nextFeedTime}
-                  retrieveOtherSleepData={retrieveOtherSleepData}
+                  babyName={baby.data.name}
+                  sleepStatus={baby.data.isAsleep}
+                  nextFeed={baby.data.nextFeed}
+                  viewType={view}
+                  retrieveSleepData={retrieveOtherSleepData}
                   user={baby}
                 />
               ))}
