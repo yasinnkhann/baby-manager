@@ -230,7 +230,10 @@ const FoodModal = ({ babyPath, babyGet, foodArray, setFoodArray, babyName }) => 
       <div>
         <Button
           onClick={toOpen}
-          style={{ width: '300px', backgroundColor: 'lightgreen' }}
+          style={{
+            width: '300px',
+            background: 'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)',
+          }}
           className='rounded-md border-2 border-emerald-400'
           variant='contained'
         >
@@ -273,7 +276,7 @@ const FoodModal = ({ babyPath, babyGet, foodArray, setFoodArray, babyName }) => 
                   />
                   <AddCircleIcon
                     onClick={addNewFood}
-                    sx={{ color: 'lightgreen', cursor: 'pointer', mr: 1, my: 0.5 }}
+                    sx={{ color: '#FE6B8B', cursor: 'pointer', mr: 1, my: 0.5 }}
                   />
                 </Box>
               </div>
@@ -283,6 +286,7 @@ const FoodModal = ({ babyPath, babyGet, foodArray, setFoodArray, babyName }) => 
                 </label>
               </div>
               <Slider
+                sx={{ color: '#FE6B8B' }}
                 className='py-8'
                 valueLabelDisplay='auto'
                 min={0}
@@ -309,7 +313,7 @@ const FoodModal = ({ babyPath, babyGet, foodArray, setFoodArray, babyName }) => 
                   Reminder must be set at least 60 mins in advance.
                 </p>
                 <Button
-                  style={{ backgroundColor: 'lightgreen' }}
+                  style={{ background: 'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)' }}
                   className='w-[25px] place-self-center'
                   onClick={() => {
                     if (reminderState) {
@@ -318,7 +322,7 @@ const FoodModal = ({ babyPath, babyGet, foodArray, setFoodArray, babyName }) => 
                       setDisplayReminderTime(true);
                     }
                     if (!reminderState) {
-                      setReminderIcon(<NotificationsActiveIcon sx={{ color: 'green' }} />);
+                      setReminderIcon(<NotificationsActiveIcon sx={{ color: 'gold' }} />);
                       setReminderState(true);
                       setDisplayReminderTime(false);
                     }
@@ -355,7 +359,10 @@ const FoodModal = ({ babyPath, babyGet, foodArray, setFoodArray, babyName }) => 
               <div style={{ display: 'flex' }} className='flex-col'>
                 <Button
                   onClick={postNextFood}
-                  style={{ backgroundColor: 'lightgreen', width: '50%' }}
+                  style={{
+                    background: 'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)',
+                    width: '50%',
+                  }}
                   className='rounded-md border-2 border-emerald-400 place-self-center'
                   variant='contained'
                   starticon='<Icon />'
@@ -364,7 +371,10 @@ const FoodModal = ({ babyPath, babyGet, foodArray, setFoodArray, babyName }) => 
                 </Button>
                 <div className='sb-buffer'></div>
                 <Button
-                  style={{ backgroundColor: 'lightgreen', width: '50%' }}
+                  style={{
+                    background: 'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)',
+                    width: '50%',
+                  }}
                   className='rounded-md border-2 border-emerald-400 place-self-center'
                   variant='contained'
                   onClick={toClose}
