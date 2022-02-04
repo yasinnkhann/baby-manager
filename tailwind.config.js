@@ -1,7 +1,7 @@
 module.exports = {
-  mode: 'jit',
+  // mode: 'jit',
   content: ['./pages/**/*.{js,ts,jsx,tsx}', './components/**/*.{js,ts,jsx,tsx}'],
-  media: false, // or 'media' or 'class'
+  // media: false, // or 'media' or 'class'
   theme: {
     extend: {
       screens: {
@@ -14,9 +14,9 @@ module.exports = {
         slider: '#0f172a',
         login: '#ec4899',
       },
-    },
-    fontFamily: {
-      body: ['Rubik', 'sans-serif'],
+      fontFamily: {
+        body: ['Rubik', 'sans-serif'],
+      },
     },
   },
   variants: {

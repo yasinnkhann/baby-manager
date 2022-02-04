@@ -95,7 +95,6 @@ function ListView(props) {
   const [view, setView] = useState('upcoming');
 
   function handleLine(index, status) {
-    console.log(index);
     if (status === 'set line') {
       setLine(['set at index', index]);
     }
@@ -122,12 +121,10 @@ function ListView(props) {
     minutes = minutes < 10 ? '0' + minutes : minutes;
     var strTime = hours + ':' + minutes + ' ' + ampm;
 
-    console.log(strTime);
     return strTime;
   }
 
   function handleToggleChange(view) {
-    console.log(view);
     setView(view);
   }
 
@@ -152,11 +149,11 @@ function ListView(props) {
       {(view === 'upcoming' && props.upcomingEvents.length === 0) ||
       (view === 'completed' && props.pastEvents.length === 0) ? (
         <div>
-          <div className='flex'>
-            <div className='ml-10 mt-7 text-lg text-[#EFF1FA] mr-5'>
+          <div className='flex justify-around lg:justify-around'>
+            <div className='self-center text-lg text-[#EFF1FA]  '>
               {props.selectedDate.toDateString().slice(0, -5)}
             </div>
-            <div className='ml-10 mt-5'>
+            <div className=''>
               <ColorToggleButton handleToggleChange={handleToggleChange} />
             </div>
             {/* <button onClick = {() => setView('upcoming') }>Upcoming</button>
@@ -182,11 +179,11 @@ function ListView(props) {
         </div>
       ) : (
         <div>
-          <div className='flex'>
-            <div className='ml-10 mt-7 text-lg text-[#EFF1FA] mr-5'>
+          <div className='flex justify-around lg:justify-around'>
+            <div className='self-center text-lg text-[#EFF1FA] '>
               {props.selectedDate.toDateString().slice(0, -5)}
             </div>
-            <div className='ml-10 mt-5'>
+            <div className=''>
               <ColorToggleButton handleToggleChange={handleToggleChange} />
             </div>
             {/* <button onClick = {() => setView('upcoming') }>Upcoming</button>
@@ -196,7 +193,6 @@ function ListView(props) {
 
           <div className='list-view-container mr-10 mt-5 mb-10'>
             {props.sortedDayEvents.map((event, i, array) => {
-              console.log(event.status, view);
               if (view === 'all') {
                 return (
                   <Event
