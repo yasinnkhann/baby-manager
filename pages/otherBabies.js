@@ -255,7 +255,7 @@ export default function OtherBabies() {
             </div>
           </div>
         ) : (
-          <div className='my-[20%]'>You are not invited to manage any babies</div>
+          <div className='my-[20%] text-center'>You are not invited to manage any babies</div>
         )}
       </div>
     </React.Fragment>

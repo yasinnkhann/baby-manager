@@ -46,7 +46,6 @@ const addBabyBtnPosition = {
   flexWrap: 'wrap',
   alignItems: 'center',
   justifyContent: 'center',
-  marginTop: '300px',
 };
 
 const babyBtnStyle = {
@@ -174,42 +173,40 @@ export default function Overview() {
 
   return (
     <React.Fragment>
-      <div className='my-[25%] mx-[4%]  '>
-        {babyData.length === 0 ? (
-          <div style={addBabyBtnPosition}>
-            <Link href='/addBaby' passHref>
-              <Button style={babyBtnStyle}>Add Baby</Button>
-            </Link>
-          </div>
-        ) : (
-          <div>
-            <div
-              className='mt-[75px] sm:mt-[75px]'
-              style={{
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}
+      <div className='mt-[25%] sm:mt-[10%] mx-[4%]  '>
+        <div>
+          <div
+            className='mt-[75px] sm:mt-[75px]'
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+          >
+            <ToggleButtonGroup
+              className='mb-[2%]'
+              orientation='horizontal'
+              value={view}
+              exclusive
+              onChange={handleOrientationChange}
             >
-              <ToggleButtonGroup
-                className='mb-[2%]'
-                orientation='horizontal'
-                value={view}
-                exclusive
-                onChange={handleOrientationChange}
-              >
-                <ToggleButton value='module' aria-label='module'>
-                  <ViewModuleIcon />
-                </ToggleButton>
-                <ToggleButton value='list' aria-label='list'>
-                  <ViewListIcon />
-                </ToggleButton>
-              </ToggleButtonGroup>
+              <ToggleButton value='module' aria-label='module'>
+                <ViewModuleIcon />
+              </ToggleButton>
+              <ToggleButton value='list' aria-label='list'>
+                <ViewListIcon />
+              </ToggleButton>
+            </ToggleButtonGroup>
+            <div className='mb-[2%]' style={addBabyBtnPosition}>
+              <Link href='/addBaby' passHref>
+                <Button style={babyBtnStyle}>Add Baby</Button>
+              </Link>
             </div>
-            <div style={isViewChange}>{mappedBabyCard}</div>
           </div>
-        )}
+          <div style={isViewChange}>{mappedBabyCard}</div>
+        </div>
+        {/* )} */}
       </div>
     </React.Fragment>
   );
