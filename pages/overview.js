@@ -67,86 +67,77 @@ export default function Overview() {
   const router = useRouter();
   const { query } = useRouter();
   let inviteToken = query.token;
+  // console.log('overview form inviteToken:', inviteToken);
 
   useEffect(() => {
     if (!user && !loading) {
       router.push('/login');
-    } else if (user) {
-      retrieveSleepData();
-    }
-    if (user && inviteToken) {
+    } else if (user && inviteToken) {
       const getInvitationDoc = async () => {
         const q = qr(collection(db, 'invitations'), where('token', '==', inviteToken));
-
         const querySnapshot = await getDocs(q);
         let invitationDoc = null;
         querySnapshot.forEach(doc => {
-          // doc.data() is never undefined for query doc snapshots
-          // console.log(doc.id, ' => ', doc.data());
           invitationDoc = doc.data();
         });
         return invitationDoc;
       };
 
-      const authorizeUser = async inviterId => {
+      const getAuthorizedUser = async inviterId => {
         const docRef = doc(db, 'users', inviterId);
         const docSnap = await getDoc(docRef);
         return docSnap.data();
       };
 
-      const updateInvitation = async () => {
+      const getInvitationId = async () => {
         const q = qr(collection(db, 'invitations'), where('token', '==', inviteToken));
-
         const querySnapshot = await getDocs(q);
         let invitationId = null;
         querySnapshot.forEach(doc => {
-          // doc.data() is never undefined for query doc snapshots
-          // console.log(doc.id, ' => ', doc.data());
           invitationId = doc.id;
         });
         return invitationId;
       };
 
+      const addAuthorizers = async inviterId => {
+        await addDoc(collection(db, 'users', user.uid, 'authorizers'), {
+          inviter_id: inviterId,
+        });
+      };
+
       getInvitationDoc().then(result => {
-        console.log('getInvitationDoc result:', result);
+        console.log('result:', result);
         const inviterId = result.inviter_id;
-        console.log('inviterId:', inviterId);
         if (!result.accepted) {
-          authorizeUser(inviterId)
+          getAuthorizedUser(inviterId)
             .then(async result => {
-              console.log('authorizeUser result:', result);
               const docRef = await addDoc(
                 collection(db, 'users', inviterId, 'authorized_users'),
                 {
                   userId: user.uid,
                 }
               );
-              console.log("added new user to inviter's authorized collection");
+              console.log("Added new user to inviter's authorized collection");
             })
             .then(() => {
-              updateInvitation().then(async result => {
-                console.log('result:', result);
-                const updateRef = doc(db, 'invitations', result);
-                await updateDoc(updateRef, {
-                  accepted: true,
+              getInvitationId()
+                .then(async result => {
+                  const updateRef = doc(db, 'invitations', result);
+                  await updateDoc(updateRef, {
+                    accepted: true,
+                  });
+                  inviteToken = null;
+                })
+                .then(() => {
+                  addAuthorizers(inviterId);
                 });
-                inviteToken = null;
-              });
             });
         } else {
-          console.log('Invalid invitation token. Invite link is already used');
+          console.log('Invalid invitation token');
         }
       });
-      // Add current user to the token's owner's authorized user's list
-      // Search the invitations collection for the owner's id of the inviteToken
-      // Then using that owner's id, find the owner's document in the user's collection
-      // and update/insert the current user.uid into the authorized user's subcollection
-      // or array?
-      // First check it invitation document's accepted field is true or false
-      // If true, "Invitation link is invalid"
-      // If false
-      // Add new user to inviter's authorized users subcollection/array
-      // Set the invitation document's accepted field to "true"
+    } else if (user) {
+      retrieveSleepData();
     }
   }, [user, loading, router]);
 

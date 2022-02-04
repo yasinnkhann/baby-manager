@@ -19,7 +19,7 @@ export default function Register() {
   const router = useRouter();
   const { query } = useRouter();
   const inviteToken = query;
-  console.log('register form inviteToken:', inviteToken);
+  // console.log('register form inviteToken:', inviteToken);
 
   const handleChange = ({ target: { name, value } }) => {
     setRegisterInfo({ ...registerInfo, hasChanged: true, [name]: value });
@@ -54,13 +54,13 @@ export default function Register() {
         if (inviteToken) {
           router.push(
             {
-              pathname: '/',
+              pathname: '/overview',
               query: inviteToken,
             },
             '/'
           );
         } else {
-          router.push('/');
+          router.push('/overview');
         }
         setRegisterInfo({
           firstName: '',
