@@ -134,9 +134,9 @@ export default function BabyCard({
   };
   // handling the view module and list
   const classNameForModuleView =
-    'm-[1%] h-[187px] w-[122px] sm:h-[187px] sm:w-[200px] md:h-[220px] md:w-[255px]';
+    'm-[1%] h-[195px] w-[120px] sm:h-[200px] sm:w-[200px] md:h-[240px] md:w-[255px]';
   const classNameForListView =
-    'm-[1%] h-[187px] w-[360px] sm:h-[187px] sm:w-[550px] md:h-[220px] md:w-[750px]';
+    'm-[1%] h-[200px] w-[360px] sm:h-[210px] sm:w-[550px] md:h-[240px] md:w-[750px]';
 
   const classNameBabyAsleep =
     'animatedCard self-center bg-[url("/asleep-baby.svg")] w-[120px] h-[110px] sm:w-[125px] sm:h-[115px]  md:w-[130px] md:h-[150px]  bg-center bg-cover bg-no-repeat';

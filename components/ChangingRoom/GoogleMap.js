@@ -39,7 +39,7 @@ export default function MyComponent({ center }) {
 
     const onLoad = mapInstance => {
       setMap(mapInstance);
-      // fetchBathroom(mapInstance, center);
+      fetchBathroom(mapInstance, center);
     };
 
     const onDragChange = () => {
