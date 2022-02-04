@@ -19,15 +19,14 @@ const crypto = require('crypto');
 export default function User() {
   const [email, setEmail] = useState('');
   const [user, loading, error] = useAuthState(auth);
-  const [authorizedUsers, setAuthorizedUsers] = useState([]);
+  const [authorizedUsers, setAuthorizedUsers] = useState(null);
   const router = useRouter();
 
   useEffect(() => {
     if (!user && !loading) {
       router.push('/login');
     } else if (user) {
-      console.log('user:', user);
-      getAuthorizedUsers().then(() => console.log('authorizedUsers:', authorizedUsers));
+      getAuthorizedUsers();
     }
   }, [user, loading]);
 
@@ -78,15 +77,21 @@ export default function User() {
     const q = collection(db, 'users', user.uid, 'authorized_users');
     const querySnapshot = await getDocs(q);
     let authorizedUsersData = [];
-    querySnapshot.forEach(async doc1 => {
-      const docRef = doc(db, 'users', doc1.data().userId);
-      const docSnap = await getDoc(docRef);
-      console.log('docSnap.data():', docSnap.data());
-      console.log(doc1.id, ' => ', doc1.data());
-      console.log(`first: ${docSnap.data().firstName + ' last: ' + docSnap.data().lastName}`);
-      authorizedUsersData.push(`${docSnap.data().firstName + ' ' + docSnap.data().lastName}`);
-      setAuthorizedUsers(authorizedUsersData);
+    let tempData = [];
+
+    querySnapshot.forEach(doc1 => {
+      tempData.push(doc1.data());
     });
+    for (let data of tempData) {
+      var temp = {};
+      const docRef = doc(db, 'users', data.userId);
+      const docSnap = await getDoc(docRef);
+
+      temp.firstName = docSnap.data().firstName;
+      temp.lastName = docSnap.data().lastName;
+      authorizedUsersData.push(temp);
+    }
+    setAuthorizedUsers(authorizedUsersData);
   };
 
   return user ? (
@@ -102,11 +107,13 @@ export default function User() {
               <div>Email: {user.email}</div>
               <div>Phone Number: {user.phoneNumber}</div>
               <div>Users that can manage your babies:</div>
-              <ul>
+              <div>
                 {authorizedUsers
-                  ? authorizedUsers.map((user, index) => <li key={index}>{user}</li>)
+                  ? authorizedUsers.map((user, index) => (
+                      <div key={index}>{user.firstName + ' ' + user.lastName}</div>
+                    ))
                   : null}
-              </ul>
+              </div>
             </div>
           </Paper>
 
