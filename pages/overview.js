@@ -173,10 +173,10 @@ export default function Overview() {
 
   return (
     <React.Fragment>
-      <div className='mt-[25%] sm:mt-[10%] mx-[4%]  '>
+      <div>
         <div>
           <div
-            className='mt-[75px] sm:mt-[75px]'
+            className='mt-[70px] sm:mt-[70px]'
             style={{
               display: 'flex',
               flexDirection: 'column',
@@ -185,7 +185,7 @@ export default function Overview() {
             }}
           >
             <ToggleButtonGroup
-              className='mb-[2%]'
+              className='mt-[5px] sm:mt-[10px]'
               orientation='horizontal'
               value={view}
               exclusive
@@ -198,7 +198,7 @@ export default function Overview() {
                 <ViewListIcon />
               </ToggleButton>
             </ToggleButtonGroup>
-            <div className='mb-[2%]' style={addBabyBtnPosition}>
+            <div className='mt-[10px] sm:mt-[10px]' style={addBabyBtnPosition}>
               <Link href='/addBaby' passHref>
                 <Button style={babyBtnStyle}>Add Baby</Button>
               </Link>
@@ -206,7 +206,6 @@ export default function Overview() {
           </div>
           <div style={isViewChange}>{mappedBabyCard}</div>
         </div>
-        {/* )} */}
       </div>
     </React.Fragment>
   );
