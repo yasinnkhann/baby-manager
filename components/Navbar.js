@@ -4,7 +4,7 @@ import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 import PersonIcon from '@mui/icons-material/Person';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
-import AddCircleIcon from '@mui/icons-material/AddCircle';
+import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
 import { faBaby } from '@fortawesome/free-solid-svg-icons';
 import BabyChangingStationIcon from '@mui/icons-material/BabyChangingStation';
 import { useState } from 'react';
@@ -40,9 +40,9 @@ export default function Navbar() {
           </div>
         </Link>
         <div className='justify-self-end flex flex-row items-center justify-around'>
-          <Link href='/addBaby' passHref>
+          <Link href='/otherBabies' passHref>
             <IconButton className='hidden sm:block text-neutral-900 text-[24px]'>
-              <AddCircleIcon className='hidden sm:block' />
+              <PeopleAltIcon className='hidden sm:block' />
             </IconButton>
           </Link>
           <Link href='/overview' passHref>
@@ -111,12 +111,6 @@ export default function Navbar() {
               onClose={() => setAnchorEl(null)}
               TransitionComponent={Fade}
             >
-              {/* <MenuItem
-                onClick={() => setAnchorEl(null)}
-              >
-                Baby Coupons
-              </MenuItem> */}
-
               <Link href='/notes' passHref>
                 <MenuItem onClick={() => setAnchorEl(null)}>Notes</MenuItem>
               </Link>
