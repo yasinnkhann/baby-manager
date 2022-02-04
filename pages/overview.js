@@ -193,7 +193,7 @@ export default function Overview() {
         ) : (
           <div>
             <div
-              className='mt-[21%] sm:mt-[10%]'
+              className='mt-[75px] sm:mt-[75px]'
               style={{
                 display: 'flex',
                 flexDirection: 'column',
