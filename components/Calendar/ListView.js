@@ -140,11 +140,11 @@ function ListView(props) {
     //         type={event.type}
     //         babyName={event.babyName}
     //         startTime={event.startTime}
-    //       />
+    //       />   border-solid border-4 border-blue-500
     //     );
     //   })}
     // </div>
-    <>
+    <div className='w-screen flex flex-col'>
       {/* {console.log('a',view, props.upcomingEvents.length)} */}
       {(view === 'upcoming' && props.upcomingEvents.length === 0) ||
       (view === 'completed' && props.pastEvents.length === 0) ? (
@@ -178,7 +178,7 @@ function ListView(props) {
           </div>
         </div>
       ) : (
-        <div>
+        <div className='flex flex-col'>
           <div className='flex justify-around lg:justify-around'>
             <div className='self-center text-lg text-[#EFF1FA] '>
               {props.selectedDate.toDateString().slice(0, -5)}
@@ -191,7 +191,7 @@ function ListView(props) {
             <button onClick = {() => setView('all') }>View All</button> */}
           </div>
 
-          <div className='list-view-container mr-10 mt-5 mb-10'>
+          <div className='list-view-container my-5 w-[90%] self-center'>
             {props.sortedDayEvents.map((event, i, array) => {
               if (view === 'all') {
                 return (
@@ -234,7 +234,7 @@ function ListView(props) {
           </div>
         </div>
       )}
-    </>
+    </div>
   );
 }
 export default ListView;

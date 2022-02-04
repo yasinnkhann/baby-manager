@@ -67,12 +67,14 @@ const babyListViewCard = {
   boxShadow: '2px 5px #B5B5B5',
 };
 
-const babyCard = {
-  margin: '5px',
-  padding: '1px',
-  borderRadius: '10px',
-  boxShadow: '1px 2px #B5B5B5',
-};
+// const babyCard = {
+//   margin: '5px',
+//   padding: '1px',
+//   borderRadius: '10px',
+//   boxShadow: '1px 2px #B5B5B5',
+//   width: '400px',
+//   height: '400px'
+// };
 
 const nextFeedBtn = {
   margin: '15px',
