@@ -39,19 +39,18 @@ function Event(props) {
   }
 
   return (
-    <Paper elevation={6} className='my-4 content-center pt-1 pb-1'>
-      <div className=' rounded  flex flex-row justify-around'>
-        <div className='start-time self-center text-[#A020F0] '>
-          {props.startTime}
-          <div className='divider ml-2 inline-block h-[50%] self-center border border-[#AA336A] opacity-25'></div>
-        </div>
+    <>
+      <Paper elevation={6} className=' content-center'>
+        <div className='w-[325px] h-[60px] lg:w-[500px] md:w-[500px] rounded mb-2  flex justify-start gap-5'>
+          <div className='start-time self-center text-[#A020F0] ml-3'>
+            {props.startTime}
+            <div className='divider ml-2 inline-block h-[50%] self-center border border-[#AA336A] opacity-25'></div>
+          </div>
 
-        <div className='baby-name self-center text-[#85C9EA] font-[600]'>
-          {' '}
-          {props.babyName}
-        </div>
-
-        <div className='flex flex-row justify-between w-[25%] '>
+          <div className='baby-name self-center text-[#85C9EA] font-[600]'>
+            {' '}
+            {props.babyName}
+          </div>
           {props.type === 'eat' ? (
             <DiningIcon className='self-center' />
           ) : (
@@ -67,12 +66,12 @@ function Event(props) {
             <>
               {props.type === 'eat' ? (
                 <div className='food-type self-center '>
-                  {`${props.typeOfFood}`}
-                  {props.foodMetric ? (
+                  {`${props.typeOfFood}, ${props.foodAmount} ${props.foodMetric}`}
+                  {/* {props.foodMetric ? (
                     <div className='food-amount self-center '>{`${props.foodAmount} ${props.foodMetric}`}</div>
                   ) : (
                     <div className='food-amount self-center'>{`${props.foodAmount}`}</div>
-                  )}
+                  )} */}
                 </div>
               ) : (
                 ''
@@ -80,8 +79,8 @@ function Event(props) {
             </>
           )}
         </div>
-      </div>
-    </Paper>
+      </Paper>
+    </>
   );
 }
 export default Event;
