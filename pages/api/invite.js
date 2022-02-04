@@ -1,17 +1,12 @@
 const nodemailer = require('nodemailer');
-// const crypto = require('crypto');
 
 export default function inviteHandler(req, res) {
-  // Create random token
-  // Create firebase query to store hash,main user id/email, provided email to invite
   try {
-    // console.log('req.body:', req.body);
     const token = req.body.token;
     const email = req.body.email;
     const name = req.body.name;
-    // var token = crypto.randomBytes(8).toString('hex');
 
-    const INVITE_LINK = `http://localhost:3000?token=${token}`;
+    const INVITE_LINK = `https://baby-manager.vercel.app?token=${token}`;
     let transporter = nodemailer.createTransport({
       service: 'gmail',
       auth: {

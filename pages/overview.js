@@ -106,7 +106,6 @@ export default function Overview() {
       };
 
       getInvitationDoc().then(result => {
-        console.log('result:', result);
         const inviterId = result.inviter_id;
         if (!result.accepted) {
           getAuthorizedUser(inviterId)
@@ -117,7 +116,6 @@ export default function Overview() {
                   userId: user.uid,
                 }
               );
-              console.log("Added new user to inviter's authorized collection");
             })
             .then(() => {
               getInvitationId()
@@ -133,7 +131,7 @@ export default function Overview() {
                 });
             });
         } else {
-          console.log('Invalid invitation token');
+          alert('Invalid invitation token');
         }
       });
     } else if (user) {

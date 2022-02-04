@@ -65,7 +65,6 @@ export default function OtherBabies() {
   const [authorizersBabyData, setAuthorizersBabyData] = useState(null);
   const [user, loading] = useAuthState(auth);
   const router = useRouter();
-  // var allAuthorizersBabies = [];
 
   useEffect(() => {
     if (!user && !loading) {
@@ -80,7 +79,6 @@ export default function OtherBabies() {
     const querySnapshot = await getDocs(q);
     let authorizersData = [];
     querySnapshot.forEach(doc => {
-      console.log(doc.id, ' => ', doc.data());
       authorizersData.push(doc.data());
     });
     return authorizersData;
@@ -91,12 +89,10 @@ export default function OtherBabies() {
       let authorizers = await getAuthorizers();
       var allAuthorizersBabies = [];
       authorizers.forEach(async user => {
-        // console.log('user inviter id', user.inviter_id);
         const q = collection(db, 'users', user.inviter_id, 'babies');
         const babiesSnapshot = await getDocs(q);
         // let allAuthorizersBabies = [];
         babiesSnapshot.forEach(baby => {
-          console.log(baby.id, ' => ', baby.data());
           allAuthorizersBabies.push({
             id: baby.id,
             data: baby.data(),
@@ -107,110 +103,18 @@ export default function OtherBabies() {
       });
       // console.log('typeof allAuthorizersBabies:', typeof allAuthorizersBabies);
       // console.log('allAuthorizersBabies[1]:', allAuthorizersBabies[1]);
-      console.log('allAuthorizersBabies:', allAuthorizersBabies);
+      // console.log('allAuthorizersBabies:', allAuthorizersBabies);
       // await setAuthorizersBabyData(allAuthorizersBabies);
-      console.log('authorizersBabyData after setting state:', authorizersBabyData);
+      // console.log('authorizersBabyData after setting state:', authorizersBabyData);
     } catch (err) {
       console.log(err);
     }
   };
 
-  //   getAuthorizers()
-  //     .then(users => {
-  //       console.log('getAuthorizers result:', users);
-  //       users.forEach(async user => {
-  //         // console.log('user inviter id', user.inviter_id);
-  //         const q = collection(db, 'users', user.inviter_id, 'babies');
-  //         console.log('q:', q);
-  //         const babiesSnapshot = await getDocs(q);
-  //         // let allAuthorizersBabies = [];
-  //         babiesSnapshot.forEach(baby => {
-  //           console.log(baby.id, ' => ', baby.data());
-  //           allAuthorizersBabies.push({
-  //             id: baby.id,
-  //             data: baby.data(),
-  //             uid: user.inviter_id,
-  //           });
-  //         });
-  //       });
-  //     })
-  //     .then(() => {
-  //       console.log('typeof allAuthorizersBabies:', typeof allAuthorizersBabies);
-  //       console.log('allAuthorizersBabies[1]:', allAuthorizersBabies[1]);
-  //       console.log('allAuthorizersBabies:', allAuthorizersBabies);
-  //       setAuthorizersBabyData(allAuthorizersBabies);
-  //     })
-  //     .then(() =>
-  //       console.log('authorizersBabyData after setting state:', authorizersBabyData)
-  //     );
-  // } catch (err) {
-  //   console.log(err);
-  // }
-  // };
-
   const handleOrientationChange = (event, nextView) => {
     nextView === 'module' ? setViewChange(babyCardInModule) : setViewChange(babyCardInList);
     setView(nextView);
   };
-
-  // const baby = {
-  //   data: [
-  //     {
-  //       id: 1,
-  //       babyName: 'Ryne',
-  //       sleep: true,
-  //       nextFeedTime: '12:30pm',
-  //     },
-  //     {
-  //       id: 2,
-  //       babyName: 'Alissa',
-  //       sleep: false,
-  //       nextFeedTime: '13:30pm',
-  //     },
-  //     {
-  //       id: 3,
-  //       babyName: 'Jake',
-  //       sleep: true,
-  //       nextFeedTime: '16:34pm',
-  //     },
-  //     {
-  //       id: 4,
-  //       babyName: 'Hatha',
-  //       sleep: false,
-  //       nextFeedTime: '13:30pm',
-  //     },
-  //     {
-  //       id: 5,
-  //       babyName: 'Ryan',
-  //       sleep: true,
-  //       nextFeedTime: '15:30pm',
-  //     },
-  //     {
-  //       id: 6,
-  //       babyName: 'Yasin',
-  //       sleep: true,
-  //       nextFeedTime: '10:30pm',
-  //     },
-  //     {
-  //       id: 7,
-  //       babyName: 'Edward',
-  //       sleep: false,
-  //       nextFeedTime: '11:30pm',
-  //     },
-  //     {
-  //       id: 8,
-  //       babyName: 'Daniel',
-  //       sleep: true,
-  //       nextFeedTime: '13:30pm',
-  //     },
-  //     {
-  //       id: 9,
-  //       babyName: 'Derek',
-  //       sleep: false,
-  //       nextFeedTime: '13:30pm',
-  //     },
-  //   ],
-  // };
 
   return (
     <React.Fragment>
