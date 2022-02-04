@@ -37,6 +37,7 @@ const Baby = ({ baby }) => {
   const [feedingEvents, setFeedingEvents] = React.useState(null);
   const [isAsleep, setIsAsleep] = React.useState('Asleep');
   const [foodArray, setFoodArray] = React.useState(['Loading', 'One Sec']);
+  const [curAsleep, setCurAsleep] = React.useState(false);
   const { asPath } = useRouter();
   const path = asPath.split('/baby/')[1];
 
@@ -163,6 +164,7 @@ const Baby = ({ baby }) => {
     if (currentBaby === null) return;
     setBabyName(currentBaby.name);
     setFoodArray(currentBaby.babyFoodsArray);
+    setCurAsleep(currentBaby.isAsleep);
     babySleep();
     if (currentBaby.nextNap === null) return;
     const uglyDate = new Date(currentBaby.nextNap.seconds * 1000).toString();
@@ -210,57 +212,62 @@ const Baby = ({ baby }) => {
       <div style={{ paddingTop: '80px' }}></div>
       <div
         className='container mx-auto md:grid md:place-content-center'
-        style={{ padding: '2rem' }}
+        style={{ padding: '1rem' }}
       >
         <div className='text-center text-2xl'>
-          <b>{babyName}</b>
+          <p style={{ color: '#f5f5f5' }} className='text-5xl font-medium'>
+            {babyName}
+          </p>
           <div className='sb-buffer'></div>
-          <hr />
+          <hr
+            style={{ border: '3px solid #f5f5f5', borderRadius: '3px', background: 'white' }}
+          ></hr>
           <div className='sb-buffer'></div>
         </div>
         <div className='md:sb-container md:grid-cols-1'>
-          <div style={{ display: 'grid' }} className='grid-cols-2 text-center'>
-            <div className='place-self-center'>
-              <div className='bg-[url("/awake-baby.svg")] w-[125px] h-[125px] bg-center bg-cover bg-no-repeat'></div>
-            </div>
-            <div>
+          <div style={{ maxWidth: '550px' }} className='mx-auto'>
+            <div
+              style={{
+                width: '250px',
+                height: '250px',
+                display: 'flex',
+                background: 'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)',
+                color: 'white',
+                boxShadow: '1px 1px 11px 6px lightblue',
+              }}
+              className='rounded-full p-2 mx-auto flex-col'
+            >
               <div className='sb-buffer'></div>
-              <b>The baby is {isAsleep}</b>
+              {curAsleep ? (
+                <div className='bg-[url("/asleep-baby-white.svg")] w-[125px] h-[125px] bg-center bg-cover bg-no-repeat mx-auto'></div>
+              ) : (
+                <div className='bg-[url("/awake-baby-white.svg")] w-[125px] h-[125px] bg-center bg-cover bg-no-repeat mx-auto'></div>
+              )}
+              <p className='font-medium text-center'>Your baby is {isAsleep}!</p>
+            </div>
+            <div className='sb-buffer'></div>
+            <div className='w-full h-[75px] bg-[#f5f5f5] rounded-md p-2'>
+              <p className='text-xl font-medium'>Next Nap</p>
+              <p className='indent-5'>{nextSleep}</p>
+            </div>
+            <div className='sb-buffer'></div>
+            <div className='w-full h-[75px] bg-[#f5f5f5] rounded-md p-2'>
+              <p className='text-xl font-medium'>Last Nap</p>
+              <p className='indent-5'>{lastSleep}</p>
+            </div>
+            <div className='sb-buffer'></div>
+            <div className='w-full h-[75px] bg-[#f5f5f5] rounded-md p-2'>
+              <p className='text-xl font-medium'>Next Feed</p>
+              <p className='indent-5'>{nextFeed}</p>
+            </div>
+            <div className='sb-buffer'></div>
+
+            <div className='w-full h-[75px] bg-[#f5f5f5] rounded-md p-2'>
+              <p className='text-xl font-medium'>Last Feed</p>
+              <p className='indent-5'>{lastFeed}</p>
             </div>
           </div>
           <div className='sb-buffer'></div>
-          <div style={{ display: 'grid' }} className='grid-cols-2 text-center sb-buffer'>
-            <div>
-              <b>Last Feed</b>
-            </div>
-            <div>
-              <b>{lastFeed}</b>
-            </div>
-          </div>
-          <div style={{ display: 'grid' }} className='grid-cols-2 text-center sb-buffer'>
-            <div>
-              <b>Next Feed</b>
-            </div>
-            <div>
-              <b>{nextFeed}</b>
-            </div>
-          </div>
-          <div style={{ display: 'grid' }} className='grid-cols-2 text-center sb-buffer'>
-            <div>
-              <b>Last Nap</b>
-            </div>
-            <div>
-              <b>{lastSleep}</b>
-            </div>
-          </div>
-          <div style={{ display: 'grid' }} className='grid-cols-2 text-center sb-buffer'>
-            <div>
-              <b>Next Nap</b>
-            </div>
-            <div>
-              <b>{nextSleep}</b>
-            </div>
-          </div>
           <div style={{ display: 'grid' }} className='grid-cols-1 text-center'>
             <div className='sb-buffer'>
               <FoodModal

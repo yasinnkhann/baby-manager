@@ -1,40 +1,37 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth, db } from '../firebaseConfig.js';
-import { collection, doc, setDoc, getDoc, updateDoc, addDoc } from 'firebase/firestore';
+import {
+  collection,
+  doc,
+  setDoc,
+  getDoc,
+  updateDoc,
+  addDoc,
+  getDocs,
+} from 'firebase/firestore';
 import Link from 'next/link';
 import { Paper, Button, TextField } from '@mui/material';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { useRouter } from 'next/router';
 const crypto = require('crypto');
 
 export default function User() {
   const [email, setEmail] = useState('');
   const [user, loading, error] = useAuthState(auth);
+  const [authorizedUsers, setAuthorizedUsers] = useState([]);
+  const router = useRouter();
 
   useEffect(() => {
-    if (user) {
-      console.log(user);
+    if (!user && !loading) {
+      router.push('/login');
+    } else if (user) {
+      console.log('user:', user);
+      getAuthorizedUsers().then(() => console.log('authorizedUsers:', authorizedUsers));
     }
-  }, [user]);
-
-  const getUserInfo = async () => {
-    const userRef = doc(db, 'users', user.uid);
-    const docSnap = await getDoc(userRef);
-
-    if (docSnap.exists()) {
-      console.log('Document data:', docSnap.data());
-    } else {
-      // doc.data() will be undefined in this case
-      console.log('No such document!');
-    }
-  };
+  }, [user, loading]);
 
   const createInvitation = async token => {
-    // const docRef = await addDoc(collection(db, 'users', user.uid, 'invitations'), {
-    //   emailSentTo: email,
-    //   token: token,
-    //   accepted: false,
-    // });
     await addDoc(collection(db, 'invitations'), {
       inviter_id: user.uid,
       emailSentTo: email,
@@ -77,6 +74,21 @@ export default function User() {
     },
   });
 
+  const getAuthorizedUsers = async () => {
+    const q = collection(db, 'users', user.uid, 'authorized_users');
+    const querySnapshot = await getDocs(q);
+    let authorizedUsersData = [];
+    querySnapshot.forEach(async doc1 => {
+      const docRef = doc(db, 'users', doc1.data().userId);
+      const docSnap = await getDoc(docRef);
+      console.log('docSnap.data():', docSnap.data());
+      console.log(doc1.id, ' => ', doc1.data());
+      console.log(`first: ${docSnap.data().firstName + ' last: ' + docSnap.data().lastName}`);
+      authorizedUsersData.push(`${docSnap.data().firstName + ' ' + docSnap.data().lastName}`);
+      setAuthorizedUsers(authorizedUsersData);
+    });
+  };
+
   return user ? (
     <ThemeProvider theme={theme}>
       <article>
@@ -89,7 +101,12 @@ export default function User() {
               <div>Name: {user.displayName}</div>
               <div>Email: {user.email}</div>
               <div>Phone Number: {user.phoneNumber}</div>
-              <div>[List of names that are authorized to manage your baby details]</div>
+              <div>Users that can manage your babies:</div>
+              <ul>
+                {authorizedUsers
+                  ? authorizedUsers.map((user, index) => <li key={index}>{user}</li>)
+                  : null}
+              </ul>
             </div>
           </Paper>
 

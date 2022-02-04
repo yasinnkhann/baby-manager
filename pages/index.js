@@ -10,7 +10,7 @@ export default function Home() {
   const router = useRouter();
   const { query } = useRouter();
   const inviteToken = query;
-  console.log(" '/' inviteToken", inviteToken);
+  // console.log('"/" form inviteToken:', inviteToken);
 
   useEffect(() => {
     const updateUsers = async () => {
@@ -61,7 +61,14 @@ export default function Home() {
     }
 
     if (!user) {
-      router.push('/login');
+      if (inviteToken) {
+        router.push({
+          pathname: '/login',
+          query: inviteToken,
+        });
+      } else {
+        router.push('/login');
+      }
     }
   };
 
