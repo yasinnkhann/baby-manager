@@ -110,7 +110,7 @@ export default function Register() {
         <title>BabyManager | Register</title>
       </Head>
       <div className='h-screen my-[10%] flex flex-col px-5 font-["Rubik"]'>
-        <h1 className='text-blue-500 text-center text-xl mb-10 mt-[10%] '>
+        <h1 className='text-pink-500 text-center text-xl mb-10 mt-[10%] '>
           Create an Account
         </h1>
 
