@@ -33,6 +33,9 @@ import { useAuthState } from 'react-firebase-hooks/auth';
 import Head from 'next/head';
 import InputAdornment from '@mui/material/InputAdornment';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
+import NotificationsOffIcon from '@mui/icons-material/NotificationsOff';
+import NotificationsActiveIcon from '@mui/icons-material/NotificationsActive';
+import MobileTimePicker from '@mui/lab/MobileTimePicker';
 
 //work on styling for this, cuts off a little bit at the top when overflow is to big
 const popupStyle = {
@@ -53,7 +56,7 @@ const popupStyle = {
 //------------------Modal Window Section------------------//
 //--------------------------------------------------------//
 
-const FoodModal = ({ babyPath, babyGet, foodArray, setFoodArray }) => {
+const FoodModal = ({ babyPath, babyGet, foodArray, setFoodArray, babyName }) => {
   const [user, loading, error] = useAuthState(auth);
   const [open, setOpen] = React.useState(false);
   const [food, setFood] = React.useState(['Formula', 'Milk', 'Mushy Peas']);
@@ -63,6 +66,13 @@ const FoodModal = ({ babyPath, babyGet, foodArray, setFoodArray }) => {
   const [feedTime, setFeedTime] = React.useState(new Date());
   const [feedDate, setFeedDate] = React.useState(new Date().toString());
   const [newFood, setNewFood] = React.useState('');
+  const [smsNumber, setSmsNumber] = React.useState(null);
+  const [displayReminderTime, setDisplayReminderTime] = React.useState(true);
+  const [reminderIcon, setReminderIcon] = React.useState(
+    <NotificationsOffIcon color='disabled' />
+  );
+  const [reminderTime, setReminderTime] = React.useState(new Date());
+  const [reminderState, setReminderState] = React.useState(false);
 
   //------------------------------------------//
   //----To handle open and close Modal--------//
@@ -80,29 +90,75 @@ const FoodModal = ({ babyPath, babyGet, foodArray, setFoodArray }) => {
   //------------------------------------------//
   //----Scrape Data and prepare for post------//
   //------------------------------------------//
-  const postNextFood = () => {
-    if (feedTime.getTime() < Date.now()) {
-      window.alert('Please input a valid Date and Time.');
-      return;
-    }
-    updateDoc(doc(db, 'users', user.uid, 'babies', babyPath), {
-      nextFeed: feedTime,
-    }).then(res => {
-      addDoc(collection(db, 'users', user.uid, 'babies', babyPath, 'feedingEvents'), {
-        foodAmount: foodAmount,
-        foodMetric: 'oz',
-        foodType: foodValue,
-        startTime: feedTime,
-      }).then(res2 => {
-        console.log('res2', res2);
+  const postNextFood = async () => {
+    if (smsNumber !== null) {
+      if (feedTime.getTime() < Date.now()) {
+        window.alert('Please input a valid Date and Time.');
+        return;
+      }
+      await updateDoc(doc(db, 'users', user.uid, 'babies', babyPath), {
+        nextFeed: feedTime,
+      }).then(res => {
+        addDoc(collection(db, 'users', user.uid, 'babies', babyPath, 'feedingEvents'), {
+          foodAmount: foodAmount,
+          foodMetric: 'oz',
+          foodType: foodValue,
+          startTime: feedTime,
+        }).then(res2 => {
+          // console.log('res2', res2);
+        });
+        // console.log('res', res);
       });
-      console.log('res', res);
-    });
-    toClose();
-    babyGet();
+      toClose();
+      babyGet();
+      sendSMS();
+    } else {
+      if (feedTime.getTime() < Date.now()) {
+        window.alert('Please input a valid Date and Time.');
+        return;
+      }
+      await updateDoc(doc(db, 'users', user.uid, 'babies', babyPath), {
+        nextFeed: feedTime,
+      }).then(res => {
+        addDoc(collection(db, 'users', user.uid, 'babies', babyPath, 'feedingEvents'), {
+          foodAmount: foodAmount,
+          foodMetric: 'oz',
+          foodType: foodValue,
+          startTime: feedTime,
+        }).then(res2 => {
+          // console.log('res2', res2);
+        });
+        // console.log('res', res);
+      });
+      toClose();
+      babyGet();
+    }
   };
 
-  const addNewFood = () => {
+  const sendSMS = async () => {
+    let notificationBody = {
+      to: smsNumber, //this can be number or string
+      body: `This is a feed reminder for ${babyName} scheduled for ${feedTime.toLocaleString(
+        'en-US'
+      )}, ${babyName} is having ${foodAmount} oz ${foodValue}.`,
+      date: reminderTime.toISOString(),
+    };
+
+    console.log(notificationBody);
+    const res = await fetch('/api/sendMessage', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(notificationBody),
+    });
+
+    const data = await res.json();
+    console.log(data);
+    setSmsNumber(null);
+  };
+
+  const addNewFood = async () => {
     if (newFood === '') {
       window.alert('Please input a new type of food');
       return;
@@ -110,7 +166,7 @@ const FoodModal = ({ babyPath, babyGet, foodArray, setFoodArray }) => {
     let newFoodArray = foodArray.slice();
     newFoodArray.push(newFood);
     console.log(newFoodArray);
-    updateDoc(doc(db, 'users', user.uid, 'babies', babyPath), {
+    await updateDoc(doc(db, 'users', user.uid, 'babies', babyPath), {
       babyFoodsArray: newFoodArray,
     }).then(res => {
       console.log(res);
@@ -246,6 +302,55 @@ const FoodModal = ({ babyPath, babyGet, foodArray, setFoodArray }) => {
                   />
                 </LocalizationProvider>
                 <div className='sb-buffer'></div>
+              </div>
+              <div style={{ display: 'flex' }} className='flex-col'>
+                <p className='text-center'>Send a Text Reminder?</p>
+                <p className='text-center text-xs'>
+                  Reminder must be set at least 60 mins in advance.
+                </p>
+                <Button
+                  style={{ backgroundColor: 'lightgreen' }}
+                  className='w-[25px] place-self-center'
+                  onClick={() => {
+                    if (reminderState) {
+                      setReminderIcon(<NotificationsOffIcon color='disabled' />);
+                      setReminderState(false);
+                      setDisplayReminderTime(true);
+                    }
+                    if (!reminderState) {
+                      setReminderIcon(<NotificationsActiveIcon sx={{ color: 'green' }} />);
+                      setReminderState(true);
+                      setDisplayReminderTime(false);
+                    }
+                  }}
+                  variant='contained'
+                >
+                  {reminderIcon}
+                </Button>
+                <div className='sb-buffer'></div>
+                <div className='place-self-center' hidden={displayReminderTime}>
+                  <LocalizationProvider dateAdapter={AdapterDateFns}>
+                    <MobileTimePicker
+                      label='Reminder Time'
+                      value={reminderTime}
+                      onChange={time => {
+                        setReminderTime(time);
+                      }}
+                      renderInput={params => <TextField {...params} />}
+                    />
+                  </LocalizationProvider>
+                  <div className='sb-buffer'></div>
+                  <p className='text-center text-xs'>Please Input Phone Number</p>
+                  <p className='text-center text-xs'>10 Digits, Numbers only</p>
+                  <br />
+                  <TextField
+                    id='telNumber'
+                    label='Mobile Number'
+                    variant='outlined'
+                    onChange={e => setSmsNumber(e.target.value)}
+                  />
+                  <div className='sb-buffer'></div>
+                </div>
               </div>
               <div style={{ display: 'flex' }} className='flex-col'>
                 <Button

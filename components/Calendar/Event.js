@@ -1,6 +1,7 @@
 import react, { useState, useEffect } from 'react';
 import DiningIcon from '@mui/icons-material/Dining';
 import SleepingIcon from '@mui/icons-material/LocalHotel';
+import { Paper } from '@mui/material';
 
 function Event(props) {
   function getDuration(startTime, endTime) {}
@@ -26,10 +27,7 @@ function Event(props) {
 
   var lineOutput = '';
   if (new Date().getSeconds() < props.eventStartTime) {
-    console.log('props.line', props.line);
     if (props.line[0] === 'not set') {
-      console.log('running', props.line);
-
       props.handleLine(props.index, 'set line');
     }
     if (props.line === 'set at line') {
@@ -40,58 +38,48 @@ function Event(props) {
     }
   }
 
-  console.log(props.line);
-
   return (
     <>
-      <div className='rounded mb-2  box bg-[#DCEBFE] flex gap-x-20  justify-start border border-gray-600/75'>
-        <div className='event-left'>
-          <div className='start-time text-[#A020F0] ml-1'>{props.startTime}</div>
+      <Paper elevation={6} className=' content-center'>
+        <div className=' rounded mb-2  flex justify-start gap-5'>
+          <div className='start-time self-center text-[#A020F0] ml-1'>
+            {props.startTime}
+            <div className='divider ml-2 inline-block h-[50%] self-center border border-[#AA336A] opacity-25'></div>
+          </div>
+
+          <div className='baby-name self-center text-[#85C9EA] font-[600]'>
+            {' '}
+            {props.babyName}
+          </div>
           {props.type === 'eat' ? (
-            <div className='duration text-slate-400'>
-              {' '}
-              {getDuration(props.startTime, props.endTime)}{' '}
+            <DiningIcon className='self-center' />
+          ) : (
+            <SleepingIcon className='self-center' />
+          )}
+
+          {props.babyName === 'Jake' && props.type === 'eat' ? (
+            <div className='food-type self-center '>
+              {`protein, `}
+              <div className='food-amount self-center'>{`1000 grams`}</div>
             </div>
           ) : (
-            <div className='duration text-slate-400'>
-              {' '}
-              {getDuration(props.startTime, props.endTime)}{' '}
-            </div>
+            <>
+              {props.type === 'eat' ? (
+                <div className='food-type self-center '>
+                  {`${props.typeOfFood}`}
+                  {props.foodMetric ? (
+                    <div className='food-amount self-center '>{`${props.foodAmount} ${props.foodMetric}`}</div>
+                  ) : (
+                    <div className='food-amount self-center'>{`${props.foodAmount}`}</div>
+                  )}
+                </div>
+              ) : (
+                ''
+              )}
+            </>
           )}
         </div>
-        <div className='divider border border-[#AA336A] opacity-25'></div>
-        <div className='my-6 event-right'>
-          <div className='right-subcontainer'>
-            {!props.gender ? (
-              <div className='baby-name text-[#85C9EA] mr-7 font-[600]'> {props.babyName}</div>
-            ) : (
-              <div className='baby-name text-[#FF92B1] mr-7 font-bold'> {props.babyName}</div>
-            )}
-            {props.type === 'eat' ? <DiningIcon /> : <SleepingIcon />}
-            {props.babyName === 'JakeB' ? (
-              <div className='food-calendar align-start'>
-                <div className='food-type ml-6'>protein</div>
-                <div className='food-amount ml-6'>1000 grams</div>
-              </div>
-            ) : (
-              <div className='food-calendar align-start'>
-                {props.type === 'eat' ? (
-                  <div>
-                    <div className='food-type ml-6 text-[#AA336A]'>{props.typeOfFood}</div>
-                    {props.foodMetric ? (
-                      <div className='food-amount ml-6 text-[#AA336A]'>{`${props.foodAmount} ${props.foodMetric}`}</div>
-                    ) : (
-                      <div className='food-amount ml-6'>{`${props.foodAmount}`}</div>
-                    )}
-                  </div>
-                ) : (
-                  ''
-                )}
-              </div>
-            )}
-          </div>
-        </div>
-      </div>
+      </Paper>
     </>
   );
 }

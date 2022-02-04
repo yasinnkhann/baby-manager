@@ -13,6 +13,9 @@ function Calendar() {
   // const [allEvents, setAllEvents] = useState([]);
   const [dayEvents, setDayEvents] = useState([]);
   const [sortedDayEvents, setSortedDayEvents] = useState([]);
+  const [upcomingEvents, setUpcomingEvents] = useState([]);
+  const [pastEvents, setPastEvents] = useState([]);
+
   const [user, loading, error] = useAuthState(auth);
 
   function sameDay(d1, d2) {
@@ -21,6 +24,14 @@ function Calendar() {
       d1.getMonth() === d2.getMonth() &&
       d1.getDate() === d2.getDate()
     );
+  }
+
+  function categorizeStatus(seconds) {
+    if (seconds < new Date().getTime() / 1000) {
+      return 'completed';
+    } else {
+      return 'upcoming';
+    }
   }
 
   // var orderEvents = async ()=> {
@@ -69,7 +80,6 @@ function Calendar() {
         // const querySnapshot = await getDocs(feedingEvents);
         // console.log(babyName)
         const babyName = doc.data().name;
-        console.log(babyName);
 
         // GET ALL FEEDING EVENTS FOR CURRENT BABY AND PUSH TO feedingEventsArray
 
@@ -86,9 +96,9 @@ function Calendar() {
           var feedingEvent = doc.data();
           feedingEvent['babyName'] = babyName;
           feedingEvent['type'] = 'eat';
+          feedingEvent['status'] = categorizeStatus(doc.data().startTime.seconds);
           feedingEventsArray.push(feedingEvent);
         });
-        console.log('feedingEvents: ', feedingEventsArray);
 
         // GET ALL SLEEPING EVENTS FOR CURRENT BABY AND PUSH TO sleepingEventsArray
 
@@ -106,15 +116,12 @@ function Calendar() {
           var sleepingEvent = doc.data();
           sleepingEvent['babyName'] = babyName;
           sleepingEvent['type'] = 'sleep';
+          sleepingEvent['status'] = categorizeStatus(doc.data().startTime.seconds);
           sleepingEventsArray.push(sleepingEvent);
           // console.log(new Date(events[0].startTime.seconds * 1000));
         });
 
-        console.log('sleepingEventsArray ', sleepingEventsArray);
-
         var combinedEvents = feedingEventsArray.flat().concat(sleepingEventsArray.flat());
-
-        console.log('combinedEvents ', combinedEvents);
 
         var dayEvents = combinedEvents.filter(event => {
           var seconds = event.startTime.seconds;
@@ -126,7 +133,15 @@ function Calendar() {
         });
         setSortedDayEvents(sortedDayEvents);
 
-        console.log('sortedEvents', sortedDayEvents);
+        var upcomingEvents = sortedDayEvents.filter(event => {
+          return event.status === 'upcoming';
+        });
+        setUpcomingEvents(upcomingEvents);
+
+        var pastEvents = sortedDayEvents.filter(event => {
+          return event.status === 'completed';
+        });
+        setPastEvents(pastEvents);
       });
       // feedingEventsArray.push(feedingEventsData);
     } catch {
@@ -165,19 +180,15 @@ function Calendar() {
         // console.log('allEvents ', allEvents);
 
         var combinedEvents = feedingEventsArray.flat().concat(sleepingEventsData.flat());
-        console.log('combinedEvents ', combinedEvents);
 
         var dayEvents = combinedEvents.filter(event => {
-          console.log(combinedEvents);
           var seconds = event.startTime.seconds;
           var date = new Date(seconds * 1000);
           return sameDay(date, selectedDate);
         });
-        console.log('combined dayevents ', dayEvents);
         var sortedDayEvents = dayEvents.sort((a, b) => {
           return a.startTime.seconds - b.startTime.seconds;
         });
-        console.log('sorted dayevents ', sortedDayEvents);
         setSortedDayEvents(sortedDayEvents);
       });
     } catch {
@@ -186,18 +197,24 @@ function Calendar() {
   };
 
   var setSelectedDate = function (date) {
-    console.log(date);
     setDate(date);
   };
 
   return (
-    <div className='my-[25%] lg:my-[7%] md:my-[14%]'>
+    <div className='my-[25%] flex justify-center lg:my-[7%] md:my-[14%]'>
       <Head>
         <title>BabyManager | Calendar</title>
       </Head>
-      <WeeklyView setSelectedDate={setSelectedDate} selectedDate={selectedDate} />
-      <div className='xsm:w-[300px] md:w-[600px]'>
-        <ListView sortedDayEvents={sortedDayEvents} selectedDate={selectedDate} />
+      <div className=''>
+        <WeeklyView setSelectedDate={setSelectedDate} selectedDate={selectedDate} />
+        <div className='xsm:w-[300px] md:w-[600px]'>
+          <ListView
+            upcomingEvents={upcomingEvents}
+            pastEvents={pastEvents}
+            sortedDayEvents={sortedDayEvents}
+            selectedDate={selectedDate}
+          />
+        </div>
       </div>
     </div>
   );
