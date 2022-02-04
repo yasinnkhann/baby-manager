@@ -22,11 +22,10 @@
     height: 75px;
   }
 
-  .list-view-container {
+  /* .list-view-container {
     margin-left: 45px;
     height: 300px;
-    /* overflow: scroll; */
-  }
+  } */
 
   .baby-name {
     /* font-family: 'Courier New', Courier, monospace */

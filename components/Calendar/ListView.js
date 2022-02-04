@@ -191,7 +191,7 @@ function ListView(props) {
             <button onClick = {() => setView('all') }>View All</button> */}
           </div>
 
-          <div className='list-view-container mr-10 mt-5 mb-10'>
+          <div className='list-view-container  mt-5 mb-10'>
             {props.sortedDayEvents.map((event, i, array) => {
               if (view === 'all') {
                 return (

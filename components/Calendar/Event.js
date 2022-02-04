@@ -41,8 +41,8 @@ function Event(props) {
   return (
     <>
       <Paper elevation={6} className=' content-center'>
-        <div className=' rounded mb-2  flex justify-start gap-5'>
-          <div className='start-time self-center text-[#A020F0] ml-1'>
+        <div className='w-[325px] h-[60px] rounded mb-2  flex justify-start gap-5'>
+          <div className='start-time self-center text-[#A020F0] ml-3'>
             {props.startTime}
             <div className='divider ml-2 inline-block h-[50%] self-center border border-[#AA336A] opacity-25'></div>
           </div>
@@ -66,12 +66,12 @@ function Event(props) {
             <>
               {props.type === 'eat' ? (
                 <div className='food-type self-center '>
-                  {`${props.typeOfFood}`}
-                  {props.foodMetric ? (
+                  {`${props.typeOfFood}, ${props.foodAmount} ${props.foodMetric}`}
+                  {/* {props.foodMetric ? (
                     <div className='food-amount self-center '>{`${props.foodAmount} ${props.foodMetric}`}</div>
                   ) : (
                     <div className='food-amount self-center'>{`${props.foodAmount}`}</div>
-                  )}
+                  )} */}
                 </div>
               ) : (
                 ''
