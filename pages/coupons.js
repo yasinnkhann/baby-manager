@@ -38,12 +38,14 @@ const Coupons = () => {
     coupons?.map(coupon => <CouponItem key={coupon.deal.id} coupon={coupon} />);
 
   return (
-    <div className='h-screen my-[20%] sm:my-[10%]'>
+    <div className='h-screen'>
       <Head>
         <title>Baby Manager | Coupons</title>
       </Head>
-      <h1>Coupons</h1>
-      <section>{renderCoupons()}</section>
+      <div className='mx-[5%] sm:mx-[15%] my-[10%] sm:my-[20%] md:my-[10%] flex flex-col justify-center'>
+        <h1 className='lg:text-[58px] md:text-[38px] text-center'>Coupons</h1>
+        <section>{renderCoupons()}</section>
+      </div>
     </div>
   );
 };

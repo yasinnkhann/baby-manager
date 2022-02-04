@@ -117,6 +117,9 @@ export default function Navbar() {
               <Link href='/changingRooms' passHref>
                 <MenuItem onClick={() => setAnchorEl(null)}>Changing Stations</MenuItem>
               </Link>
+              <Link href='/coupons' passHref>
+                <MenuItem onClick={() => setAnchorEl(null)}>Coupons</MenuItem>
+              </Link>
             </Menu>
           </div>
         </div>
