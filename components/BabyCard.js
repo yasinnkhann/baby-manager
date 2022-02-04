@@ -134,9 +134,15 @@ export default function BabyCard({
   };
   // handling the view module and list
   const classNameForModuleView =
-    'm-[1%] h-[180px] w-[122px] sm:h-[187px] sm:w-[200px] md:h-[220px] md:w-[255px]';
+    'm-[1%] h-[187px] w-[122px] sm:h-[187px] sm:w-[200px] md:h-[220px] md:w-[255px]';
   const classNameForListView =
-    'm-[1%] h-[180px] w-[360px] sm:h-[187px] sm:w-[550px] md:h-[220px] md:w-[750px]';
+    'm-[1%] h-[187px] w-[360px] sm:h-[187px] sm:w-[550px] md:h-[220px] md:w-[750px]';
+
+  const classNameBabyAsleep =
+    'animatedCard self-center bg-[url("/asleep-baby.svg")] w-[120px] h-[110px] sm:w-[125px] sm:h-[115px]  md:w-[130px] md:h-[150px]  bg-center bg-cover bg-no-repeat';
+
+  const classNameBabyAwake =
+    'animatedCard self-center bg-[url("/awake-baby.svg")] w-[120px] h-[110px] sm:w-[125px] sm:h-[115px]  md:w-[130px] md:h-[150px] bg-center bg-cover bg-no-repeat';
 
   return (
     <React.Fragment>
@@ -159,20 +165,18 @@ export default function BabyCard({
             }
           />
           <Link href={`/baby/${babyID}`} key={babyID} passHref>
-            <div>
-              <div className='flex flex-col' style={{ cursor: 'pointer' }}>
-                <CardContent
-                  className='animatedCard self-center'
-                  style={{ textAlign: 'center' }}
-                >
-                  {sleepStatus ? (
-                    <div className='bg-[url("/asleep-baby.svg")] w-[100px] h-[90px] bg-center bg-cover bg-no-repeat'></div>
-                  ) : (
-                    <div className='bg-[url("/awake-baby.svg")] w-[100px] h-[90px] bg-center bg-cover bg-no-repeat'></div>
-                  )}
-                  <a>{babyName}</a>
-                </CardContent>
+            <div style={{ textAlign: 'center' }}>
+              <div
+                className='flex flex-col h-[100%] w-[100%]'
+                style={{ cursor: 'pointer', textAlign: 'center' }}
+              >
+                {sleepStatus ? (
+                  <div className={classNameBabyAsleep}></div>
+                ) : (
+                  <div className={classNameBabyAwake}></div>
+                )}
               </div>
+              <div>{babyName}</div>
             </div>
           </Link>
         </Card>
