@@ -22,23 +22,11 @@
     height: 75px;
   }
 
-  .list-view-container {
+  /* .list-view-container {
     margin-left: 45px;
     height: 300px;
-    /* overflow: scroll; */
-  }
 
-  .baby-name {
-    /* font-family: 'Courier New', Courier, monospace */
-  }
-
-  .right-subcontainer {
-    display: flex;
-  }
-
-  .start-time {
-    /* font-family: 'Courier New', Courier, monospace */
-  }
+  } */
 
   .food-calendar {
     margin-top: -10px;
@@ -54,9 +42,9 @@
 
   .divider {
     height: 50px;
-    margin-top: 10px;
+    /* margin-top: 10px;
     margin-right: -50px;
-    margin-left: -65px;
+    margin-left: -65px; */
   }
 }
 
@@ -64,9 +52,9 @@
 /*flip card to delete Baby card*/
 .flip-card {
   background-color: transparent;
-  width: 190px;
-  height: 150px;
-  perspective: 200px;
+  /* width: 190px;
+  height: 150px; */
+  /* perspective: 200px; */
 }
 
 .flip-card-inner {

@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { styled } from '@mui/material/styles';
 import Card from '@mui/material/Card';
-// import CardMedia from '@mui/material/CardMedia';
 import CardContent from '@mui/material/CardContent';
 import Switch from '@mui/material/Switch';
 import FormControlLabel from '@mui/material/FormControlLabel';
@@ -60,14 +59,6 @@ const MaterialUISwitch = styled(Switch)(({ theme }) => ({
   },
 }));
 
-const icon = {
-  awake:
-    'https://cdn3.iconfinder.com/data/icons/family-member-flat-happy-family-day/512/Son-256.png',
-
-  asleep:
-    'https://cdn0.iconfinder.com/data/icons/family-babies-kids/24/kid-infant-baby-child-children-family-512.png',
-};
-
 const babyListViewCard = {
   display: 'flex',
   margin: '5px',
@@ -76,12 +67,14 @@ const babyListViewCard = {
   boxShadow: '2px 5px #B5B5B5',
 };
 
-const babyCard = {
-  margin: '5px',
-  padding: '1px',
-  borderRadius: '10px',
-  boxShadow: '1px 2px #B5B5B5',
-};
+// const babyCard = {
+//   margin: '5px',
+//   padding: '1px',
+//   borderRadius: '10px',
+//   boxShadow: '1px 2px #B5B5B5',
+//   width: '400px',
+//   height: '400px'
+// };
 
 const nextFeedBtn = {
   margin: '15px',
@@ -141,21 +134,32 @@ export default function BabyCard({
       retrieveSleepData();
     }
   };
+  // handling the view module and list
+  const classNameForModuleView =
+    'm-[1%] h-[195px] w-[120px] sm:h-[200px] sm:w-[200px] md:h-[240px] md:w-[255px]';
+  const classNameForListView =
+    'm-[1%] h-[200px] w-[360px] sm:h-[210px] sm:w-[550px] md:h-[240px] md:w-[750px]';
 
-  // <Card className='animatedCard' style={babyCard} sx={{ maxWidth: 120, maxHeight: 140 }}>
+  const classNameBabyAsleep =
+    'animatedCard self-center bg-[url("/asleep-baby.svg")] w-[120px] h-[110px] sm:w-[125px] sm:h-[115px]  md:w-[130px] md:h-[150px]  bg-center bg-cover bg-no-repeat';
+
+  const classNameBabyAwake =
+    'animatedCard self-center bg-[url("/awake-baby.svg")] w-[120px] h-[110px] sm:w-[125px] sm:h-[115px]  md:w-[130px] md:h-[150px] bg-center bg-cover bg-no-repeat';
 
   return (
     <React.Fragment>
       <div
-        className='mt-[2%] h-[200px] w-[275px] sm:h-[275px] sm:w-[350px] md:h-[550px] md:w-[750px] '
+        className={viewType === 'list' ? classNameForListView : classNameForModuleView}
         style={viewType === 'list' ? babyListViewCard : null}
       >
-        <Card className='animatedCard h-[100%] w-[60%]'>
+        <Card className='animatedCard h-[100%] w-[100%]'>
           <FormControlLabel
+            className='flex flex-col'
             labelPlacement='top'
             label=''
             control={
               <MaterialUISwitch
+                className='animatedCard self-center'
                 checked={sleepStatus}
                 onChange={handleUpdateSleep}
                 sx={{ m: 1 }}
@@ -163,22 +167,27 @@ export default function BabyCard({
             }
           />
           <Link href={`/baby/${babyID}`} key={babyID} passHref>
-            <CardContent style={{ textAlign: 'center' }}>
-              {sleepStatus ? (
-                <div className='bg-[url("/asleep-baby.svg")] w-[100px] h-[100px] bg-center bg-cover bg-no-repeat'></div>
-              ) : (
-                <div className='bg-[url("/awake-baby.svg")] w-[100px] h-[100px] bg-center bg-cover bg-no-repeat'></div>
-              )}
-              <a>{babyName}</a>
-            </CardContent>
+            <div style={{ textAlign: 'center' }}>
+              <div
+                className='flex flex-col h-[100%] w-[100%]'
+                style={{ cursor: 'pointer', textAlign: 'center' }}
+              >
+                {sleepStatus ? (
+                  <div className={classNameBabyAsleep}></div>
+                ) : (
+                  <div className={classNameBabyAwake}></div>
+                )}
+              </div>
+              <div>{babyName}</div>
+            </div>
           </Link>
         </Card>
         {viewType === 'list' ? (
-          <div className='flip-card'>
+          <div className='animatedCard flip-card h-[100%] w-[100%]'>
             <div className='flip-card-inner'>
               <div className='flip-card-front'>
-                <div style={{ alignSelf: 'center', height: '110px', margin: '10px' }}>
-                  <div style={{ margin: '20px' }}>
+                <div className='mt-[15%] h-[100%] w-[100%]'>
+                  <div>
                     <Button style={{ color: 'black' }} variant='contained'>
                       Next Feed{' '}
                     </Button>
@@ -196,26 +205,25 @@ export default function BabyCard({
                   </div>
                 </div>
               </div>
-              <div className='flip-card-back'>
+              <div className='flip-card-back mt-[15%] h-[100%] w-[100%]'>
                 <Button
                   onClick={handleDeleteBaby}
-                  style={{ marginTop: '13px' }}
                   variant='outlined'
                   startIcon={<DeleteIcon />}
                 >
                   {' '}
                   Delete{' '}
                 </Button>
-
                 {isEditing ? (
-                  <form onSubmit={e => handleUpdateBabyName(e)}>
-                    <div>
-                      <Button style={{ marginTop: '2px' }} type='submit' variant='outlined'>
-                        Submit
+                  <form className='h-[100%] w-[100%]' onSubmit={e => handleUpdateBabyName(e)}>
+                    <div className='my-[2%] md:flex md:flex-col lg:flex lg:flex-col'>
+                      <Button type='submit' variant='outlined'>
+                        {' '}
+                        Submit{' '}
                       </Button>
                       <TextField
+                        className='my-[2%]'
                         style={{
-                          margin: '2px',
                           backgroundColor: 'transparent',
                           color: 'black',
                         }}
@@ -227,12 +235,12 @@ export default function BabyCard({
                   </form>
                 ) : (
                   <Button
+                    className='my-[2%] h-[25%] w-[70%]'
                     onClick={() => setIsEditing(!isEditing)}
-                    style={{ margin: '5px' }}
                     variant='outlined'
                     startIcon={<EditIcon />}
                   >
-                    Edit Name
+                    Edit
                   </Button>
                 )}
               </div>

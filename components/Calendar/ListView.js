@@ -4,7 +4,13 @@ import Link from 'next/link';
 import BasicSelect from './BasicSelect.js';
 import ColorToggleButton from './ColorToggleButton.js';
 var events = [
-  { babyName: 'Daniel', gender: 'male', type: 'sleep', startTime: '6AM', endTime: '12PM' },
+  {
+    babyName: 'Daniel',
+    gender: 'male',
+    type: 'sleep',
+    startTime: '6AM',
+    endTime: '12PM',
+  },
   {
     babyName: 'Alissa',
     gender: 'female',
@@ -13,7 +19,13 @@ var events = [
     foodAmount: '28oz',
     startTime: '8AM',
   },
-  { babyName: 'Derek', gender: 'male', type: 'sleep', startTime: '9AM', endTime: '12PM' },
+  {
+    babyName: 'Derek',
+    gender: 'male',
+    type: 'sleep',
+    startTime: '9AM',
+    endTime: '12PM',
+  },
   {
     babyName: 'JakeB',
     gender: 'male',
@@ -22,7 +34,13 @@ var events = [
     foodAmount: '28oz',
     startTime: '11AM',
   },
-  { babyName: 'Ryan', gender: 'female', type: 'sleep', startTime: '3PM', endTime: '12PM' },
+  {
+    babyName: 'Ryan',
+    gender: 'female',
+    type: 'sleep',
+    startTime: '3PM',
+    endTime: '12PM',
+  },
   {
     babyName: 'Yasin',
     gender: 'male',
@@ -31,7 +49,13 @@ var events = [
     foodAmount: '28oz',
     startTime: '4PM',
   },
-  { babyName: 'Edward', gender: 'male', type: 'sleep', startTime: '7PM', endTime: '12PM' },
+  {
+    babyName: 'Edward',
+    gender: 'male',
+    type: 'sleep',
+    startTime: '7PM',
+    endTime: '12PM',
+  },
   {
     babyName: 'Hatha',
     gender: 'male',
@@ -71,7 +95,6 @@ function ListView(props) {
   const [view, setView] = useState('upcoming');
 
   function handleLine(index, status) {
-    console.log(index);
     if (status === 'set line') {
       setLine(['set at index', index]);
     }
@@ -98,13 +121,10 @@ function ListView(props) {
     minutes = minutes < 10 ? '0' + minutes : minutes;
     var strTime = hours + ':' + minutes + ' ' + ampm;
 
-    console.log(strTime);
     return strTime;
   }
 
   function handleToggleChange(view) {
-    debugger;
-    console.log(view);
     setView(view);
   }
 
@@ -120,20 +140,20 @@ function ListView(props) {
     //         type={event.type}
     //         babyName={event.babyName}
     //         startTime={event.startTime}
-    //       />
+    //       />   border-solid border-4 border-blue-500
     //     );
     //   })}
     // </div>
-    <>
+    <div className='w-screen flex flex-col'>
       {/* {console.log('a',view, props.upcomingEvents.length)} */}
       {(view === 'upcoming' && props.upcomingEvents.length === 0) ||
       (view === 'completed' && props.pastEvents.length === 0) ? (
         <div>
-          <div className='flex'>
-            <div className='ml-10 mt-7 text-lg text-[#EFF1FA] mr-5'>
+          <div className='flex justify-around lg:justify-around'>
+            <div className='self-center text-lg text-[#EFF1FA]  '>
               {props.selectedDate.toDateString().slice(0, -5)}
             </div>
-            <div className='ml-10 mt-5'>
+            <div className=''>
               <ColorToggleButton handleToggleChange={handleToggleChange} />
             </div>
             {/* <button onClick = {() => setView('upcoming') }>Upcoming</button>
@@ -146,24 +166,24 @@ function ListView(props) {
               {' '}
               <br></br> <br></br>
               <Link className='text-[#A020F0]' href='/addBaby'>
-                "Add A Baby"
+                &quot;Add A Baby&quot;
               </Link>{' '}
             </div>
             {'or go to '}{' '}
             <div className='underline inline'>
               {' '}
-              <Link href='/overview'> "Baby Overview"</Link>{' '}
+              <Link href='/overview'>&quot;Baby Overview&quot;</Link>{' '}
             </div>{' '}
             to add feed/sleep events.
           </div>
         </div>
       ) : (
-        <div>
-          <div className='flex'>
-            <div className='ml-10 mt-7 text-lg text-[#EFF1FA] mr-5'>
+        <div className='flex flex-col'>
+          <div className='flex justify-around lg:justify-around'>
+            <div className='self-center text-lg text-[#EFF1FA] '>
               {props.selectedDate.toDateString().slice(0, -5)}
             </div>
-            <div className='ml-10 mt-5'>
+            <div className=''>
               <ColorToggleButton handleToggleChange={handleToggleChange} />
             </div>
             {/* <button onClick = {() => setView('upcoming') }>Upcoming</button>
@@ -171,9 +191,8 @@ function ListView(props) {
             <button onClick = {() => setView('all') }>View All</button> */}
           </div>
 
-          <div className='list-view-container mr-10 mt-5 mb-10'>
+          <div className='list-view-container my-5 w-[90%] self-center'>
             {props.sortedDayEvents.map((event, i, array) => {
-              console.log(event.status, view);
               if (view === 'all') {
                 return (
                   <Event
@@ -215,7 +234,7 @@ function ListView(props) {
           </div>
         </div>
       )}
-    </>
+    </div>
   );
 }
 export default ListView;
