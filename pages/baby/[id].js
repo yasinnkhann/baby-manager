@@ -50,21 +50,14 @@ const Baby = ({ baby }) => {
   };
 
   const babyGet = async () => {
-    const babyData = doc(db, 'users', baby.uid ? baby.uid : user.uid, 'babies', path);
+    const babyData = doc(db, 'users', user.uid, 'babies', path);
     const babySnap = await getDoc(babyData);
     setCurrentBaby(babySnap.data());
   };
 
   const babySleepingEvents = async () => {
     if (currentBaby === null) return;
-    const babyData = collection(
-      db,
-      'users',
-      baby.uid ? baby.uid : user.uid,
-      'babies',
-      path,
-      'sleepingEvents'
-    );
+    const babyData = collection(db, 'users', user.uid, 'babies', path, 'sleepingEvents');
     const babyQuery = query(babyData, orderBy('startTime', 'desc'), limit(10));
     const sleeps = await getDocs(babyQuery);
     const sortedSleeps = sleeps.docs.map(doc => ({
@@ -87,14 +80,7 @@ const Baby = ({ baby }) => {
 
   const babyFeedingEvents = async () => {
     if (currentBaby === null) return;
-    const babyData = collection(
-      db,
-      'users',
-      baby.uid ? baby.uid : user.uid,
-      'babies',
-      path,
-      'feedingEvents'
-    );
+    const babyData = collection(db, 'users', user.uid, 'babies', path, 'feedingEvents');
     const babyQuery = query(babyData, orderBy('startTime', 'desc'), limit(10));
     const feeds = await getDocs(babyQuery);
     const sortedFeeds = feeds.docs.map(doc => ({ id: doc.id, ...doc.data() }));
