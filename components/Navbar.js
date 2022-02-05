@@ -36,7 +36,7 @@ export default function Navbar() {
         <Link href='/overview' passHref>
           <div className='flex flex-row content-center hover:text-pink-500 hover:cursor-pointer'>
             <div className='bg-[url("/baby3.svg")] w-[65px] h-[70px] bg-center bg-cover bg-no-repeat'></div>
-            <div className='font-["Pacifico"] text-xl self-center '>Baby Manager</div>
+            <div className='font-["Pacifico"] text-xl self-center '>Bambino</div>
           </div>
         </Link>
         <div className='justify-self-end flex flex-row items-center justify-around'>
