@@ -89,10 +89,24 @@ const NapModal = ({ babyPath, babyGet, babyName }) => {
   //------------------------------------------//
   const postNextNap = async () => {
     if (napDate.getTime() < Date.now()) {
-      window.alert('Please Select a valid Date and Time');
+      window.alert(
+        'Please Select a valid Date and Time for sleeping event ahead of current time.'
+      );
       return;
     }
+    let hourAhead = Date.now() + 3660000;
+    let remTime = reminderTime.getTime();
     if (smsNumber !== null) {
+      if (hourAhead > remTime) {
+        window.alert(
+          'Please Input a reminder time at least 65 minutes ahead of current time.'
+        );
+        return;
+      }
+      if (smsNumber.split('').length !== 10) {
+        window.alert('Please input a valid cell phone number.');
+        return;
+      }
       await updateDoc(doc(db, 'users', user.uid, 'babies', babyPath), {
         nextNap: napDate,
       }).then(res => {
@@ -233,7 +247,7 @@ const NapModal = ({ babyPath, babyGet, babyName }) => {
             <div style={{ display: 'flex' }} className='flex-col'>
               <p className='text-center'>Send a Text Reminder?</p>
               <p className='text-center text-xs'>
-                Reminder must be set at least 60 mins in advance.
+                Reminder must be set at least 65 mins in advance.
               </p>
               <Button
                 style={{ background: 'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)' }}
@@ -267,8 +281,8 @@ const NapModal = ({ babyPath, babyGet, babyName }) => {
                   />
                 </LocalizationProvider>
                 <div className='sb-buffer'></div>
-                <sub>Please Input Phone Number</sub>
-                <br />
+                <p className='text-center text-xs'>Please Input Phone Number</p>
+                <p className='text-center text-xs'>10 Digits, Numbers only</p>
                 <br />
                 <TextField
                   id='telNumber'

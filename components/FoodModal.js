@@ -91,9 +91,23 @@ const FoodModal = ({ babyPath, babyGet, foodArray, setFoodArray, babyName }) => 
   //----Scrape Data and prepare for post------//
   //------------------------------------------//
   const postNextFood = async () => {
+    let hourAhead = Date.now() + 3660000;
+    let remTime = reminderTime.getTime();
     if (smsNumber !== null) {
+      if (hourAhead > remTime) {
+        window.alert(
+          'Please Input a Reminder Time at least 65 minutes ahead of current time.'
+        );
+        return;
+      }
+      if (smsNumber.split('').length !== 10) {
+        window.alert('Please input a valid cell phone number.');
+        return;
+      }
       if (feedTime.getTime() < Date.now()) {
-        window.alert('Please input a valid Date and Time.');
+        window.alert(
+          'Please input a valid Date and Time for Feeding Event ahead of current time.'
+        );
         return;
       }
       await updateDoc(doc(db, 'users', user.uid, 'babies', babyPath), {
@@ -310,7 +324,7 @@ const FoodModal = ({ babyPath, babyGet, foodArray, setFoodArray, babyName }) => 
               <div style={{ display: 'flex' }} className='flex-col'>
                 <p className='text-center'>Send a Text Reminder?</p>
                 <p className='text-center text-xs'>
-                  Reminder must be set at least 60 mins in advance.
+                  Reminder must be set at least 65 mins in advance.
                 </p>
                 <Button
                   style={{ background: 'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)' }}
