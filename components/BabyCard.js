@@ -166,7 +166,8 @@ export default function BabyCard({
               />
             }
           />
-          <Link href={`/baby/${babyID}`} key={babyID} passHref>
+          <Link href={{ pathname: `/baby/${babyID}`, query: user.uid }} key={babyID} passHref>
+            {/* <Link href={{ pathname: `/baby/${babyID}` }} key={babyID} passHref> */}
             <div style={{ textAlign: 'center' }}>
               <div
                 className='flex flex-col h-[100%] w-[100%]'
