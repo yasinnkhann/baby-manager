@@ -100,7 +100,6 @@ export default function BabyCard({
   const [editedName, setEditedName] = useState(babyName);
 
   const handleUpdateSleep = async (e, value) => {
-    console.log('user.uid:', user.uid);
     e.preventDefault();
     try {
       const babyRef = doc(db, 'users', user.uid, 'babies', babyID);

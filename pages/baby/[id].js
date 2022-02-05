@@ -39,12 +39,9 @@ const Baby = ({ baby }) => {
   const [foodArray, setFoodArray] = React.useState(['Loading', 'One Sec']);
   const [curAsleep, setCurAsleep] = React.useState(false);
   const { asPath } = useRouter();
-  console.log('asPath:', asPath);
   const temp = asPath.split('/baby/')[1];
   const path = temp.split('?')[0];
   const uid = temp.split('?')[1];
-  console.log('path:', path);
-  console.log('uid:', uid);
 
   const babySleep = () => {
     if (currentBaby.isAsleep) {
