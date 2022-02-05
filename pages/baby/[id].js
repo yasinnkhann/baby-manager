@@ -39,7 +39,12 @@ const Baby = ({ baby }) => {
   const [foodArray, setFoodArray] = React.useState(['Loading', 'One Sec']);
   const [curAsleep, setCurAsleep] = React.useState(false);
   const { asPath } = useRouter();
-  const path = asPath.split('/baby/')[1];
+  console.log('asPath:', asPath);
+  const temp = asPath.split('/baby/')[1];
+  const path = temp.split('?')[0];
+  const uid = temp.split('?')[1];
+  console.log('path:', path);
+  console.log('uid:', uid);
 
   const babySleep = () => {
     if (currentBaby.isAsleep) {
@@ -50,56 +55,103 @@ const Baby = ({ baby }) => {
   };
 
   const babyGet = async () => {
-    const babyData = doc(db, 'users', user.uid, 'babies', path);
-    const babySnap = await getDoc(babyData);
-    setCurrentBaby(babySnap.data());
+    if (uid) {
+      const babyData = doc(db, 'users', uid, 'babies', path);
+      const babySnap = await getDoc(babyData);
+      setCurrentBaby(babySnap.data());
+    } else {
+      const babyData = doc(db, 'users', user.uid, 'babies', path);
+      const babySnap = await getDoc(babyData);
+      setCurrentBaby(babySnap.data());
+    }
   };
 
   const babySleepingEvents = async () => {
-    if (currentBaby === null) return;
-    const babyData = collection(db, 'users', user.uid, 'babies', path, 'sleepingEvents');
-    const babyQuery = query(babyData, orderBy('startTime', 'desc'), limit(10));
-    const sleeps = await getDocs(babyQuery);
-    const sortedSleeps = sleeps.docs.map(doc => ({
-      id: doc.id,
-      ...doc.data(),
-    }));
-    if (sortedSleeps.length < 1) return;
-    for (var i = 0; i < sortedSleeps.length; i++) {
-      if (
-        sortedSleeps[i].startTime.seconds <= currentBaby.nextNap.seconds &&
-        sortedSleeps[i].startTime.seconds * 1000 < Date.now()
-      ) {
-        setSleepingEvents(sortedSleeps[i].startTime.seconds);
-        return;
-      } else {
-        continue;
+    if (!currentBaby) return;
+    if (uid) {
+      const babyData = collection(db, 'users', uid, 'babies', path, 'sleepingEvents');
+      const babyQuery = query(babyData, orderBy('startTime', 'desc'), limit(10));
+      const sleeps = await getDocs(babyQuery);
+      const sortedSleeps = sleeps.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+      if (sortedSleeps.length < 1) return;
+      for (var i = 0; i < sortedSleeps.length; i++) {
+        if (
+          sortedSleeps[i].startTime.seconds <= currentBaby.nextNap.seconds &&
+          sortedSleeps[i].startTime.seconds * 1000 < Date.now()
+        ) {
+          setSleepingEvents(sortedSleeps[i].startTime.seconds);
+          return;
+        } else {
+          continue;
+        }
+      }
+    } else {
+      const babyData = collection(db, 'users', user.uid, 'babies', path, 'sleepingEvents');
+      const babyQuery = query(babyData, orderBy('startTime', 'desc'), limit(10));
+      const sleeps = await getDocs(babyQuery);
+      const sortedSleeps = sleeps.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+      if (sortedSleeps.length < 1) return;
+      for (var i = 0; i < sortedSleeps.length; i++) {
+        if (
+          sortedSleeps[i].startTime.seconds <= currentBaby.nextNap.seconds &&
+          sortedSleeps[i].startTime.seconds * 1000 < Date.now()
+        ) {
+          setSleepingEvents(sortedSleeps[i].startTime.seconds);
+          return;
+        } else {
+          continue;
+        }
       }
     }
   };
 
   const babyFeedingEvents = async () => {
-    if (currentBaby === null) return;
-    const babyData = collection(db, 'users', user.uid, 'babies', path, 'feedingEvents');
-    const babyQuery = query(babyData, orderBy('startTime', 'desc'), limit(10));
-    const feeds = await getDocs(babyQuery);
-    const sortedFeeds = feeds.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-    if (sortedFeeds.length < 1) return;
-    for (var i = 0; i < sortedFeeds.length; i++) {
-      if (
-        sortedFeeds[i].startTime.seconds <= currentBaby.nextFeed.seconds &&
-        sortedFeeds[i].startTime.seconds * 1000 < Date.now()
-      ) {
-        setFeedingEvents(sortedFeeds[i].startTime.seconds);
-        return;
-      } else {
-        continue;
+    if (!currentBaby) return;
+    if (uid) {
+      const babyData = collection(db, 'users', uid, 'babies', path, 'feedingEvents');
+      const babyQuery = query(babyData, orderBy('startTime', 'desc'), limit(10));
+      const feeds = await getDocs(babyQuery);
+      const sortedFeeds = feeds.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+      if (sortedFeeds.length < 1) return;
+      for (var i = 0; i < sortedFeeds.length; i++) {
+        if (
+          sortedFeeds[i].startTime.seconds <= currentBaby.nextFeed.seconds &&
+          sortedFeeds[i].startTime.seconds * 1000 < Date.now()
+        ) {
+          setFeedingEvents(sortedFeeds[i].startTime.seconds);
+          return;
+        } else {
+          continue;
+        }
+      }
+    } else {
+      const babyData = collection(db, 'users', user.uid, 'babies', path, 'feedingEvents');
+      const babyQuery = query(babyData, orderBy('startTime', 'desc'), limit(10));
+      const feeds = await getDocs(babyQuery);
+      const sortedFeeds = feeds.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+      if (sortedFeeds.length < 1) return;
+      for (var i = 0; i < sortedFeeds.length; i++) {
+        if (
+          sortedFeeds[i].startTime.seconds <= currentBaby.nextFeed.seconds &&
+          sortedFeeds[i].startTime.seconds * 1000 < Date.now()
+        ) {
+          setFeedingEvents(sortedFeeds[i].startTime.seconds);
+          return;
+        } else {
+          continue;
+        }
       }
     }
   };
 
   const getLastFeedDatePretty = () => {
-    if (currentBaby === null) return;
+    if (!currentBaby) return;
     if (feedingEvents === null) return;
     const uglyDate = new Date(feedingEvents * 1000).toString();
     const splitDate = uglyDate.split(' ');
@@ -118,7 +170,7 @@ const Baby = ({ baby }) => {
   };
 
   const getNextFeedDatePretty = () => {
-    if (currentBaby === null) return;
+    if (!currentBaby) return;
     setBabyName(currentBaby.name);
     if (currentBaby.nextFeed === null) return;
     const uglyDate = new Date(currentBaby.nextFeed.seconds * 1000).toString();
@@ -161,7 +213,7 @@ const Baby = ({ baby }) => {
   };
 
   const getNextNapDatePretty = () => {
-    if (currentBaby === null) return;
+    if (!currentBaby) return;
     setBabyName(currentBaby.name);
     setFoodArray(currentBaby.babyFoodsArray);
     setCurAsleep(currentBaby.isAsleep);

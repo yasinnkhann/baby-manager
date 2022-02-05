@@ -100,6 +100,7 @@ export default function BabyCard({
   const [editedName, setEditedName] = useState(babyName);
 
   const handleUpdateSleep = async (e, value) => {
+    console.log('user.uid:', user.uid);
     e.preventDefault();
     try {
       const babyRef = doc(db, 'users', user.uid, 'babies', babyID);
@@ -166,7 +167,8 @@ export default function BabyCard({
               />
             }
           />
-          <Link href={`/baby/${babyID}`} key={babyID} passHref>
+          <Link href={{ pathname: `/baby/${babyID}`, query: user.uid }} key={babyID} passHref>
+            {/* <Link href={{ pathname: `/baby/${babyID}` }} key={babyID} passHref> */}
             <div style={{ textAlign: 'center' }}>
               <div
                 className='flex flex-col h-[100%] w-[100%]'
