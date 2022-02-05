@@ -1,6 +1,6 @@
 # Bambino
 
-Our team was tasked with creating a mobile-first baby manager web application. Our application allows new parents to schedule feed and nap times, schedule text reminders for feeding times, toggle sleep status, and allow parents to invite nanny’s or other users to manage their babies. In addition, Bambino allows users to find changing stations based on current location, allows for easy access to baby-related Groupon deals, and provides a note-taking feature for organization.
+Our team was tasked with creating a mobile-first baby manager web application. Our application allows new parents to schedule feed and nap times, schedule text reminders for feeding times, toggle sleep status, and allow parents to invite nanny’s or other users to manage their babies. In addition, Bambino allows users to find changing stations based on current location, gives easy access to baby-related Groupon deals, and provides a note-taking feature for organization.
 
 ## Tech Stack
 
