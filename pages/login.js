@@ -112,21 +112,21 @@ export default function Login() {
   });
 
   return (
-    <div className='h-screen flex flex-col content-center font-["Rubik"]'>
+    <div className='h-screen flex flex-col content-center'>
       <Head>
         <title>BabyManager | Login</title>
       </Head>
       <div className='w-full max-w-xs m-auto bg-indigo-100/75 rounded p-5'>
-        <Button
+        <button
           onClick={googleSignIn}
-          className='w-full bg-indigo-700 hover:bg-pink-700 text-white font-bold py-2 px-4 mb-6 rounded'
+          className='w-full bg-indigo-700 hover:bg-pink-700 text-white font-bold py-2 px-4 mb-6 rounded font-["Arial"]'
           variant='contained'
         >
           Login with Google
-        </Button>
+        </button>
 
         <fieldset>
-          <form onSubmit={handleSubmit} className='font-["Rubik"]'>
+          <form onSubmit={handleSubmit}>
             <TextField
               className='w-full mb-2 '
               type='email'
@@ -149,12 +149,12 @@ export default function Login() {
               onChange={handleChange}
             ></TextField>
 
-            <Button
-              className='w-full bg-indigo-700 hover:bg-pink-700 text-white font-bold py-2 px-4 mb-6 rounded'
+            <button
+              className='w-full bg-indigo-700 hover:bg-pink-700 text-white font-bold py-2 px-4 mb-6 rounded font-["Arial"]'
               type='submit'
             >
               Login
-            </Button>
+            </button>
           </form>
         </fieldset>
 
