@@ -127,27 +127,29 @@ export default function Login() {
 
         <fieldset>
           <form onSubmit={handleSubmit}>
-            <TextField
-              className='w-full mb-2 '
+            <label className='block mb-2 text-indigo-500' htmlFor='username'>
+              Email:
+            </label>
+            <input
+              className='w-full p-2 mb-6 text-indigo-700 border-b-2 border-indigo-500 outline-none focus:bg-gray-300'
               type='email'
-              color='primary'
               id='email'
               label='Email:'
               name='email'
-              variant='filled'
               onChange={handleChange}
-            ></TextField>
+            />
 
-            <TextField
-              className='w-full mb-2 '
+            <label className='block mb-2 text-indigo-500' htmlFor='password'>
+              Password:
+            </label>
+            <input
+              className='w-full p-2 mb-6 text-indigo-700 border-b-2 border-indigo-500 outline-none focus:bg-gray-300'
               type='password'
-              color='primary'
               id='password'
               label='Password:'
               name='password'
-              variant='filled'
               onChange={handleChange}
-            ></TextField>
+            />
 
             <button
               className='w-full bg-indigo-700 hover:bg-pink-700 text-white font-bold py-2 px-4 mb-6 rounded font-["Arial"]'
