@@ -13,7 +13,7 @@ export default async (req, res) => {
 
     client.messages
       .create({
-        from: process.env.NEXT_PUBLIC_REACT_APP_TWILIO_PHONE_NUMBER,
+        from: process.env.NEXT_PUBLIC_MESSAGING_SERVICE_SID,
         to: req.body.to,
         body: req.body.body,
         scheduleType: 'fixed',
