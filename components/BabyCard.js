@@ -166,22 +166,43 @@ export default function BabyCard({
               />
             }
           />
-          <Link href={{ pathname: `/baby/${babyID}`, query: user.uid }} key={babyID} passHref>
-            {/* <Link href={{ pathname: `/baby/${babyID}` }} key={babyID} passHref> */}
-            <div style={{ textAlign: 'center' }}>
-              <div
-                className='flex flex-col h-[100%] w-[100%]'
-                style={{ cursor: 'pointer', textAlign: 'center' }}
-              >
-                {sleepStatus ? (
-                  <div className={classNameBabyAsleep}></div>
-                ) : (
-                  <div className={classNameBabyAwake}></div>
-                )}
+          {user ? (
+            <Link
+              href={{ pathname: `/baby/${babyID}`, query: user.uid }}
+              key={babyID}
+              passHref
+            >
+              <div style={{ textAlign: 'center' }}>
+                <div
+                  className='flex flex-col h-[100%] w-[100%]'
+                  style={{ cursor: 'pointer', textAlign: 'center' }}
+                >
+                  {sleepStatus ? (
+                    <div className={classNameBabyAsleep}></div>
+                  ) : (
+                    <div className={classNameBabyAwake}></div>
+                  )}
+                </div>
+                <div>{babyName}</div>
               </div>
-              <div>{babyName}</div>
-            </div>
-          </Link>
+            </Link>
+          ) : (
+            <Link href={{ pathname: `/baby/${babyID}` }} key={babyID} passHref>
+              <div style={{ textAlign: 'center' }}>
+                <div
+                  className='flex flex-col h-[100%] w-[100%]'
+                  style={{ cursor: 'pointer', textAlign: 'center' }}
+                >
+                  {sleepStatus ? (
+                    <div className={classNameBabyAsleep}></div>
+                  ) : (
+                    <div className={classNameBabyAwake}></div>
+                  )}
+                </div>
+                <div>{babyName}</div>
+              </div>
+            </Link>
+          )}
         </Card>
         {viewType === 'list' ? (
           <div className='animatedCard flip-card h-[100%] w-[100%]'>
