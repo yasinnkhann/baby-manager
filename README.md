@@ -6,14 +6,18 @@ Our team was tasked with creating a mobile-first baby manager web application. O
    <img width="250" alt="login demo" src="./demogifs/login.gif">
    <img width="250" alt="overview demo" src="./demogifs/overview.gif">
    <img width="250" alt="babyprofile demo" src="./demogifs/babyprofile.gif">
-   <img width="250" alt="addbaby demo" src="./demogifs/add.gif">
 </p>
 <p align="center">
+    <img width="250" alt="addbaby demo" src="./demogifs/add.gif">
    <img width="250" alt="calendar demo" src="./demogifs/calendar.gif">
    <img width="250" alt="userprofile demo" src="./demogifs/profile.gif">
-   <img width="250" alt="notes demo" src="./demogifs/notes.gif">
-   <img width="250" alt="changingroom demo" src="./demogifs/changingroom.gif">
 </p>
+
+<p align="center">
+   <img width="250" alt="notes demo" src="./demogifs/notes.gif">
+   <img width="250" alt="groupon demo" src="./demogifs/groupon.gif">
+   <img width="250" alt="changingroom demo" src="./demogifs/changingroom.gif">
+ </p>
 
 ## Tech Stack
 
