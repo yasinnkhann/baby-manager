@@ -3,16 +3,16 @@
 Our team was tasked with creating a mobile-first baby manager web application. Our application allows new parents to schedule feed and nap times, schedule text reminders for feeding times, toggle sleep status, and allow parents to invite nannies or other users to manage their babies. In addition, Bambino allows users to find changing stations based on current location, gives easy access to baby-related Groupon deals, and provides a note-taking feature for organization.
 
 <p align="center">
-   <img alt="login demo" src="./demogifs/login.gif">
-   <img alt="overview demo" src="./demogifs/overview.gif">
-   <img alt="babyprofile demo" src="./demogifs/babyprofile.gif">
-   <img alt="addbaby demo" src="./demogifs/add.gif">
+   <img width="250" alt="login demo" src="./demogifs/login.gif">
+   <img width="250" alt="overview demo" src="./demogifs/overview.gif">
+   <img width="250" alt="babyprofile demo" src="./demogifs/babyprofile.gif">
+   <img width="250" alt="addbaby demo" src="./demogifs/add.gif">
 </p>
 <p align="center">
-   <img alt="calendar demo" src="./demogifs/calendar.gif">
-   <img alt="userprofile demo" src="./demogifs/profile.gif">
-   <img alt="notes demo" src="./demogifs/notes.gif">
-   <img alt="changingroom demo" src="./demogifs/changingroom.gif">
+   <img width="250" alt="calendar demo" src="./demogifs/calendar.gif">
+   <img width="250" alt="userprofile demo" src="./demogifs/profile.gif">
+   <img width="250" alt="notes demo" src="./demogifs/notes.gif">
+   <img width="250" alt="changingroom demo" src="./demogifs/changingroom.gif">
 </p>
 
 ## Tech Stack
