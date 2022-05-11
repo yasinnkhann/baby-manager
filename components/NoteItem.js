@@ -62,9 +62,9 @@ const NoteItem = ({ note, fetchNotes, user }) => {
           {note.data.body}
         </Paper>
       )}
-      <div className='mb-[2%]'>
+      <div className='!my-4'>
         <Button
-          className='min-w-[100px] max-w-[20%] text-stone-900 bg-cyan-200  hover:bg-pink-500 my-[10px] mr-[10px]'
+          className='min-w-[100px] max-w-[20%] text-stone-900 bg-cyan-200  hover:bg-pink-500 !mr-4'
           onClick={() => setIsEditing(!isEditing)}
           variant='contained'
           startIcon={<EditIcon />}
@@ -73,7 +73,7 @@ const NoteItem = ({ note, fetchNotes, user }) => {
         </Button>
 
         <Button
-          className='min-w-[100px] max-w-[20%] text-stone-900 bg-cyan-200  hover:bg-pink-500 my-[10px] mr-[10px]'
+          className='min-w-[100px] max-w-[20%] text-stone-900 bg-cyan-200  hover:bg-pink-500'
           onClick={handleDelete}
           variant='contained'
           startIcon={<DeleteForeverIcon />}

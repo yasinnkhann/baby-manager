@@ -1,28 +1,14 @@
-import { useState, useEffect } from 'react';
-import FemaleIcon from '@mui/icons-material/Female';
-import MaleIcon from '@mui/icons-material/Male';
+import React, { useState, useEffect } from 'react';
+import Head from 'next/head';
 import ChildCareIcon from '@mui/icons-material/ChildCare';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import DatePicker from '@mui/lab/DatePicker';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
-import Head from 'next/head';
-import {
-  ToggleButtonGroup,
-  ToggleButton,
-  Button,
-  FormLabel,
-  Select,
-  MenuItem,
-  TextField,
-  Slider,
-  FormControl,
-} from '@mui/material';
-
+import { Button, Select, MenuItem, TextField, Slider } from '@mui/material';
 import { auth, db } from '../firebaseConfig.js';
 import { useRouter } from 'next/router';
-import Link from 'next/link';
-import { doc, addDoc, collection } from 'firebase/firestore';
+import { addDoc, collection } from 'firebase/firestore';
 import { useAuthState } from 'react-firebase-hooks/auth';
 
 export default function AddBaby() {
@@ -42,7 +28,7 @@ export default function AddBaby() {
     try {
       e.preventDefault();
       const babiesRef = collection(db, 'users', user.uid, 'babies');
-      const docRef = await addDoc(babiesRef, {
+      await addDoc(babiesRef, {
         name: e.target.name.value,
         birthday: date,
         weightType: weightType,
@@ -60,15 +46,15 @@ export default function AddBaby() {
   };
 
   return (
-    <div className='h-screen mt-[25%]'>
+    <>
       <Head>
         <title>BabyManager | Add A Baby</title>
       </Head>
-      <main className="content-start font-['Rubik'] h-full mx-auto w-3/4 mt-2 flex flex-col justify-start px-4">
+      <main className="mt-[calc(var(--header-height)+2rem)] content-start font-['Rubik'] h-full mx-auto w-3/4 flex flex-col justify-start px-4">
         <h1 className='font-medium self-center text-[26px] md:text-4xl lg:text-5xl'>
           Add A Baby
         </h1>
-        <ChildCareIcon className='text-[75px] self-center sm:text-[95px] lg:text-[110px] xl:text-9xl' />
+        <ChildCareIcon className='mt-4 text-[75px] self-center sm:text-[95px] lg:text-[110px] xl:text-9xl' />
         <form
           sx={{ m: 1, minWidth: 80 }}
           className='flex flex-col'
@@ -77,7 +63,7 @@ export default function AddBaby() {
           }}
         >
           <TextField
-            className='py-4 pb-10'
+            className='!py-4 !pb-10'
             id='name'
             label='Name'
             variant='standard'
@@ -96,7 +82,7 @@ export default function AddBaby() {
             />
           </LocalizationProvider>
 
-          <div className='flex flex-row justify-center my-2'>
+          <div className='flex flex-row justify-center my-16'>
             <Slider
               className='py-8 text-stone-900'
               valueLabelDisplay='auto'
@@ -124,7 +110,7 @@ export default function AddBaby() {
           </div>
           <div className='flex flex-row justify-center'>
             <Button
-              className='min-w-[125px] max-w-[20%] text-stone-900 bg-emerald-50  hover:bg-cyan-200 mt-[4%] '
+              className='text-stone-900 bg-emerald-50  hover:bg-cyan-200'
               variant='contained'
               type='submit'
               startIcon={<AddCircleIcon />}
@@ -134,6 +120,6 @@ export default function AddBaby() {
           </div>
         </form>
       </main>
-    </div>
+    </>
   );
 }

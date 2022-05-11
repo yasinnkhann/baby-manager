@@ -22,7 +22,7 @@ export default function inviteHandler(req, res) {
       text: `You are invited to manage ${name}'s babies. Click the following link to log in or sign up to manage his/her babies! \n\n${INVITE_LINK} \n\nOnly log in through this link to gain access to ${name}'s babies.`,
     };
 
-    let data = transporter.sendMail(mailOptions, (err, data) => {
+    transporter.sendMail(mailOptions, (err, data) => {
       if (err) {
         console.log('Error:', err);
         res.status(400).end();

@@ -8,30 +8,14 @@ import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
-import StaticTimePicker from '@mui/lab/StaticTimePicker';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
-import DatePicker from '@mui/lab/DatePicker';
 import DateTimePicker from '@mui/lab/DateTimePicker';
 import Button from '@mui/material/Button';
 import { auth, db } from '../firebaseConfig.js';
-import {
-  collection,
-  query,
-  where,
-  getDocs,
-  doc,
-  setDoc,
-  getDoc,
-  orderBy,
-  limit,
-  addDoc,
-  updateDoc,
-} from 'firebase/firestore';
-import { getAuth } from 'firebase/auth';
-import router, { useRouter } from 'next/router';
+import { collection, doc, addDoc, updateDoc } from 'firebase/firestore';
+import router from 'next/router';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import Head from 'next/head';
-import InputAdornment from '@mui/material/InputAdornment';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import NotificationsOffIcon from '@mui/icons-material/NotificationsOff';
 import NotificationsActiveIcon from '@mui/icons-material/NotificationsActive';
@@ -59,12 +43,10 @@ const popupStyle = {
 const FoodModal = ({ babyPath, babyGet, foodArray, setFoodArray, babyName }) => {
   const [user, loading, error] = useAuthState(auth);
   const [open, setOpen] = React.useState(false);
-  const [food, setFood] = React.useState(['Formula', 'Milk', 'Mushy Peas']);
   const [foodValue, setFoodValue] = React.useState('');
   const [foodAmount, setFoodAmount] = React.useState(0);
   const [date, setDate] = React.useState(null);
   const [feedTime, setFeedTime] = React.useState(new Date());
-  const [feedDate, setFeedDate] = React.useState(new Date().toString());
   const [newFood, setNewFood] = React.useState('');
   const [smsNumber, setSmsNumber] = React.useState(null);
   const [displayReminderTime, setDisplayReminderTime] = React.useState(true);
@@ -83,9 +65,6 @@ const FoodModal = ({ babyPath, babyGet, foodArray, setFoodArray, babyName }) => 
   const toClose = () => {
     setOpen(false);
   };
-  //------------------------------------------//
-  //------------------------------------------//
-  //------------------------------------------//
 
   //------------------------------------------//
   //----Scrape Data and prepare for post------//
@@ -118,10 +97,7 @@ const FoodModal = ({ babyPath, babyGet, foodArray, setFoodArray, babyName }) => 
           foodMetric: 'oz',
           foodType: foodValue,
           startTime: feedTime,
-        }).then(res2 => {
-          // console.log('res2', res2);
-        });
-        // console.log('res', res);
+        }).then(res2 => {});
       });
       toClose();
       babyGet();
@@ -139,10 +115,7 @@ const FoodModal = ({ babyPath, babyGet, foodArray, setFoodArray, babyName }) => 
           foodMetric: 'oz',
           foodType: foodValue,
           startTime: feedTime,
-        }).then(res2 => {
-          // console.log('res2', res2);
-        });
-        // console.log('res', res);
+        }).then(res2 => {});
       });
       toClose();
       babyGet();
@@ -188,9 +161,6 @@ const FoodModal = ({ babyPath, babyGet, foodArray, setFoodArray, babyName }) => 
     setFoodArray(newFoodArray);
     setNewFood('');
   };
-  //------------------------------------------//
-  //------------------------------------------//
-  //------------------------------------------//
 
   //------------------------------------------//
   //----To Get Pretty Date--------------------//
@@ -201,20 +171,10 @@ const FoodModal = ({ babyPath, babyGet, foodArray, setFoodArray, babyName }) => 
     const prettyDate = `${splitDate[0]} ${splitDate[1]} ${splitDate[2]}, ${splitDate[3]}`;
     setDate(prettyDate);
   };
-  //------------------------------------------//
-  //------------------------------------------//
-  //------------------------------------------//
 
   //------------------------------------------//
   //----Use Effect to Render/Log--------------//
   //------------------------------------------//
-  // useEffect(() => {
-  //   console.log('Type of Food', foodValue);
-  //   console.log('How much Food', foodAmount);
-  //   console.log('Time', feedTime);
-  // console.log(newFood);
-  //   console.log('Date', feedDate);
-  // }, [foodValue, foodAmount, feedTime, feedDate]);
 
   useEffect(() => {
     if (!user && !loading) {
@@ -222,16 +182,11 @@ const FoodModal = ({ babyPath, babyGet, foodArray, setFoodArray, babyName }) => 
     } else if (user) {
       // console.log('that');
     }
-    // getLastFeedDatePretty();
-    // getLastNapDatePretty();
   }, [user]);
 
   useEffect(() => {
     getPrettyDate();
   }, []);
-  //------------------------------------------//
-  //------------------------------------------//
-  //------------------------------------------//
 
   //------------------------------------------//
   //----Render Component----------------------//
@@ -403,8 +358,5 @@ const FoodModal = ({ babyPath, babyGet, foodArray, setFoodArray, babyName }) => 
     </>
   );
 };
-//--------------------------------------------------------//
-//--------------------------------------------------------//
-//--------------------------------------------------------//
 
 export default FoodModal;

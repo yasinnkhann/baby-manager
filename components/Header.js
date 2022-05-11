@@ -1,19 +1,17 @@
-import { Button, Menu, MenuItem, Fade, IconButton } from '@mui/material';
-import LogoutIcon from '@mui/icons-material/Logout';
+import React, { useState } from 'react';
+import Link from 'next/link';
+import { Menu, MenuItem, Fade, IconButton } from '@mui/material';
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 import PersonIcon from '@mui/icons-material/Person';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
 import { faBaby } from '@fortawesome/free-solid-svg-icons';
-import BabyChangingStationIcon from '@mui/icons-material/BabyChangingStation';
-import { useState } from 'react';
 import { useRouter } from 'next/router';
 import { signOut } from 'firebase/auth';
 import { auth } from '../firebaseConfig.js';
-import Link from 'next/link';
 
-export default function Navbar() {
+export default function Header() {
   const [anchorElPer, setAnchorElPer] = useState(null);
   const openPer = Boolean(anchorElPer);
   const router = useRouter();
@@ -31,32 +29,32 @@ export default function Navbar() {
   };
 
   return (
-    <nav className='fixed bg-blue-100 font-["Rubik"] top-0 w-full z-[300]'>
-      <div className='flex justify-between items-center pl-[3%] sm:pr-[12%] md:pr-[10%] lg:pr-[7%] '>
+    <header className='fixed bg-blue-100 font-["Rubik"] top-0 w-full h-[var(--header-height)] z-[300]'>
+      <nav className='flex justify-between items-center'>
         <Link href='/overview' passHref>
-          <div className='flex flex-row content-center hover:text-pink-500 hover:cursor-pointer'>
-            <div className='bg-[url("/baby3.svg")] w-[65px] h-[70px] bg-center bg-cover bg-no-repeat'></div>
+          <div className='ml-4 sm:ml-12 flex flex-row content-center hover:text-pink-500 hover:cursor-pointer'>
+            <div className='bg-[url("/baby3.svg")] w-16 h-[var(--header-height)] bg-center bg-cover bg-no-repeat'></div>
             <div className='font-["Pacifico"] text-xl self-center '>Bambino</div>
           </div>
         </Link>
-        <div className='justify-self-end flex flex-row items-center justify-around'>
+        <div className='flex flex-row justify-self-end items-center justify-around'>
           <Link href='/otherBabies' passHref>
-            <IconButton className='hidden sm:block text-neutral-900 text-[24px]'>
+            <IconButton className='hidden sm:block text-neutral-900 text-2xl !mx-2'>
               <PeopleAltIcon className='hidden sm:block' />
             </IconButton>
           </Link>
           <Link href='/overview' passHref>
-            <IconButton className='hidden sm:block mx-[25%] text-neutral-900 text-[24px]'>
+            <IconButton className='hidden sm:block text-neutral-900 text-2xl !mx-2'>
               <FontAwesomeIcon icon={faBaby} />
             </IconButton>
           </Link>
           <Link href='/calendar' passHref>
-            <IconButton className='text-neutral-900'>
-              <CalendarTodayIcon className='hidden sm:block mx-[25%]' />
+            <IconButton className='text-neutral-900 !mx-2'>
+              <CalendarTodayIcon className='hidden sm:block' />
             </IconButton>
           </Link>
 
-          <div className='hidden sm:block mx-[15%]'>
+          <div className='hidden sm:block'>
             <IconButton
               className='text-neutral-900'
               id='fade-button-person'
@@ -65,7 +63,7 @@ export default function Navbar() {
               aria-expanded={openPer ? 'true' : undefined}
               onClick={e => setAnchorElPer(e.currentTarget)}
             >
-              <PersonIcon className='text-[28px]' />
+              <PersonIcon className='text-3xl' />
             </IconButton>
             <Menu
               id='fade-menu-person'
@@ -90,7 +88,7 @@ export default function Navbar() {
               </MenuItem>
             </Menu>
           </div>
-          <div className='hidden sm:block'>
+          <div className='hidden sm:block ml-1 mr-4'>
             <IconButton
               className='text-neutral-900'
               id='fade-button'
@@ -123,7 +121,7 @@ export default function Navbar() {
             </Menu>
           </div>
         </div>
-      </div>
-    </nav>
+      </nav>
+    </header>
   );
 }

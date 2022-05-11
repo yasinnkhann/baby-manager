@@ -1,25 +1,23 @@
+import React, { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth, db } from '../firebaseConfig.js';
-import LoadingPage from '../components/LoadingPage.js';
-import { useEffect } from 'react';
 import { doc, setDoc, serverTimestamp, getDoc } from 'firebase/firestore';
+import loadable from '@loadable/component';
+
+const LoadingPage = loadable(() => import('../components/LoadingPage.js'));
 
 export default function Home() {
   const [user, loading, error] = useAuthState(auth);
   const router = useRouter();
   const { query } = useRouter();
   const inviteToken = query;
-  // console.log('"/" form inviteToken:', inviteToken);
 
   useEffect(() => {
     const updateUsers = async () => {
       if (user) {
-        console.log('INDEX USER: ', user);
-        console.log('DISPLAY NAME: ', user.displayName);
         const docRef = doc(db, 'users', user.uid);
         const docSnapshot = await getDoc(docRef);
-        console.log('DOC SS', docSnapshot?.data());
         await setDoc(
           doc(db, 'users', user.uid),
           {

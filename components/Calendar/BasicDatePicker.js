@@ -10,6 +10,7 @@ export default function BasicDatePicker(props) {
   return (
     <LocalizationProvider dateAdapter={AdapterDateFns}>
       <DatePicker
+        className=''
         label={'Change Date'}
         value={value}
         onChange={newValue => {

@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --header-height: 4.5rem;
+}
+
 @layer base {
   body {
     background-image: linear-gradient(#a78bfa, #93c5fd, #cffafe, #c1c2ad);

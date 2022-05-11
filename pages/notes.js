@@ -1,19 +1,20 @@
+import React, { useEffect, useState } from 'react';
 import Head from 'next/head';
-import NoteItem from '../components/NoteItem';
-import axios from 'axios';
-import { useEffect, useState } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth, db } from '../firebaseConfig';
 import { useRouter } from 'next/router';
 import { collection, addDoc, getDocs, doc } from '@firebase/firestore';
-import { Paper, Button, TextField } from '@mui/material';
+import { Button, TextField } from '@mui/material';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
+import loadable from '@loadable/component';
+
+const NoteItem = loadable(() => import('../components/NoteItem'));
 
 const Notes = () => {
   const [notes, setNotes] = useState(null);
   const [isAddingNote, setIsAddingNote] = useState(false);
   const [newNote, setNewNote] = useState('');
-  const [user, loading, error] = useAuthState(auth);
+  const [user, loading] = useAuthState(auth);
   const router = useRouter();
 
   useEffect(() => {
@@ -41,7 +42,7 @@ const Notes = () => {
     try {
       e.preventDefault();
       const notesRef = collection(db, 'users', user.uid, 'notes');
-      const docRef = await addDoc(notesRef, {
+      await addDoc(notesRef, {
         body: newNote,
         createdAt: new Date().toISOString(),
       });
@@ -67,7 +68,7 @@ const Notes = () => {
         ></TextField>
 
         <Button
-          className='min-w-[125px] max-w-[20%] text-stone-900 bg-cyan-200  hover:bg-pink-500 mb-[5%] mt-[2%]'
+          className='min-w-[125px] max-w-[20%] text-stone-900 bg-cyan-200  hover:bg-pink-500 !mt-4 !mb-8'
           variant='contained'
           type='submit'
           endIcon={<AddCircleOutlineIcon />}
@@ -84,14 +85,14 @@ const Notes = () => {
     ));
 
   return (
-    <div className='h-screen my-[20%] sm:my-[10%]'>
+    <div className='mt-[calc(var(--header-height)+2rem)]'>
       <Head>
         <title>BabyManager | Notes</title>
       </Head>
 
-      <section className="font-['Rubik'] h-full mx-auto my-[5%] xs:w-5/6 sm:w-3/4 flex flex-col justify-start px-4">
+      <section className="font-['Rubik'] mx-auto sm:w-3/4 flex flex-col justify-start px-4">
         <div className='flex flex-row justify-between'>
-          <h1 className='font-medium self-center text-[30px] md:text-4xl lg:text-5xl'>
+          <h1 className='font-medium self-center text-[30px] md:text-4xl lg:text-5xl m-4'>
             Notes
           </h1>
           <Button

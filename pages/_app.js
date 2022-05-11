@@ -1,5 +1,7 @@
 import '../styles/globals.css';
-import Layout from '../components/Layout';
+import loadable from '@loadable/component';
+
+const Layout = loadable(() => import('../components/Layout'));
 
 function MyApp({ Component, pageProps }) {
   return (

@@ -4,7 +4,6 @@ import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBaby } from '@fortawesome/free-solid-svg-icons';
-import Button from '@mui/material/Button';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import Fade from '@mui/material/Fade';
@@ -33,7 +32,7 @@ export default function Footer() {
   };
 
   return (
-    <footer className='fixed inset-x-0 bottom-0  bg-blue-100 pb:10 bottom sm:hidden md:hidden lg:hidden xl:hidden z-[300]'>
+    <footer className='fixed inset-x-0 bottom-0  bg-blue-100 pb:10 bottom sm:hidden z-[300]'>
       <div className='px-5 py-2 mx-auto'>
         <div className='flex justify-between items-center'>
           <Link href='/calendar' passHref>
@@ -109,8 +108,6 @@ export default function Footer() {
               onClose={() => setAnchorEl(null)}
               TransitionComponent={Fade}
             >
-              {/* <MenuItem onClick={() => setAnchorEl(null)}>Baby Coupons</MenuItem> */}
-
               <Link href='/notes' passHref>
                 <MenuItem onClick={() => setAnchorEl(null)}>Notes</MenuItem>
               </Link>

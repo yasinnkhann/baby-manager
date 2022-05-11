@@ -1,30 +1,9 @@
-import react, { useState, useEffect } from 'react';
+import React from 'react';
 import DiningIcon from '@mui/icons-material/Dining';
 import SleepingIcon from '@mui/icons-material/LocalHotel';
 import { Paper } from '@mui/material';
 
 function Event(props) {
-  function getDuration(startTime, endTime) {}
-
-  // const [line, setLine] = useState(false)
-
-  // var redLine = false;
-
-  // function setLineFunc() {
-  //   setLine(true);
-  //   return <div className ='red-line'></div>
-  // }
-
-  // useEffect(()=> {
-  //   console.log('a')
-  // }. [line])
-
-  // var lineOutput = '';
-  // if(line) {
-  //   lineOutput = <div className = 'line'></div>
-  //   setLine(false);
-  // }
-
   var lineOutput = '';
   if (new Date().getSeconds() < props.eventStartTime) {
     if (props.line[0] === 'not set') {
@@ -67,11 +46,6 @@ function Event(props) {
               {props.type === 'eat' ? (
                 <div className='food-type self-center '>
                   {`${props.typeOfFood}, ${props.foodAmount} ${props.foodMetric}`}
-                  {/* {props.foodMetric ? (
-                    <div className='food-amount self-center '>{`${props.foodAmount} ${props.foodMetric}`}</div>
-                  ) : (
-                    <div className='food-amount self-center'>{`${props.foodAmount}`}</div>
-                  )} */}
                 </div>
               ) : (
                 ''

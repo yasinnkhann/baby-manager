@@ -1,39 +1,18 @@
+import React, { useState, useEffect } from 'react';
 import Modal from '@mui/material/Modal';
 import Box from '@mui/material/Box';
-import React, { useEffect } from 'react';
 import TextField from '@mui/material/TextField';
-import Slider from '@mui/material/Slider';
-import Select from '@mui/material/Select';
 import FormControl from '@mui/material/FormControl';
-import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
-import StaticTimePicker from '@mui/lab/StaticTimePicker';
 import MobileTimePicker from '@mui/lab/MobileTimePicker';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
-import TimePicker from '@mui/lab/TimePicker';
-import DatePicker from '@mui/lab/DatePicker';
 import DateTimePicker from '@mui/lab/DateTimePicker';
 import Button from '@mui/material/Button';
-import Icon from '@mui/material/Icon';
 import NotificationsOffIcon from '@mui/icons-material/NotificationsOff';
 import NotificationsActiveIcon from '@mui/icons-material/NotificationsActive';
 import { auth, db } from '../firebaseConfig.js';
-import {
-  collection,
-  query,
-  where,
-  getDocs,
-  doc,
-  setDoc,
-  getDoc,
-  orderBy,
-  limit,
-  addDoc,
-  updateDoc,
-} from 'firebase/firestore';
-import { getAuth } from 'firebase/auth';
-import router, { useRouter } from 'next/router';
+import { collection, doc, addDoc, updateDoc } from 'firebase/firestore';
+import router from 'next/router';
 import { useAuthState } from 'react-firebase-hooks/auth';
 
 const popupStyle = {
@@ -55,21 +34,15 @@ const popupStyle = {
 //--------------------------------------------------------//
 
 const NapModal = ({ babyPath, babyGet, babyName }) => {
-  const [user, loading, error] = useAuthState(auth);
-  const [open, setOpen] = React.useState(false);
-  const [food, setFood] = React.useState(['Formula', 'Milk', 'Mushy Peas']);
-  const [foodValue, setFoodValue] = React.useState('');
-  const [foodAmount, setFoodAmount] = React.useState(0);
-  const [date, setDate] = React.useState(null);
-  const [napTime, setNapTime] = React.useState(null);
-  const [napDate, setNapDate] = React.useState(null);
-  const [reminderIcon, setReminderIcon] = React.useState(
-    <NotificationsOffIcon color='disabled' />
-  );
-  const [reminderState, setReminderState] = React.useState(false);
-  const [displayReminderTime, setDisplayReminderTime] = React.useState(true);
-  const [reminderTime, setReminderTime] = React.useState(new Date());
-  const [smsNumber, setSmsNumber] = React.useState(null);
+  const [user, loading] = useAuthState(auth);
+  const [open, setOpen] = useState(false);
+  const [date, setDate] = useState(null);
+  const [napDate, setNapDate] = useState(null);
+  const [reminderIcon, setReminderIcon] = useState(<NotificationsOffIcon color='disabled' />);
+  const [reminderState, setReminderState] = useState(false);
+  const [displayReminderTime, setDisplayReminderTime] = useState(true);
+  const [reminderTime, setReminderTime] = useState(new Date());
+  const [smsNumber, setSmsNumber] = useState(null);
 
   //------------------------------------------//
   //----To handle open and close Modal--------//
@@ -123,12 +96,9 @@ const NapModal = ({ babyPath, babyGet, babyName }) => {
     } else {
       await updateDoc(doc(db, 'users', user.uid, 'babies', babyPath), {
         nextNap: napDate,
-      }).then(res => {
+      }).then(() => {
         addDoc(collection(db, 'users', user.uid, 'babies', babyPath, 'sleepingEvents'), {
           startTime: napDate,
-        }).then(res2 => {
-          // console.log('res2', res2);
-          // console.log('res', res);
         });
       });
       toClose();
@@ -138,14 +108,13 @@ const NapModal = ({ babyPath, babyGet, babyName }) => {
 
   const sendSMS = async () => {
     let notificationBody = {
-      to: smsNumber, //this can be number or string
+      to: smsNumber, // this can be number or string
       body: `This is a nap reminder for ${babyName} scheduled for ${napDate.toLocaleString(
         'en-US'
       )}`,
       date: reminderTime.toISOString(),
     };
 
-    console.log(notificationBody);
     const res = await fetch('/api/sendMessage', {
       method: 'POST',
       headers: {
@@ -179,14 +148,6 @@ const NapModal = ({ babyPath, babyGet, babyName }) => {
   //------------------------------------------//
   //----Use Effect to Render/Log--------------//
   //------------------------------------------//
-  // useEffect(() => {
-  //   console.log('Type of Food', foodValue);
-  //   console.log('How much Food', foodAmount);
-  // console.log('SMS', smsNumber);
-  // console.log('Time', napTime);
-  // console.log('Date', napDate);
-  // console.log('ReminderTime', reminderTime);
-  // }, [foodValue, foodAmount, feedTime, feedDate]);
 
   useEffect(() => {
     if (!user && !loading) {
@@ -194,8 +155,6 @@ const NapModal = ({ babyPath, babyGet, babyName }) => {
     } else if (user) {
       // console.log('that');
     }
-    // getLastFeedDatePretty();
-    // getLastNapDatePretty();
   }, [user]);
 
   useEffect(() => {

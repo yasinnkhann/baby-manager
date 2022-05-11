@@ -1,43 +1,29 @@
-import WbSunnyIcon from '@mui/icons-material/WbSunny';
-import FoodModal from '../../components/FoodModal.js';
-import { db, auth } from '../../firebaseConfig.js';
-import {
-  collection,
-  query,
-  where,
-  getDocs,
-  doc,
-  getDoc,
-  orderBy,
-  limit,
-} from 'firebase/firestore';
-import { getAuth, onAuthStateChanged } from 'firebase/auth';
-
-import NapModal from '../../components/NapModal.js';
 import React, { useState, useEffect } from 'react';
+import { collection, query, getDocs, doc, getDoc, orderBy, limit } from 'firebase/firestore';
 import router, { useRouter } from 'next/router';
 import { useAuthState } from 'react-firebase-hooks/auth';
+import { db, auth } from '../../firebaseConfig.js';
+import loadable from '@loadable/component';
 
-//--------------------------------------------------------//
-//--------------------------------------------------------//
-//--------------------------------------------------------//
+const FoodModal = loadable(() => import('../../components/FoodModal.js'));
+const NapModal = loadable(() => import('../../components/NapModal.js'));
 
 //--------------------------------------------------------//
 //------------------Render to Page------------------------//
 //--------------------------------------------------------//
-const Baby = ({ baby }) => {
-  const [user, loading, error] = useAuthState(auth);
-  const [lastFeed, setLastFeed] = React.useState(null);
-  const [lastSleep, setLastSleep] = React.useState(null);
-  const [nextSleep, setNextSleep] = React.useState('Nothing Scheduled');
-  const [nextFeed, setNextFeed] = React.useState('Nothing Scheduled');
-  const [currentBaby, setCurrentBaby] = React.useState(null);
-  const [babyName, setBabyName] = React.useState(null);
-  const [sleepingEvents, setSleepingEvents] = React.useState(null);
-  const [feedingEvents, setFeedingEvents] = React.useState(null);
-  const [isAsleep, setIsAsleep] = React.useState('Asleep');
-  const [foodArray, setFoodArray] = React.useState(['Loading', 'One Sec']);
-  const [curAsleep, setCurAsleep] = React.useState(false);
+const Baby = () => {
+  const [user, loading] = useAuthState(auth);
+  const [lastFeed, setLastFeed] = useState(null);
+  const [lastSleep, setLastSleep] = useState(null);
+  const [nextSleep, setNextSleep] = useState('Nothing Scheduled');
+  const [nextFeed, setNextFeed] = useState('Nothing Scheduled');
+  const [currentBaby, setCurrentBaby] = useState(null);
+  const [babyName, setBabyName] = useState(null);
+  const [sleepingEvents, setSleepingEvents] = useState(null);
+  const [feedingEvents, setFeedingEvents] = useState(null);
+  const [isAsleep, setIsAsleep] = useState('Asleep');
+  const [foodArray, setFoodArray] = useState(['Loading', 'One Sec']);
+  const [curAsleep, setCurAsleep] = useState(false);
   const { asPath } = useRouter();
   const temp = asPath.split('/baby/')[1];
   const path = temp.split('?')[0];
@@ -182,7 +168,7 @@ const Baby = ({ baby }) => {
     } else {
       prettyTime = `${uglyTime[0]}:${uglyTime[1]} am`;
     }
-    //check to see if date makes sense
+    // check to see if date makes sense
     if (currentBaby.nextFeed.seconds * 1000 > Date.now()) {
       const prettyDate = `${splitDate[0]} ${splitDate[1]} ${splitDate[2]}, ${splitDate[3]}, ${prettyTime}`;
       setNextFeed(prettyDate);
@@ -228,7 +214,7 @@ const Baby = ({ baby }) => {
     } else {
       prettyTime = `${uglyTime[0]}:${uglyTime[1]} am`;
     }
-    //check to see if date even makes sense
+    // check to see if date even makes sense
     if (currentBaby.nextNap.seconds * 1000 > Date.now()) {
       const prettyDate = `${splitDate[0]} ${splitDate[1]} ${splitDate[2]}, ${splitDate[3]}, ${prettyTime}`;
       setNextSleep(prettyDate);
@@ -339,9 +325,5 @@ const Baby = ({ baby }) => {
     </>
   );
 };
-
-//--------------------------------------------------------//
-//--------------------------------------------------------//
-//--------------------------------------------------------//
 
 export default Baby;

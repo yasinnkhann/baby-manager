@@ -1,5 +1,5 @@
-import Head from 'next/head';
 import React, { useState } from 'react';
+import Head from 'next/head';
 import { auth, db } from '../firebaseConfig.js';
 import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
 import { useRouter } from 'next/router';
@@ -19,7 +19,6 @@ export default function Register() {
   const router = useRouter();
   const { query } = useRouter();
   const inviteToken = query;
-  // console.log('register form inviteToken:', inviteToken);
 
   const handleChange = ({ target: { name, value } }) => {
     setRegisterInfo({ ...registerInfo, hasChanged: true, [name]: value });

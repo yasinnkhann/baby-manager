@@ -1,10 +1,12 @@
-import Navbar from './Navbar';
-import Footer from './Footer';
+import loadable from '@loadable/component';
+
+const Header = loadable(() => import('./Header.js'));
+const Footer = loadable(() => import('./Footer.js'));
 
 const Layout = ({ children }) => {
   return (
     <>
-      <Navbar />
+      <Header />
       {children}
       <Footer />
     </>

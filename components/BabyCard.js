@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { styled } from '@mui/material/styles';
 import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
 import Switch from '@mui/material/Switch';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Link from 'next/link';
@@ -10,7 +9,7 @@ import Button from '@mui/material/Button';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { db } from '../firebaseConfig';
 import EditIcon from '@mui/icons-material/Edit';
-import { Paper, TextField } from '@mui/material';
+import { TextField } from '@mui/material';
 
 const MaterialUISwitch = styled(Switch)(({ theme }) => ({
   width: 62,
@@ -66,15 +65,6 @@ const babyListViewCard = {
   padding: '1px',
   boxShadow: '2px 5px #B5B5B5',
 };
-
-// const babyCard = {
-//   margin: '5px',
-//   padding: '1px',
-//   borderRadius: '10px',
-//   boxShadow: '1px 2px #B5B5B5',
-//   width: '400px',
-//   height: '400px'
-// };
 
 const nextFeedBtn = {
   margin: '15px',

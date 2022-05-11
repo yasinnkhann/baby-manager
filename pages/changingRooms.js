@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import MyLocationIcon from '@mui/icons-material/MyLocation';
-import axios from 'axios';
 import Head from 'next/head';
-import MyComponent from '../components/ChangingRoom/GoogleMap.js';
+import loadable from '@loadable/component';
 
-export default function ChangingRooms(props) {
-  const API_KEY = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API;
+const MyComponent = loadable(() => import('../components/ChangingRoom/GoogleMap.js'));
+
+export default function ChangingRooms() {
   const [currentLocation, setCurrentLoc] = useState({ lat: 47.5423222, lng: -122.2329451 });
 
   useEffect(() => {
@@ -30,37 +29,6 @@ export default function ChangingRooms(props) {
       isApiSubscribed = false;
     };
   }, []);
-
-  const clickHandler = () => {
-    setHome(true);
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        position => {
-          const pos = {
-            lat: position.coords.latitude,
-            lng: position.coords.longitude,
-          };
-          setCurrentLoc(pos);
-        },
-        () => {
-          console.log('user denied permission');
-        }
-      );
-    }
-  };
-
-  let buttonStyle = {
-    padding: '7px',
-    backgroundColor: 'white',
-    borderRadius: '2px',
-    fontFamily: 'Roboto, Arial, sans-serif',
-    boxShadow: 'rgb(0 0 0 / 30%) 0px 1px 4px -1px',
-    zIndex: '30',
-    position: 'absolute',
-    top: '80px',
-    right: '60px',
-    height: '40px',
-  };
 
   return (
     <div style={{ marginTop: '70px' }}>

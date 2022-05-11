@@ -1,10 +1,12 @@
-import axios from 'axios';
+import React, { useEffect, useState } from 'react';
 import Head from 'next/head';
-import { useEffect, useState } from 'react';
+import axios from 'axios';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth } from '../firebaseConfig';
 import { useRouter } from 'next/router';
-import CouponItem from '../components/CouponItem';
+import loadable from '@loadable/component';
+
+const CouponItem = loadable(() => import('../components/CouponItem'));
 
 const Coupons = () => {
   const [coupons, setCoupons] = useState(null);
@@ -38,15 +40,15 @@ const Coupons = () => {
     coupons?.map(coupon => <CouponItem key={coupon.deal.id} coupon={coupon} />);
 
   return (
-    <div className='h-screen'>
+    <>
       <Head>
         <title>Baby Manager | Coupons</title>
       </Head>
-      <div className='mx-[5%] sm:mx-[15%] my-[10%] sm:my-[20%] md:my-[10%] flex flex-col justify-center'>
-        <h1 className='lg:text-[58px] md:text-[38px] text-center'>Coupons</h1>
-        <section>{renderCoupons()}</section>
+      <div className='mt-[calc(var(--header-height)+1rem)] flex flex-col justify-center items-center'>
+        <h1 className='!mb-4 text-center text-[3rem]'>Coupons</h1>
+        <section className='!mb-16'>{renderCoupons()}</section>
       </div>
-    </div>
+    </>
   );
 };
 

@@ -1,24 +1,15 @@
-import React, { useEffect, useState } from 'react';
-import BabyCard from '../components/BabyCard';
+import React, { Fragment, useEffect, useState } from 'react';
 import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import ViewListIcon from '@mui/icons-material/ViewList';
 import ViewModuleIcon from '@mui/icons-material/ViewModule';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { useRouter } from 'next/router';
-import {
-  collection,
-  addDoc,
-  getDocs,
-  doc,
-  query as qr,
-  getDoc,
-  where,
-  updateDoc,
-} from '@firebase/firestore';
-import Button from '@mui/material/Button';
-import Link from 'next/link';
+import { collection, getDocs } from '@firebase/firestore';
 import { auth, db } from '../firebaseConfig';
+import loadable from '@loadable/component';
+
+const BabyCard = loadable(() => import('../components/BabyCard'));
 
 const babyCardInModule = {
   display: 'flex',
@@ -38,25 +29,6 @@ const babyCardInList = {
   justifyContent: 'center',
   marginTop: '1px',
   marginBottom: '90px',
-};
-
-const addBabyBtnPosition = {
-  display: 'flex',
-  flexDirection: 'column',
-  flexWrap: 'wrap',
-  alignItems: 'center',
-  justifyContent: 'center',
-  marginTop: '300px',
-};
-
-const babyBtnStyle = {
-  background: 'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)',
-  border: 0,
-  borderRadius: 3,
-  boxShadow: '0 3px 5px 2px rgba(255, 105, 135, .3)',
-  color: 'white',
-  height: 48,
-  padding: '0 30px',
 };
 
 export default function OtherBabies() {
@@ -91,7 +63,6 @@ export default function OtherBabies() {
       authorizers.forEach(async user => {
         const q = collection(db, 'users', user.inviter_id, 'babies');
         const babiesSnapshot = await getDocs(q);
-        // let allAuthorizersBabies = [];
         babiesSnapshot.forEach(baby => {
           allAuthorizersBabies.push({
             id: baby.id,
@@ -101,28 +72,22 @@ export default function OtherBabies() {
         });
         setBabyData(allAuthorizersBabies);
       });
-      // console.log('typeof allAuthorizersBabies:', typeof allAuthorizersBabies);
-      // console.log('allAuthorizersBabies[1]:', allAuthorizersBabies[1]);
-      // console.log('allAuthorizersBabies:', allAuthorizersBabies);
-      // await setAuthorizersBabyData(allAuthorizersBabies);
-      // console.log('authorizersBabyData after setting state:', babyData);
     } catch (err) {
       console.log(err);
     }
   };
 
-  const handleOrientationChange = (event, nextView) => {
+  const handleOrientationChange = (_, nextView) => {
     nextView === 'module' ? setViewChange(babyCardInModule) : setViewChange(babyCardInList);
     setView(nextView);
   };
 
   return (
-    <React.Fragment>
-      <div className='mt-[25%] sm:mt-[10%] mx-[4%]  '>
+    <Fragment>
+      <div className='mt-[calc(var(--header-height)+4rem)]'>
         {babyData ? (
           <div>
             <div
-              className='mt-[75px] sm:mt-[75px]'
               style={{
                 display: 'flex',
                 flexDirection: 'column',
@@ -131,7 +96,6 @@ export default function OtherBabies() {
               }}
             >
               <ToggleButtonGroup
-                className='mb-[2%]'
                 orientation='horizontal'
                 value={view}
                 exclusive
@@ -161,9 +125,9 @@ export default function OtherBabies() {
             </div>
           </div>
         ) : (
-          <div className='my-[20%] text-center'>You are not invited to manage any babies</div>
+          <div className='text-center'>You are not invited to manage any babies</div>
         )}
       </div>
-    </React.Fragment>
+    </Fragment>
   );
 }

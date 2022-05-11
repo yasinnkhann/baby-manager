@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import BabyCard from '../components/BabyCard';
+import Link from 'next/link';
 import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import ViewListIcon from '@mui/icons-material/ViewList';
@@ -17,8 +17,10 @@ import {
   updateDoc,
 } from '@firebase/firestore';
 import Button from '@mui/material/Button';
-import Link from 'next/link';
 import { auth, db } from '../firebaseConfig';
+import loadable from '@loadable/component';
+
+const BabyCard = loadable(() => import('../components/BabyCard'));
 
 const babyCardInModule = {
   display: 'flex',
@@ -56,6 +58,7 @@ const babyBtnStyle = {
   color: 'white',
   height: 48,
   padding: '0 30px',
+  margin: '1rem',
 };
 
 export default function Overview() {
@@ -66,7 +69,6 @@ export default function Overview() {
   const router = useRouter();
   const { query } = useRouter();
   let inviteToken = query.token;
-  // console.log('overview form inviteToken:', inviteToken);
 
   useEffect(() => {
     if (!user && !loading) {
@@ -108,13 +110,10 @@ export default function Overview() {
         const inviterId = result.inviter_id;
         if (!result.accepted) {
           getAuthorizedUser(inviterId)
-            .then(async result => {
-              const docRef = await addDoc(
-                collection(db, 'users', inviterId, 'authorized_users'),
-                {
-                  userId: user.uid,
-                }
-              );
+            .then(async () => {
+              await addDoc(collection(db, 'users', inviterId, 'authorized_users'), {
+                userId: user.uid,
+              });
             })
             .then(() => {
               getInvitationId()
@@ -151,7 +150,7 @@ export default function Overview() {
     }
   };
 
-  const handleOrientationChange = (event, nextView) => {
+  const handleOrientationChange = (_, nextView) => {
     nextView === 'module' ? setViewChange(babyCardInModule) : setViewChange(babyCardInList);
     setView(nextView);
   };
@@ -170,41 +169,37 @@ export default function Overview() {
   ));
 
   return (
-    <React.Fragment>
-      <div>
-        <div>
-          <div
-            className='mt-[70px] sm:mt-[70px]'
-            style={{
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}
-          >
-            <ToggleButtonGroup
-              className='mt-[5px] sm:mt-[10px]'
-              orientation='horizontal'
-              value={view}
-              exclusive
-              onChange={handleOrientationChange}
-            >
-              <ToggleButton value='module' aria-label='module'>
-                <ViewModuleIcon />
-              </ToggleButton>
-              <ToggleButton value='list' aria-label='list'>
-                <ViewListIcon />
-              </ToggleButton>
-            </ToggleButtonGroup>
-            <div className='mt-[10px] sm:mt-[10px]' style={addBabyBtnPosition}>
-              <Link href='/addBaby' passHref>
-                <Button style={babyBtnStyle}>Add Baby</Button>
-              </Link>
-            </div>
-          </div>
-          <div style={isViewChange}>{mappedBabyCard}</div>
+    <section className='mt-[calc(var(--header-height)+2rem)]'>
+      <div
+        className='mt-[70px] sm:mt-[70px]'
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+      >
+        <ToggleButtonGroup
+          className='mt-[5px] sm:mt-[10px]'
+          orientation='horizontal'
+          value={view}
+          exclusive
+          onChange={handleOrientationChange}
+        >
+          <ToggleButton value='module' aria-label='module'>
+            <ViewModuleIcon />
+          </ToggleButton>
+          <ToggleButton value='list' aria-label='list'>
+            <ViewListIcon />
+          </ToggleButton>
+        </ToggleButtonGroup>
+        <div className='mt-[10px] sm:mt-[10px]' style={addBabyBtnPosition}>
+          <Link href='/addBaby' passHref>
+            <Button style={babyBtnStyle}>Add Baby</Button>
+          </Link>
         </div>
       </div>
-    </React.Fragment>
+      <div style={isViewChange}>{mappedBabyCard}</div>
+    </section>
   );
 }
