@@ -108,10 +108,8 @@ export default function Register() {
       <Head>
         <title>BabyManager | Register</title>
       </Head>
-      <div className='h-screen my-[10%] flex flex-col px-5 font-["Rubik"]'>
-        <h1 className='text-pink-500 text-center text-xl mb-10 mt-[10%] '>
-          Create an Account
-        </h1>
+      <section className='mt-[calc(var(--header-height)+2rem)] flex flex-col font-["Rubik"]'>
+        <h1 className='mb-6 text-pink-500 text-center text-xl'>Create an Account</h1>
 
         <form className='flex flex-col mx-10 font-["Rubik"]' onSubmit={handleSubmit}>
           <TextField
@@ -185,7 +183,7 @@ export default function Register() {
           ></TextField>
 
           <Button
-            className='w-full p-2 my-2 bg-indigo-700 hover:bg-pink-700 text-white font-bold rounded'
+            className='!w-full !p-2 !mt-4 bg-indigo-700 hover:bg-pink-700 text-white font-bold rounded'
             type='submit'
           >
             Register
@@ -200,7 +198,7 @@ export default function Register() {
             Have an account? Login here!
           </button>
         </div>
-      </div>
+      </section>
     </ThemeProvider>
   );
 }
