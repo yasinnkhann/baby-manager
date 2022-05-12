@@ -48,7 +48,7 @@ const NoteItem = ({ note, fetchNotes, user }) => {
             ></TextField>
 
             <Button
-              className='min-w-[125px] max-w-[20%] text-stone-900 bg-cyan-200  hover:bg-pink-500 mt-[2%] mb-[5%] '
+              className='text-stone-900 bg-cyan-200  hover:bg-pink-500 mt-[2%] mb-[5%] '
               variant='contained'
               type='submit'
               endIcon={<KeyboardArrowUpIcon />}
@@ -64,7 +64,7 @@ const NoteItem = ({ note, fetchNotes, user }) => {
       )}
       <div className='!my-4'>
         <Button
-          className='min-w-[100px] max-w-[20%] text-stone-900 bg-cyan-200  hover:bg-pink-500 !mr-4'
+          className='text-stone-900 bg-cyan-200  hover:bg-pink-500 !mr-4'
           onClick={() => setIsEditing(!isEditing)}
           variant='contained'
           startIcon={<EditIcon />}
@@ -73,7 +73,7 @@ const NoteItem = ({ note, fetchNotes, user }) => {
         </Button>
 
         <Button
-          className='min-w-[100px] max-w-[20%] text-stone-900 bg-cyan-200  hover:bg-pink-500'
+          className='text-stone-900 bg-cyan-200  hover:bg-pink-500'
           onClick={handleDelete}
           variant='contained'
           startIcon={<DeleteForeverIcon />}

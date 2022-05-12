@@ -32,25 +32,25 @@ export default function Header() {
     <header className='fixed bg-blue-100 font-["Rubik"] top-0 w-full h-[var(--header-height)] z-[300]'>
       <nav className='flex justify-between items-center'>
         <Link href='/overview' passHref>
-          <div className='ml-4 sm:ml-12 flex flex-row content-center hover:text-pink-500 hover:cursor-pointer'>
+          <section className='ml-4 sm:ml-12 flex flex-row content-center hover:text-pink-500 hover:cursor-pointer'>
             <div className='bg-[url("/baby3.svg")] w-16 h-[var(--header-height)] bg-center bg-cover bg-no-repeat'></div>
             <div className='font-["Pacifico"] text-xl self-center '>Bambino</div>
-          </div>
+          </section>
         </Link>
-        <div className='flex flex-row justify-self-end items-center justify-around'>
+        <section className='flex flex-row justify-self-end items-center justify-around'>
           <Link href='/otherBabies' passHref>
-            <IconButton className='hidden sm:block text-neutral-900 text-2xl !mx-2'>
-              <PeopleAltIcon className='hidden sm:block' />
+            <IconButton className='hidden sm:block text-neutral-900 text-2xl'>
+              <PeopleAltIcon className='!mx-1 sm:!mx-3 ' />
             </IconButton>
           </Link>
           <Link href='/overview' passHref>
-            <IconButton className='hidden sm:block text-neutral-900 text-2xl !mx-2'>
-              <FontAwesomeIcon icon={faBaby} />
+            <IconButton className='hidden sm:block text-neutral-900 text-2xl'>
+              <FontAwesomeIcon icon={faBaby} className='!mx-1 sm:!mx-3' />
             </IconButton>
           </Link>
           <Link href='/calendar' passHref>
-            <IconButton className='text-neutral-900 !mx-2'>
-              <CalendarTodayIcon className='hidden sm:block' />
+            <IconButton className='text-neutral-900'>
+              <CalendarTodayIcon className='!mx-1 sm:!mx-3' />
             </IconButton>
           </Link>
 
@@ -63,7 +63,7 @@ export default function Header() {
               aria-expanded={openPer ? 'true' : undefined}
               onClick={e => setAnchorElPer(e.currentTarget)}
             >
-              <PersonIcon className='text-3xl' />
+              <PersonIcon className='text-3xl sm:!mx-3 ' />
             </IconButton>
             <Menu
               id='fade-menu-person'
@@ -88,7 +88,7 @@ export default function Header() {
               </MenuItem>
             </Menu>
           </div>
-          <div className='hidden sm:block ml-1 mr-4'>
+          <div className='hidden sm:block'>
             <IconButton
               className='text-neutral-900'
               id='fade-button'
@@ -97,7 +97,7 @@ export default function Header() {
               aria-expanded={open ? 'true' : undefined}
               onClick={e => setAnchorEl(e.currentTarget)}
             >
-              <MoreHorizIcon />
+              <MoreHorizIcon className='sm:!mx-3' />
             </IconButton>
             <Menu
               id='fade-menu'
@@ -120,7 +120,7 @@ export default function Header() {
               </Link>
             </Menu>
           </div>
-        </div>
+        </section>
       </nav>
     </header>
   );

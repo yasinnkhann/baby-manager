@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Head from 'next/head';
+import { useRouter } from 'next/router';
 import { collection, getDocs } from 'firebase/firestore';
 import { db } from '../firebaseConfig.js';
 import { auth } from '../firebaseConfig.js';
@@ -15,7 +16,8 @@ function Calendar() {
   const [upcomingEvents, setUpcomingEvents] = useState([]);
   const [pastEvents, setPastEvents] = useState([]);
 
-  const [user, _, error] = useAuthState(auth);
+  const [user, loading] = useAuthState(auth);
+  const router = useRouter();
 
   function sameDay(d1, d2) {
     return (
@@ -34,10 +36,12 @@ function Calendar() {
   }
 
   useEffect(() => {
-    if (user) {
+    if (!user && !loading) {
+      router.push('/login');
+    } else if (user) {
       getCurrentUserBabyFeedingEvents();
     }
-  }, [user, selectedDate]); // eslint-disable-line
+  }, [user, loading, selectedDate]); // eslint-disable-line
 
   const sleepingEventsArray = [];
 
@@ -109,8 +113,8 @@ function Calendar() {
         });
         setPastEvents(pastEvents);
       });
-    } catch {
-      console.log(error);
+    } catch (err) {
+      console.error(err);
     }
   };
 

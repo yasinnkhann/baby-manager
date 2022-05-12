@@ -68,7 +68,7 @@ const Notes = () => {
         ></TextField>
 
         <Button
-          className='min-w-[125px] max-w-[20%] text-stone-900 bg-cyan-200  hover:bg-pink-500 !mt-4 !mb-8'
+          className='text-stone-900 bg-cyan-200  hover:bg-pink-500 !mt-4 !mb-8'
           variant='contained'
           type='submit'
           endIcon={<AddCircleOutlineIcon />}
@@ -98,7 +98,7 @@ const Notes = () => {
           <Button
             onClick={() => setIsAddingNote(!isAddingNote)}
             variant='contained'
-            className='bg-pink-500 m-5 max-w-[25%] self-center'
+            className='bg-pink-500 m-5 self-center'
           >
             Add Note
           </Button>
