@@ -36,21 +36,21 @@ export default function Footer() {
       <div className='px-5 py-2 mx-auto'>
         <div className='flex justify-between items-center'>
           <Link href='/calendar' passHref>
-            <IconButton className='text-neutral-900'>
-              <CalendarTodayIcon />
+            <IconButton className='!text-black'>
+              <CalendarTodayIcon className='text-[1.75rem] !text-black' />
             </IconButton>
           </Link>
 
           <div>
             <IconButton
-              className='text-neutral-900'
+              className='!text-black'
               id='fade-button-person'
               aria-controls={openPer ? 'fade-menu-person' : undefined}
               aria-haspopup='true'
               aria-expanded={openPer ? 'true' : undefined}
               onClick={e => setAnchorElPer(e.currentTarget)}
             >
-              <PersonIcon className='text-[28px]' />
+              <PersonIcon className='text-[1.75rem] !text-black' />
             </IconButton>
             <Menu
               id='fade-menu-person'
@@ -78,25 +78,25 @@ export default function Footer() {
 
           <Link href='/overview' passHref>
             <IconButton>
-              <FontAwesomeIcon className='text-[24px] text-neutral-900' icon={faBaby} />
+              <FontAwesomeIcon className='text-[1.75rem] !text-black' icon={faBaby} />
             </IconButton>
           </Link>
           <Link href='/otherBabies' passHref>
             <IconButton>
-              <PeopleAltIcon className='text-neutral-900 text-[24px]' />
+              <PeopleAltIcon className='text-[1.75rem] !text-black' />
             </IconButton>
           </Link>
 
           <div>
             <IconButton
-              className='text-neutral-900'
+              className='!text-black'
               id='fade-button'
               aria-controls={open ? 'fade-menu' : undefined}
               aria-haspopup='true'
               aria-expanded={open ? 'true' : undefined}
               onClick={e => setAnchorEl(e.currentTarget)}
             >
-              <MoreHorizIcon />
+              <MoreHorizIcon className='text-[1.75rem] !text-black' />
             </IconButton>
             <Menu
               id='fade-menu'

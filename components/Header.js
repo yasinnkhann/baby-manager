@@ -40,17 +40,17 @@ export default function Header() {
         <section className='flex flex-row justify-self-end items-center justify-around'>
           <Link href='/otherBabies' passHref>
             <IconButton className='hidden sm:block text-neutral-900 text-2xl'>
-              <PeopleAltIcon className='!mx-1 sm:!mx-3 ' />
+              <PeopleAltIcon className='!mx-1 sm:!mx-3 !text-black' />
             </IconButton>
           </Link>
           <Link href='/overview' passHref>
             <IconButton className='hidden sm:block text-neutral-900 text-2xl'>
-              <FontAwesomeIcon icon={faBaby} className='!mx-1 sm:!mx-3' />
+              <FontAwesomeIcon icon={faBaby} className='!mx-1 sm:!mx-3 !text-black' />
             </IconButton>
           </Link>
           <Link href='/calendar' passHref>
             <IconButton className='text-neutral-900'>
-              <CalendarTodayIcon className='!mx-1 sm:!mx-3' />
+              <CalendarTodayIcon className='!mx-1 sm:!mx-3 !text-black' />
             </IconButton>
           </Link>
 
@@ -63,7 +63,7 @@ export default function Header() {
               aria-expanded={openPer ? 'true' : undefined}
               onClick={e => setAnchorElPer(e.currentTarget)}
             >
-              <PersonIcon className='text-3xl sm:!mx-3 ' />
+              <PersonIcon className='text-3xl sm:!mx-3 !text-black' />
             </IconButton>
             <Menu
               id='fade-menu-person'
@@ -97,7 +97,7 @@ export default function Header() {
               aria-expanded={open ? 'true' : undefined}
               onClick={e => setAnchorEl(e.currentTarget)}
             >
-              <MoreHorizIcon className='sm:!mx-3' />
+              <MoreHorizIcon className='sm:!mx-3 !text-black' />
             </IconButton>
             <Menu
               id='fade-menu'
