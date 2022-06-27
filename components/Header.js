@@ -17,16 +17,18 @@ export default function Header() {
   const router = useRouter();
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
-  const [showBtnRipple, setShowRipple] = useState(window.innerWidth > 640);
-
-  const handleShowBtnRipple = () => {
-    setShowRipple(window.innerWidth > 640);
-  };
+  const [showBtnRipple, setShowRipple] = useState(false);
 
   useEffect(() => {
+    setShowRipple(window.innerWidth > 640);
+
+    const handleShowBtnRipple = () => {
+      setShowRipple(window.innerWidth > 640);
+    };
+
     window.addEventListener('resize', handleShowBtnRipple);
     return () => window.removeEventListener('resize', handleShowBtnRipple);
-  });
+  }, []);
 
   const handleSignOut = async () => {
     try {
