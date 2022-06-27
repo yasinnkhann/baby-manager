@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { Menu, MenuItem, Fade, IconButton } from '@mui/material';
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
@@ -17,6 +17,16 @@ export default function Header() {
   const router = useRouter();
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
+  const [showBtnRipple, setShowRipple] = useState(window.innerWidth > 640);
+
+  const handleShowBtnRipple = () => {
+    setShowRipple(window.innerWidth > 640);
+  };
+
+  useEffect(() => {
+    window.addEventListener('resize', handleShowBtnRipple);
+    return () => window.removeEventListener('resize', handleShowBtnRipple);
+  });
 
   const handleSignOut = async () => {
     try {
@@ -39,23 +49,30 @@ export default function Header() {
         </Link>
         <section className='flex flex-row justify-self-end items-center justify-around'>
           <Link href='/otherBabies' passHref>
-            <IconButton className='hidden sm:block text-neutral-900 text-2xl'>
+            <IconButton
+              disableRipple={showBtnRipple}
+              className='hidden sm:block text-neutral-900 text-2xl'
+            >
               <PeopleAltIcon className='!mx-1 sm:!mx-3 !text-black' />
             </IconButton>
           </Link>
           <Link href='/overview' passHref>
-            <IconButton className='hidden sm:block text-neutral-900 text-2xl'>
+            <IconButton
+              disableRipple={showBtnRipple}
+              className='hidden sm:block text-neutral-900 text-2xl'
+            >
               <FontAwesomeIcon icon={faBaby} className='!mx-1 sm:!mx-3 !text-black' />
             </IconButton>
           </Link>
           <Link href='/calendar' passHref>
-            <IconButton className='text-neutral-900'>
+            <IconButton disableRipple={showBtnRipple} className='text-neutral-900'>
               <CalendarTodayIcon className='!mx-1 sm:!mx-3 !text-black' />
             </IconButton>
           </Link>
 
           <div className='hidden sm:block'>
             <IconButton
+              disableRipple={showBtnRipple}
               className='text-neutral-900'
               id='fade-button-person'
               aria-controls={openPer ? 'fade-menu-person' : undefined}
@@ -90,6 +107,7 @@ export default function Header() {
           </div>
           <div className='hidden sm:block'>
             <IconButton
+              disableRipple={showBtnRipple}
               className='text-neutral-900'
               id='fade-button'
               aria-controls={open ? 'fade-menu' : undefined}
