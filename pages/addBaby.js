@@ -56,8 +56,7 @@ export default function AddBaby() {
         </h1>
         <ChildCareIcon className='mt-4 text-[75px] self-center sm:text-[95px] lg:text-[110px] xl:text-9xl' />
         <form
-          sx={{ m: 1, minWidth: 80 }}
-          className='flex flex-col'
+          className='flex flex-col min-w-[80]'
           onSubmit={e => {
             handleSubmit(e);
           }}
