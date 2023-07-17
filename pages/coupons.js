@@ -9,9 +9,9 @@ import loadable from '@loadable/component';
 const CouponItem = loadable(() => import('../components/CouponItem'));
 
 const Coupons = () => {
+  const router = useRouter();
   const [coupons, setCoupons] = useState(null);
   const [user, loading, error] = useAuthState(auth);
-  const router = useRouter();
 
   useEffect(() => {
     if (!user && !loading) {
