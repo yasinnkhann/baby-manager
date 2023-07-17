@@ -104,7 +104,6 @@ export default function Login() {
         <button
           onClick={googleSignIn}
           className='w-full bg-indigo-700 hover:bg-pink-700 text-white font-bold py-2 px-4 mb-6 rounded font-["Arial"]'
-          variant='contained'
         >
           Login with Google
         </button>
